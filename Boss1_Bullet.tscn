@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bjxcqjnkf8tf2"]
+
+[ext_resource type="Script" uid="uid://cdje0jmk62aye" path="res://Boss1_Bullet.gd" id="1_bwx05"]
+[ext_resource type="Texture2D" uid="uid://o664b1i0b8qf" path="res://圖片4.png" id="2_b2ldk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b2ldk"]
+
+[node name="BossBullet" type="Area2D" unique_id=1400497496]
+script = ExtResource("1_bwx05")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1148182119]
+texture = ExtResource("2_b2ldk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1300918764]
+shape = SubResource("CircleShape2D_b2ldk")

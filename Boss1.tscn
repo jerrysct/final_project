@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://dxj5il4u0ibe8"]
+
+[ext_resource type="Script" uid="uid://bp420gko6q7ys" path="res://Boss.gd" id="1_dtosr"]
+[ext_resource type="Texture2D" uid="uid://dk7n8oaqtvmvg" path="res://icon.svg" id="2_4jvlg"]
+[ext_resource type="PackedScene" uid="uid://bjxcqjnkf8tf2" path="res://Boss1_Bullet.tscn" id="2_ohn0q"]
+[ext_resource type="Script" uid="uid://pin3fcqem2v4" path="res://SequenceUI.gd" id="3_ohn0q"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_paxtu"]
+radius = 91.04944
+
+[node name="Boss" type="CharacterBody2D" unique_id=737443956]
+position = Vector2(0, 4)
+script = ExtResource("1_dtosr")
+bullet_scene = ExtResource("2_ohn0q")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=761326382]
+position = Vector2(560, 222)
+texture = ExtResource("2_4jvlg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1562202276]
+position = Vector2(558, 222)
+shape = SubResource("CircleShape2D_paxtu")
+
+[node name="BulletSpawnPoint" type="Marker2D" parent="." unique_id=1518232827]
+position = Vector2(550, 224)
+
+[node name="FireTimer" type="Timer" parent="." unique_id=349895596]
+wait_time = 0.8
+
+[node name="StunTimer" type="Timer" parent="." unique_id=1977830478]
+wait_time = 2.0
+one_shot = true
+
+[node name="SequenceUI" type="Node2D" parent="." unique_id=1739298482]
+position = Vector2(494, 96)
+script = ExtResource("3_ohn0q")
+
+[node name="Color1" type="ColorRect" parent="SequenceUI" unique_id=1373193463]
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Color2" type="ColorRect" parent="SequenceUI" unique_id=1082723732]
+offset_left = 50.0
+offset_right = 90.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Color3" type="ColorRect" parent="SequenceUI" unique_id=1926291985]
+offset_left = 100.0
+offset_right = 140.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true

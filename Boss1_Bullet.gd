@@ -23,10 +23,8 @@ var can_slow_player: bool = false
 
 func _ready() -> void:
 	add_to_group("bullets")
-
 	body_entered.connect(_on_body_entered)
 	area_entered.connect(_on_area_entered)
-
 	update_visual()
 
 
@@ -44,7 +42,7 @@ func setup(
 	direction = new_direction.normalized()
 	is_phantom = phantom
 	can_slow_player = slow_bullet
-
+	
 	update_visual()
 
 
@@ -52,12 +50,12 @@ func reflect(new_direction: Vector2, multiplier: float = 1.0) -> void:
 	if is_phantom:
 		queue_free()
 		return
-
+	
 	is_reflected = true
 	direction = new_direction.normalized()
 	speed *= 1.2
 	damage *= multiplier
-
+	
 	modulate = Color.WHITE
 
 
@@ -69,17 +67,20 @@ func change_color(new_color: int) -> void:
 func update_visual() -> void:
 	if sprite == null:
 		return
-
+	
 	match color_type:
 		BulletColor.RED:
 			sprite.modulate = Color.RED
+		
 		BulletColor.BLUE:
 			sprite.modulate = Color.BLUE
+		
 		BulletColor.GREEN:
 			sprite.modulate = Color.GREEN
+		
 		BulletColor.YELLOW:
 			sprite.modulate = Color.YELLOW
-
+	
 	if is_phantom:
 		sprite.modulate.a = 0.35
 	else:
@@ -87,35 +88,28 @@ func update_visual() -> void:
 
 
 func _on_body_entered(body: Node) -> void:
-	# 反彈後打到 Boss
-	if is_reflected:
-		if body.has_method("receive_reflected_bullet"):
-			body.receive_reflected_bullet(color_type, is_phantom)
-			queue_free()
-			return
-		
-		# 反彈後如果打到其他東西，不處理玩家傷害
+	# 反彈後打到 Boss：交給 Boss 判斷顏色
+	if is_reflected and body.has_method("receive_reflected_bullet"):
+		body.receive_reflected_bullet(color_type, is_phantom)
+		queue_free()
 		return
-
-	# 未反彈時打到玩家
+	
+	# 反彈後撞到其他東西，不扣血
+	if is_reflected:
+		return
+	
+	# 未反彈時，只能傷害玩家
 	if body.is_in_group("player"):
 		if body.has_method("take_damage"):
 			body.take_damage(damage)
-
+		
 		if can_slow_player and body.has_method("apply_slow"):
 			body.apply_slow(slow_multiplier, slow_duration)
-
-		queue_free()
-
-	if not is_reflected and body.has_method("take_damage"):
-		body.take_damage(damage)
-
-		if can_slow_player and body.has_method("apply_slow"):
-			body.apply_slow(slow_multiplier, slow_duration)
-
+		
 		queue_free()
 
 
 func _on_area_entered(area: Area2D) -> void:
+	# 稜鏡場
 	if area.has_method("refract_bullet"):
 		area.refract_bullet(self)
