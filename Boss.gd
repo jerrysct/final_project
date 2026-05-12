@@ -28,10 +28,18 @@ enum BossState {
 @export var phantom_chance: float = 0.3
 @export var slow_bullet_chance: float = 0.2
 
+@export var move_speed: float = 55.0
+@export var move_range_x: float = 220.0
+@export var move_range_y: float = 120.0
+@export var arrive_distance: float = 10.0
+
 @onready var fire_timer: Timer = $FireTimer
 @onready var stun_timer: Timer = $StunTimer
 @onready var bullet_spawn_point: Marker2D = $BulletSpawnPoint
 @onready var sequence_ui: Node = $SequenceUI
+
+var start_position: Vector2
+var target_position: Vector2
 
 var hp: int
 var state: BossState = BossState.IDLE
@@ -47,6 +55,9 @@ func _ready() -> void:
 	hp = max_hp
 	randomize()
 
+	start_position = global_position
+	choose_new_target_position()
+
 	generate_sequence()
 	update_sequence_ui()
 
@@ -55,6 +66,33 @@ func _ready() -> void:
 	stun_timer.timeout.connect(_on_stun_timer_timeout)
 
 	change_state(BossState.ATTACK)
+
+
+func _physics_process(delta: float) -> void:
+	if state == BossState.DEAD:
+		return
+	
+	if state == BossState.STUN:
+		return
+	
+	move_boss(delta)
+
+
+func move_boss(delta: float) -> void:
+	var direction_to_target = target_position - global_position
+
+	if direction_to_target.length() <= arrive_distance:
+		choose_new_target_position()
+		return
+
+	global_position += direction_to_target.normalized() * move_speed * delta
+
+
+func choose_new_target_position() -> void:
+	var random_x = randf_range(-move_range_x, move_range_x)
+	var random_y = randf_range(-move_range_y, move_range_y)
+
+	target_position = start_position + Vector2(random_x, random_y)
 
 
 func change_state(new_state: BossState) -> void:
