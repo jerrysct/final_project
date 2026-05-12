@@ -1,13 +1,9 @@
 [gd_scene format=3 uid="uid://b05f5twqxbwqi"]
 
 [ext_resource type="PackedScene" uid="uid://dxj5il4u0ibe8" path="res://Boss1.tscn" id="1_8uh7m"]
-[ext_resource type="PackedScene" uid="uid://fe4qq74r4nr5" path="res://Boss1_skill.tscn" id="2_6uqi0"]
 
 [node name="Test" type="Node2D" unique_id=382374532]
 position = Vector2(5, 6)
 
 [node name="Boss" parent="." unique_id=737443956 instance=ExtResource("1_8uh7m")]
 position = Vector2(-34, -6)
-
-[node name="PrimsField" parent="." unique_id=444656274 instance=ExtResource("2_6uqi0")]
-position = Vector2(44, 356)
