@@ -1,131 +1,126 @@
 extends CharacterBody2D
 
-# --- 基礎移動數值 ---
-@export var walk_speed = 200.0     # 正常走路速度
-@export var dash_speed = 600.0    # 位移時的衝刺速度
-@export var max_stamina = 100.0   # 體力上限
-@export var stamina_regen_idle = 20.0
-@export var stamina_regen_move = 5.0
+# --- 基礎設定 ---
+@export var walk_speed = 200.0
+@export var dash_speed = 600.0
+@export var max_stamina = 100.0
+@export var max_bullet_storage = 10 
+@export var bullet_time_scale = 0.2 
 
-# --- 反彈與蓄力數值 ---
-@export var energy_max = 100.0    # 能量上限
-@export var absorb_energy_cost = 20.0 # 蓄力每秒消耗能量
-
-# --- 節點引用 (請確保場景中名稱一致) ---
-@onready var stamina_bar = $CanvasLayer/ProgressBar 
+# --- 節點引用 ---
+@onready var stamina_bar = $CanvasLayer/ProgressBar
+@onready var charge_bar = $CanvasLayer2/ChargeBar
 @onready var bounce_zone = $BounceZone  
+@onready var aim_line = $AimLine 
 
-# --- 內部狀態變數 ---
+# --- 狀態變數 ---
 var current_stamina = 100.0
-var current_energy = 100.0
 var is_dashing = false
-var is_absorbing = false
-var captured_bullets = [] # 儲存吸收的子彈
+var is_aiming = false
+var captured_bullets = [] 
+
+func _ready():
+	# 初始化 UI 與 指向線
+	charge_bar.max_value = max_bullet_storage
+	charge_bar.visible = false
+	
+	aim_line.visible = false
+	aim_line.width = 5.0
+	# 強制確保 Line2D 只有兩個點
+	aim_line.clear_points()
+	aim_line.add_point(Vector2.ZERO)
+	aim_line.add_point(Vector2.ZERO)
+	# 關鍵：確保線條不受父節點縮放或旋轉的干擾
+	aim_line.top_level = false 
 
 func _physics_process(delta):
-	# 1. 處理體力與能量回復
-	handle_resources(delta)
-	
-	# 2. 更新 UI (假設進度條顯示體力)
 	stamina_bar.value = current_stamina
 	
-	# 3. 移動邏輯
 	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	handle_movement(direction)
 	
-	# 4. 瞬間反彈機制 (Parry)
 	if Input.is_action_just_pressed("parry"):
 		execute_instant_parry()
 		
-	# 5. 蓄力吸收機制 (Absorb)
-	handle_absorb_mechanic(delta)
+	handle_absorb_logic(delta)
+	handle_aim_and_release()
 	
 	move_and_slide()
 
-# --- 資源管理 ---
-func handle_resources(delta):
-	# 體力回復
-	if current_stamina < max_stamina:
-		var regen = stamina_regen_idle if velocity == Vector2.ZERO else stamina_regen_move
-		current_stamina = min(current_stamina + regen * delta, max_stamina)
-	
-	# 能量自然回補 (可選)
-	if not is_absorbing and current_energy < energy_max:
-		current_energy = min(current_energy + 5.0 * delta, energy_max)
-
-# --- 移動與衝刺 ---
-func handle_movement(direction):
-	if Input.is_action_just_pressed("dash") and direction != Vector2.ZERO and current_stamina >= 30.0:
-		perform_dash()
-	
-	if is_dashing:
-		velocity = direction.normalized() * dash_speed
-	else:
-		velocity = direction * walk_speed
-
-func perform_dash():
-	current_stamina -= 30.0 
-	is_dashing = true
-	await get_tree().create_timer(0.2).timeout
-	is_dashing = false
-
-# --- 核心機制 A：瞬間反彈 ---
-func execute_instant_parry():
-	var targets = bounce_zone.get_overlapping_areas()
-	var success = false
-	
-	for bullet in targets:
-		if bullet.has_method("reflect") and not bullet.get("is_reflected"):
-			# 1.5倍傷害，朝反方向彈回
-			var reflect_dir = -bullet.direction if "direction" in bullet else Vector2.ZERO
-			bullet.reflect(reflect_dir, 1.5)
-			success = true
-			current_energy = min(current_energy + 10.0, energy_max) # 成功反彈獎勵能量
-	
-	if success:
-		print("成功瞬間反彈！")
-
-# --- 核心機制 B：蓄力吸收 ---
-func handle_absorb_mechanic(delta):
-	# 按住吸收鍵且還有能量
-	if Input.is_action_pressed("absorb") and current_energy > 0:
-		is_absorbing = true
-		current_energy -= absorb_energy_cost * delta
+# --- 吸收邏輯 (右鍵) ---
+func handle_absorb_logic(delta):
+	if Input.is_action_pressed("absorb"):
+		if captured_bullets.size() < max_bullet_storage:
+			var targets = bounce_zone.get_overlapping_areas()
+			for bullet in targets:
+				if bullet.has_method("reflect") and not bullet.get("is_reflected"):
+					if not captured_bullets.has(bullet):
+						absorb_bullet(bullet)
 		
-		var targets = bounce_zone.get_overlapping_areas()
-		for bullet in targets:
-			if bullet.has_method("reflect") and not bullet.get("is_reflected"):
-				if not captured_bullets.has(bullet):
-					absorb_bullet(bullet)
-	else:
-		if is_absorbing: # 如果原本在吸收但現在停止了 (按鍵放開或能量耗盡)
-			launch_captured_bullets()
-			is_absorbing = false
+		if not captured_bullets.is_empty():
+			charge_bar.visible = true
+			charge_bar.value = captured_bullets.size()
 
-func absorb_bullet(bullet):
-	captured_bullets.append(bullet)
-	# 停止子彈運作並隱藏
-	bullet.set_physics_process(false)
-	bullet.visible = false
-	# 關閉碰撞層避免重複觸發
-	bullet.set_deferred("monitorable", false)
-	bullet.set_deferred("monitoring", false)
-
-func launch_captured_bullets():
-	if captured_bullets.is_empty():
+# --- 指向瞄準與釋放 (F 鍵) ---
+func handle_aim_and_release():
+	if captured_bullets.is_empty(): 
+		aim_line.visible = false
+		is_aiming = false
 		return
+
+	if Input.is_action_pressed("skill_release"):
+		is_aiming = true
+		Engine.time_scale = bullet_time_scale
+		aim_line.visible = true
 		
-	# 朝滑鼠方向發射
+		# --- 終極修正方案 ---
+		# 1. 強制重設起點為玩家中心
+		aim_line.set_point_position(0, global_position) 
+		
+		# 2. 獲取滑鼠相對於相機/視口的局部座標
+		# 使用 get_local_mouse_position() 是最穩定的，前提是 AimLine 是 Player 的直接子節點
+		var target_pos = get_local_mouse_position()
+		
+		# 3. 更新線條終點
+		aim_line.set_point_position(1, target_pos)
+		
+	if Input.is_action_just_released("skill_release") and is_aiming:
+		is_aiming = false
+		Engine.time_scale = 1.0
+		aim_line.visible = false
+		launch_captured_bullets()
+
+# --- 發射邏輯 ---
+func launch_captured_bullets():
+	var power_multiplier = 1.0 + (captured_bullets.size() * 0.2)
 	var target_dir = (get_global_mouse_position() - global_position).normalized()
 	
 	for bullet in captured_bullets:
 		if is_instance_valid(bullet):
 			bullet.visible = true
-			bullet.global_position = global_position # 從玩家位置統一射出
+			bullet.global_position = global_position
 			bullet.set_deferred("monitorable", true)
 			bullet.set_deferred("monitoring", true)
 			bullet.set_physics_process(true)
-			bullet.reflect(target_dir, 1.0)
+			bullet.reflect(target_dir, power_multiplier)
 			
 	captured_bullets.clear()
-	print("蓄力釋放！")
+	charge_bar.visible = false
+
+# --- 基礎功能 ---
+func absorb_bullet(bullet):
+	captured_bullets.append(bullet)
+	bullet.set_physics_process(false)
+	bullet.visible = false
+	bullet.set_deferred("monitorable", false)
+	bullet.set_deferred("monitoring", false)
+
+func execute_instant_parry():
+	var targets = bounce_zone.get_overlapping_areas()
+	for bullet in targets:
+		if bullet.has_method("reflect") and not bullet.get("is_reflected"):
+			bullet.reflect(-bullet.direction, 1.5)
+
+func handle_movement(direction):
+	var speed_mult = 1.0 / Engine.time_scale if is_aiming else 1.0
+	velocity = direction * walk_speed * speed_mult
