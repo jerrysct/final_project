@@ -2,11 +2,15 @@
 
 [ext_resource type="Script" uid="uid://bp420gko6q7ys" path="res://Boss.gd" id="1_dtosr"]
 [ext_resource type="PackedScene" uid="uid://bjxcqjnkf8tf2" path="res://Boss1_Bullet.tscn" id="2_ohn0q"]
-[ext_resource type="Texture2D" uid="uid://dl77ypnanlex" path="res://ChatGPT Image 2026年5月12日 上午11_13_16.png" id="3_1r8ol"]
+[ext_resource type="Texture2D" uid="uid://dl77ypnanlex" path="res://Bossimage.png" id="3_1r8ol"]
 [ext_resource type="Script" uid="uid://pin3fcqem2v4" path="res://SequenceUI.gd" id="3_ohn0q"]
 [ext_resource type="PackedScene" uid="uid://fe4qq74r4nr5" path="res://Boss1_skill.tscn" id="3_r2dsk"]
+<<<<<<< HEAD
 [ext_resource type="PackedScene" uid="uid://bfesk12q31j0l" path="res://player_1.tscn" id="5_r2dsk"]
 [ext_resource type="Script" path="res://bossHealBar.gd" id="6_yjrng"]
+=======
+[ext_resource type="Script" uid="uid://cpgxgawsgn4ue" path="res://bossHealBar.gd" id="6_yjrng"]
+>>>>>>> 83feddd39f324ede63b936c6995355eae9802796
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_paxtu"]
 radius = 91.04944
@@ -66,6 +70,9 @@ scale = Vector2(2.283648, 2.786451)
 max_value = 1000.0
 value = 1000.0
 script = ExtResource("6_yjrng")
+<<<<<<< HEAD
 
 [node name="Node2D" parent="." unique_id=516929009 instance=ExtResource("5_r2dsk")]
 position = Vector2(127, 364)
+=======
+>>>>>>> 83feddd39f324ede63b936c6995355eae9802796
