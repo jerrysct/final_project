@@ -2,8 +2,10 @@
 
 [ext_resource type="Script" uid="uid://bp420gko6q7ys" path="res://Boss.gd" id="1_dtosr"]
 [ext_resource type="PackedScene" uid="uid://bjxcqjnkf8tf2" path="res://Boss1_Bullet.tscn" id="2_ohn0q"]
-[ext_resource type="Texture2D" uid="uid://dl77ypnanlex" path="res://ChatGPT Image 2026年5月12日 上午11_13_16.png" id="3_1r8ol"]
+[ext_resource type="Texture2D" uid="uid://dl77ypnanlex" path="res://Bossimage.png" id="3_1r8ol"]
 [ext_resource type="Script" uid="uid://pin3fcqem2v4" path="res://SequenceUI.gd" id="3_ohn0q"]
+[ext_resource type="PackedScene" uid="uid://fe4qq74r4nr5" path="res://Boss1_skill.tscn" id="3_r2dsk"]
+[ext_resource type="Script" uid="uid://cpgxgawsgn4ue" path="res://bossHealBar.gd" id="6_yjrng"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_paxtu"]
 radius = 91.04944
@@ -12,6 +14,7 @@ radius = 91.04944
 position = Vector2(0, 4)
 script = ExtResource("1_dtosr")
 bullet_scene = ExtResource("2_ohn0q")
+prism_field_scene = ExtResource("3_r2dsk")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=761326382]
 position = Vector2(559, 233.24998)
@@ -52,3 +55,13 @@ offset_left = 100.0
 offset_right = 140.0
 offset_bottom = 40.0
 metadata/_edit_use_anchors_ = true
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1506493363]
+offset_left = 350.0
+offset_top = 5.0
+offset_right = 550.0
+offset_bottom = 32.0
+scale = Vector2(2.283648, 2.786451)
+max_value = 1000.0
+value = 1000.0
+script = ExtResource("6_yjrng")
