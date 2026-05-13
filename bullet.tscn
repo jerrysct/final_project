@@ -1,20 +1,40 @@
 [gd_scene format=3 uid="uid://bvmhowfgfeq8l"]
 
-[ext_resource type="Script" uid="uid://2fwhlgc8k23i" path="res://bullet.gd" id="1_v8qja"]
 [ext_resource type="Texture2D" uid="uid://o664b1i0b8qf" path="res://圖片4.png" id="2_t4vbm"]
+
+[sub_resource type="GDScript" id="GDScript_v7oki"]
+script/source = "# Bullet.gd
+extends Area2D
+
+var direction = Vector2.RIGHT
+var speed = 200.0
+var damage = 10.0
+var is_reflected = false
+
+func _physics_process(delta):
+	position += direction * speed * delta
+
+# 被反彈時呼叫此函式
+func reflect(new_direction: Vector2, multiplier: float = 1.0):
+	direction = new_direction
+	damage *= multiplier
+	is_reflected = true
+	# 改變顏色或特效來區分
+	modulate = Color.GOLD
+"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2b2rl"]
 radius = 9.0
 
 [node name="bullet" type="Area2D" unique_id=117124398]
 position = Vector2(1, -2)
-script = ExtResource("1_v8qja")
+script = SubResource("GDScript_v7oki")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=488455379]
-position = Vector2(135, 103.5)
+position = Vector2(0, 0.5)
 shape = SubResource("CircleShape2D_2b2rl")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1879738096]
-position = Vector2(135, 103.5)
+position = Vector2(0, 0.5)
 scale = Vector2(0.1046511, 0.10119048)
 texture = ExtResource("2_t4vbm")
