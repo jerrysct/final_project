@@ -13,7 +13,7 @@ radius = 19.026299
 bg_color = Color(0.80784315, 0.57254905, 0, 1)
 
 [node name="Node2D" type="CharacterBody2D" unique_id=516929009]
-position = Vector2(-2, 0)
+position = Vector2(154, 65)
 script = ExtResource("1_bxx23")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=492225163]
