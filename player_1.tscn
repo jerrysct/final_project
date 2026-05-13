@@ -12,9 +12,10 @@ radius = 19.026299
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxx23"]
 bg_color = Color(0.80784315, 0.57254905, 0, 1)
 
-[node name="Node2D" type="CharacterBody2D" unique_id=516929009]
+[node name="Node2D" type="CharacterBody2D" unique_id=516929009 groups=["player"]]
 position = Vector2(154, 65)
 script = ExtResource("1_bxx23")
+metadata/_edit_horizontal_guides_ = [34.0]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=492225163]
 position = Vector2(1.2000008, -0.79999924)

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="final_project_godot"
-run/main_scene="res://player_1.tscn"
+run/main_scene="uid://dxj5il4u0ibe8"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
