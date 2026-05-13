@@ -2,12 +2,16 @@
 
 [ext_resource type="PackedScene" uid="uid://bfesk12q31j0l" path="res://player_1.tscn" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bvmhowfgfeq8l" path="res://bullet.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://rfhwlcbsfea3" path="res://Boss3_Melee.tscn" id="3_h2yge"]
 
 [node name="main" type="Node2D" unique_id=1501841022]
 position = Vector2(0, -1)
 
 [node name="Node2D" parent="." unique_id=516929009 instance=ExtResource("1_0xm2m")]
-position = Vector2(551, 383)
+position = Vector2(423, 169)
 
 [node name="bullet" parent="." unique_id=117124398 instance=ExtResource("2_h2yge")]
 position = Vector2(0, 251)
+
+[node name="Boss3Melee" parent="." unique_id=2037844958 instance=ExtResource("3_h2yge")]
+position = Vector2(437, 109)

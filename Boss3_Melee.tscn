@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://rfhwlcbsfea3"]
+
+[ext_resource type="Script" uid="uid://dvjc2hcefwr7e" path="res://Boss3_Melee.gd" id="1_mdmya"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_olbf4"]
+
+[node name="Boss3_Melee" type="CharacterBody2D" unique_id=2037844958]
+script = ExtResource("1_mdmya")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1568842799]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1044099119]
+shape = SubResource("CircleShape2D_olbf4")
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=1897201129]
+
+[node name="ChargeTimer" type="Timer" parent="." unique_id=1776064104]
+
+[node name="FireSpawnPoint" type="Marker2D" parent="." unique_id=1858704145]
+
+[node name="BulletSpawnPoint" type="Marker2D" parent="." unique_id=449475848]
