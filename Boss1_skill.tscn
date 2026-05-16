@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://fe4qq74r4nr5"]
+
+[ext_resource type="Script" uid="uid://c5bqpehpy0wsh" path="res://Boss1_skill.gd" id="1_mj8yi"]
+[ext_resource type="Texture2D" uid="uid://ddgjox2o1pmvk" path="res://skillimage.png" id="2_wlj7y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v2eey"]
+size = Vector2(107.24921, 112.51062)
+
+[node name="PrimsField" type="Area2D" unique_id=444656274]
+position = Vector2(-6, 0)
+script = ExtResource("1_mj8yi")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=188011669]
+position = Vector2(370, 239)
+scale = Vector2(-0.09565943, -0.25621036)
+texture = ExtResource("2_wlj7y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2134183752]
+position = Vector2(376.58017, 246.5)
+scale = Vector2(1.1640146, 0.6666036)
+shape = SubResource("RectangleShape2D_v2eey")

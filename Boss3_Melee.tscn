@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://rfhwlcbsfea3"]
+
+[ext_resource type="Script" uid="uid://dvjc2hcefwr7e" path="res://Boss3_Melee.gd" id="1_mdmya"]
+[ext_resource type="PackedScene" uid="uid://n8io3ewieojt" path="res://Boss3_Fire.tscn" id="2_nkiiy"]
+[ext_resource type="Texture2D" uid="uid://clkf6kx0otbbe" path="res://boss3_melee.png" id="2_o76aw"]
+[ext_resource type="PackedScene" uid="uid://b2e51s2slqvaw" path="res://Boss3_HomingBullet.tscn" id="3_ukpb7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_olbf4"]
+radius = 120.0
+
+[node name="Boss3_Melee" type="CharacterBody2D" unique_id=2037844958]
+script = ExtResource("1_mdmya")
+fire_scene = ExtResource("2_nkiiy")
+homing_bullet_scene = ExtResource("3_ukpb7")
+dive_chance = 0.25
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1568842799]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_o76aw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1044099119]
+shape = SubResource("CircleShape2D_olbf4")
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=1897201129]
+
+[node name="ChargeTimer" type="Timer" parent="." unique_id=1776064104]
+
+[node name="FireSpawnPoint" type="Marker2D" parent="." unique_id=1858704145]
+
+[node name="BulletSpawnPoint" type="Marker2D" parent="." unique_id=449475848]
