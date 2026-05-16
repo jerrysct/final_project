@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://b2e51s2slqvaw"]
+
+[ext_resource type="Script" uid="uid://n5ernrn5hr2w" path="res://Boss3_HomingBullet.gd" id="1_homing"]
+[ext_resource type="Texture2D" uid="uid://0bfglu0hotke" path="res://追蹤彈.png" id="2_2wi18"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_homing"]
+radius = 16.0
+
+[node name="Boss3_HomingBullet" type="Area2D" unique_id=38893510]
+script = ExtResource("1_homing")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1663023797]
+scale = Vector2(0.07421875, 0.0703125)
+texture = ExtResource("2_2wi18")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=301932069]
+shape = SubResource("CircleShape2D_homing")
