@@ -3,33 +3,18 @@
 [ext_resource type="Script" uid="uid://ixgihuvnvkgm" path="res://player_1.gd" id="1_bxx23"]
 [ext_resource type="Texture2D" uid="uid://dk7n8oaqtvmvg" path="res://icon.svg" id="2_qh3su"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_bxx23"]
+radius = 40.012497
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_buxg0"]
 radius = 19.026299
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_bxx23"]
-radius = 80.86335
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qh3su"]
-bg_color = Color(0.7813404, 0, 0.19627443, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxx23"]
 bg_color = Color(0.80784315, 0.57254905, 0, 1)
 
-<<<<<<< HEAD
 [node name="Node2D" type="CharacterBody2D" unique_id=516929009]
 position = Vector2(-2, 0)
-=======
-[node name="Node2D" type="CharacterBody2D" unique_id=516929009 groups=["player"]]
-position = Vector2(154, 65)
->>>>>>> 62d3910faad2496e309c2cc9b7847887723713e4
 script = ExtResource("1_bxx23")
-metadata/_edit_horizontal_guides_ = [34.0]
-
-[node name="Hurtbox" type="Area2D" parent="." unique_id=1199489429]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=68443044]
-position = Vector2(1.2000008, -0.79999924)
-shape = SubResource("CircleShape2D_buxg0")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=492225163]
 position = Vector2(1.2000008, -0.79999924)
@@ -49,6 +34,10 @@ position = Vector2(1.2000008, -0.79999924)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BounceZone" unique_id=1002421943]
 shape = SubResource("CircleShape2D_bxx23")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=68443044]
+position = Vector2(1.2000008, -0.79999924)
+shape = SubResource("CircleShape2D_buxg0")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=336286500]
 
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=1564527792]
@@ -58,13 +47,6 @@ offset_right = 737.0
 offset_bottom = 625.0
 value = 50.0
 
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=143379986]
-offset_left = 457.0
-offset_top = 510.0
-offset_right = 735.0
-offset_bottom = 537.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_qh3su")
-
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=554437804]
 
 [node name="ChargeBar" type="ProgressBar" parent="CanvasLayer2" unique_id=203638426]
@@ -73,5 +55,3 @@ offset_top = 554.0
 offset_right = 737.0
 offset_bottom = 581.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_bxx23")
-
-[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

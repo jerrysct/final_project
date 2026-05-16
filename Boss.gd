@@ -487,3 +487,6 @@ func update_sequence_ui() -> void:
 
 	if sequence_ui.has_method("set_sequence"):
 		sequence_ui.set_sequence(target_sequence, player_sequence_index)
+func _input(event):
+	if event.is_action_pressed("ui_accept"):
+		take_damage(100)
