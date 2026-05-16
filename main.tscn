@@ -1,12 +1,57 @@
 [gd_scene format=3 uid="uid://bqxxx55tqqj5a"]
 
-[ext_resource type="PackedScene" uid="uid://bfesk12q31j0l" path="res://player_1.tscn" id="1_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://bvmhowfgfeq8l" path="res://bullet.tscn" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://r1supnu5b6b2" path="res://main.gd" id="1_ig7tw"]
 
-[node name="main" type="Node2D" unique_id=1501841022]
+[node name="Control" type="Control" unique_id=124240756]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ig7tw")
 
-[node name="Node2D" parent="." unique_id=516929009 instance=ExtResource("1_0xm2m")]
-position = Vector2(678, 3)
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1702237248]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.0
+offset_top = -50.5
+offset_right = 36.0
+offset_bottom = 50.5
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="bullet" parent="." unique_id=117124398 instance=ExtResource("2_h2yge")]
-position = Vector2(0, 251)
+[node name="商店" type="Button" parent="VBoxContainer" unique_id=612858888]
+custom_minimum_size = Vector2(250, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "商店"
+
+[node name="裝備" type="Button" parent="VBoxContainer" unique_id=1787515676]
+custom_minimum_size = Vector2(250, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "裝備
+"
+
+[node name="開始遊戲" type="Button" parent="VBoxContainer" unique_id=732273926]
+custom_minimum_size = Vector2(250, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "開始遊戲"
+
+[node name="MenuButton" type="Button" parent="." unique_id=1421214871]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -120.0
+offset_bottom = 50.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 20
+text = "目錄"

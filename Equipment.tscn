@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://c0vkk2g5ygi4f"]
+
+[ext_resource type="Script" uid="uid://cwaeiqxl5runo" path="res://Equipment.gd" id="1_ij1m0"]
+
+[node name="Equipment_tscn" type="Control" unique_id=1596227129]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ij1m0")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1644893958]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -28.0
+offset_top = -11.5
+offset_right = 28.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Slot1" type="Button" parent="HBoxContainer" unique_id=470517472]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+
+[node name="Slot2" type="Button" parent="HBoxContainer" unique_id=2013450813]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+
+[node name="Slot3" type="Button" parent="HBoxContainer" unique_id=252475892]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+
+[node name="Slot4" type="Button" parent="HBoxContainer" unique_id=1016679064]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+
+[node name="Slot5" type="Button" parent="HBoxContainer" unique_id=87048339]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+
+[node name="Back" type="Button" parent="." unique_id=2066159498]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_font_sizes/font_size = 28
+text = "Back"

@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bfesk12q31j0l"]
 
-[ext_resource type="Script" uid="uid://ixgihuvnvkgm" path="res://player_1.gd" id="1_bxx23"]
-[ext_resource type="Texture2D" uid="uid://dk7n8oaqtvmvg" path="res://icon.svg" id="2_qh3su"]
+[ext_resource type="Script" uid="uid://ixgihuvnvkgm" path="res://playerdate_in_game.gd" id="1_bxx23"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bxx23"]
 radius = 40.012497
@@ -12,11 +11,17 @@ radius = 19.026299
 [node name="Node2D" type="CharacterBody2D" unique_id=516929009]
 position = Vector2(-6, 118)
 script = ExtResource("1_bxx23")
+walk_speed = null
+dash_speed = null
+max_stamina = null
+stamina_regen_idle = null
+stamina_regen_move = null
+energy_max = null
+absorb_energy_cost = null
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=492225163]
 position = Vector2(218, 347)
 scale = Vector2(0.3, 0.3)
-texture = ExtResource("2_qh3su")
 
 [node name="BounceZone" type="Area2D" parent="." unique_id=316898556]
 position = Vector2(218, 347)
