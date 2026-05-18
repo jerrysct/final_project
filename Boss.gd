@@ -18,7 +18,9 @@ enum AttackPattern {
 	NORMAL,
 	PHANTOM,
 	PRISM,
-	SLOW
+	SLOW,
+	RADIAL,
+	BURST
 }
 @onready var health_bar: ProgressBar = $HealthBar
 @export var max_hp: int = 1000
@@ -40,6 +42,8 @@ enum AttackPattern {
 @export var prism_pattern_time: float = 6.0
 @export var slow_pattern_time: float = 4.0
 @export var pattern_break_time: float = 1.0
+@export var radial_pattern_time: float = 5.0
+@export var burst_pattern_time: float = 5.0
 
 @export var phantom_chance: float = 0.3
 @export var phase_two_phantom_chance: float = 0.5
@@ -158,7 +162,16 @@ func skill_loop() -> void:
 		print("攻擊模式：遲緩子彈")
 		await get_tree().create_timer(slow_pattern_time).timeout
 		await pattern_break()
-
+		
+		current_pattern = AttackPattern.RADIAL
+		print("攻擊模式：環形彈幕")
+		await get_tree().create_timer(radial_pattern_time).timeout
+		await pattern_break()
+		
+		current_pattern = AttackPattern.BURST
+		print("攻擊模式：大球爆散環形彈幕")
+		await get_tree().create_timer(burst_pattern_time).timeout
+		await pattern_break()
 
 func pattern_break() -> void:
 	if state == BossState.DEAD:
@@ -310,6 +323,12 @@ func fire_bullet() -> void:
 		AttackPattern.SLOW:
 			fire_single_bullet(false, randf() < get_current_slow_chance())
 
+		AttackPattern.RADIAL:
+			fire_radial_bullets()
+
+		AttackPattern.BURST:
+			fire_burst_bullet()
+
 
 func fire_single_bullet(phantom: bool, slow_bullet: bool) -> void:
 	var bullet = bullet_scene.instantiate()
@@ -354,7 +373,61 @@ func fire_spread_bullets(count: int, phantom: bool, slow_bullet: bool) -> void:
 				slow_bullet
 			)
 
+func fire_radial_bullets() -> void:
+	var bullet_count = 12
+	var bullet_speed = 220.0
 
+	if is_phase_two:
+		bullet_count = 20
+		bullet_speed = 260.0
+
+	for i in range(bullet_count):
+		var bullet = bullet_scene.instantiate()
+		get_tree().current_scene.add_child(bullet)
+
+		bullet.global_position = bullet_spawn_point.global_position
+
+		var angle = TAU * float(i) / float(bullet_count)
+		var bullet_direction = Vector2.RIGHT.rotated(angle)
+
+		var phantom = false
+		var slow_bullet = false
+
+		if is_phase_two:
+			phantom = randf() < 0.25
+			slow_bullet = randf() < 0.15
+
+		if bullet.has_method("setup"):
+			bullet.setup(
+				get_random_color(),
+				bullet_direction,
+				phantom,
+				slow_bullet,
+				bullet_speed
+			)
+
+func fire_burst_bullet() -> void:
+	if bullet_scene == null:
+		print("尚未指定 bullet_scene")
+		return
+
+	var bullet = bullet_scene.instantiate()
+	get_tree().current_scene.add_child(bullet)
+
+	bullet.global_position = bullet_spawn_point.global_position
+
+	var bullet_direction = Vector2.DOWN.rotated(randf_range(-0.35, 0.35))
+
+	if bullet.has_method("setup"):
+		bullet.setup(
+			get_random_color(),
+			bullet_direction,
+			false,
+			false,
+			160.0,
+			1,
+			is_phase_two
+		)
 func spawn_prism_fields() -> void:
 	if prism_field_scene == null:
 		print("尚未指定 prism_field_scene")
