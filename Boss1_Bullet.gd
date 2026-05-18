@@ -180,9 +180,12 @@ func _on_body_entered(body: Node) -> void:
 	if bullet_type == BulletType.BURST:
 		return
 
+<<<<<<< HEAD
 	if is_absorbed:
 		return
 
+=======
+>>>>>>> 1e117bf6e76abe51d0e8b6efedf84895643d357f
 	if is_reflected and body.has_method("receive_reflected_bullet"):
 		body.receive_reflected_bullet(color_type, is_phantom)
 		queue_free()

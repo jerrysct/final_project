@@ -1,8 +1,12 @@
 [gd_scene format=3 uid="uid://bfesk12q31j0l"]
 
+<<<<<<< HEAD
 [ext_resource type="Script" uid="uid://dil0so24fmf0d" path="res://player_1.gd" id="1_bxx23"]
 [ext_resource type="Texture2D" uid="uid://dk7n8oaqtvmvg" path="res://icon.svg" id="2_bxx23"]
 [ext_resource type="Script" uid="uid://c14o3o0faeeld" path="res://skill_indicator.gd" id="2_indicator"]
+=======
+[ext_resource type="Script" uid="uid://ixgihuvnvkgm" path="res://playerdate_in_game.gd" id="1_bxx23"]
+>>>>>>> 1e117bf6e76abe51d0e8b6efedf84895643d357f
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_buxg0"]
 radius = 19.026299
@@ -17,7 +21,18 @@ bg_color = Color(0.7813404, 0, 0.19627443, 1)
 bg_color = Color(0.80784315, 0.57254905, 0, 1)
 
 [node name="Node2D" type="CharacterBody2D" unique_id=516929009 groups=["player"]]
+<<<<<<< HEAD
+=======
+position = Vector2(-2, 0)
+>>>>>>> 1e117bf6e76abe51d0e8b6efedf84895643d357f
 script = ExtResource("1_bxx23")
+walk_speed = null
+dash_speed = null
+max_stamina = null
+stamina_regen_idle = null
+stamina_regen_move = null
+energy_max = null
+absorb_energy_cost = null
 metadata/_edit_horizontal_guides_ = [34.0]
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1199489429]
@@ -28,11 +43,14 @@ shape = SubResource("CircleShape2D_buxg0")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=492225163]
 position = Vector2(1.2000008, -0.79999924)
 scale = Vector2(0.3, 0.3)
+<<<<<<< HEAD
 texture = ExtResource("2_bxx23")
 
 [node name="SkillIndicator" type="Node2D" parent="." unique_id=1869918399]
 z_index = 10
 script = ExtResource("2_indicator")
+=======
+>>>>>>> 1e117bf6e76abe51d0e8b6efedf84895643d357f
 
 [node name="AimLine" type="Line2D" parent="." unique_id=282183723]
 top_level = true
