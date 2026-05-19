@@ -137,7 +137,7 @@ func reflect(new_direction: Vector2, multiplier: float = 1.0) -> void:
 	is_reflected = true
 	direction = new_direction.normalized()
 	speed *= 1.2
-	damage *= multiplier
+	damage = int(damage * multiplier)
 
 	modulate = Color.WHITE
 

@@ -124,3 +124,14 @@ func execute_instant_parry():
 func handle_movement(direction):
 	var speed_mult = 1.0 / Engine.time_scale if is_aiming else 1.0
 	velocity = direction * walk_speed * speed_mult
+	
+func take_damage(amount):
+	print("玩家受到傷害：", amount)
+
+
+func apply_slow(multiplier: float, duration: float):
+	walk_speed *= multiplier
+	
+	await get_tree().create_timer(duration).timeout
+	
+	walk_speed /= multiplier

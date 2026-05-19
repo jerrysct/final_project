@@ -1,31 +1,22 @@
 [gd_scene format=3 uid="uid://bfesk12q31j0l"]
 
-[ext_resource type="Script" uid="uid://ixgihuvnvkgm" path="res://playerdate_in_game.gd" id="1_bxx23"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_bxx23"]
-radius = 40.012497
+[ext_resource type="Script" uid="uid://ixgihuvnvkgm" path="res://player_1.gd" id="1_bxx23"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_buxg0"]
 radius = 19.026299
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_bxx23"]
+radius = 40.012497
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxx23"]
 bg_color = Color(0.80784315, 0.57254905, 0, 1)
 
-<<<<<<< HEAD
-[node name="Node2D" type="CharacterBody2D" unique_id=516929009]
-position = Vector2(-2, 0)
-script = ExtResource("1_bxx23")
-=======
 [node name="Node2D" type="CharacterBody2D" unique_id=516929009 groups=["player"]]
 position = Vector2(-2, 0)
 script = ExtResource("1_bxx23")
 walk_speed = null
 dash_speed = null
 max_stamina = null
-stamina_regen_idle = null
-stamina_regen_move = null
-energy_max = null
-absorb_energy_cost = null
 metadata/_edit_horizontal_guides_ = [34.0]
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1199489429]
@@ -33,7 +24,6 @@ metadata/_edit_horizontal_guides_ = [34.0]
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=68443044]
 position = Vector2(1.2000008, -0.79999924)
 shape = SubResource("CircleShape2D_buxg0")
->>>>>>> 1e117bf6e76abe51d0e8b6efedf84895643d357f
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=492225163]
 position = Vector2(1.2000008, -0.79999924)
@@ -52,7 +42,7 @@ position = Vector2(1.2000008, -0.79999924)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BounceZone" unique_id=1002421943]
 shape = SubResource("CircleShape2D_bxx23")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=68443044]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=960846342]
 position = Vector2(1.2000008, -0.79999924)
 shape = SubResource("CircleShape2D_buxg0")
 

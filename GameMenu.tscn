@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c2l8egek4iwfb"]
 
-[ext_resource type="Script" uid="uid://chjadysb4crqg" path="res://GameMenu.gd" id="1_rtg43"]
+[ext_resource type="Script" path="res://GameMenu.gd" id="1_rtg43"]
 
 [node name="GameMenu" type="Control" unique_id=782900967]
 layout_mode = 3

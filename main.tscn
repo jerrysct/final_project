@@ -1,11 +1,6 @@
 [gd_scene format=3 uid="uid://bqxxx55tqqj5a"]
 
-<<<<<<< HEAD
-[ext_resource type="PackedScene" uid="uid://bfesk12q31j0l" path="res://player_1.tscn" id="1_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://bvmhowfgfeq8l" path="res://bullet.tscn" id="2_h2yge"]
-=======
 [ext_resource type="Script" uid="uid://r1supnu5b6b2" path="res://main.gd" id="1_ig7tw"]
->>>>>>> 1e117bf6e76abe51d0e8b6efedf84895643d357f
 
 [node name="Control" type="Control" unique_id=124240756]
 layout_mode = 3
@@ -16,13 +11,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ig7tw")
 
-<<<<<<< HEAD
-[node name="Node2D" parent="." unique_id=516929009 instance=ExtResource("1_0xm2m")]
-position = Vector2(551, 383)
-
-[node name="bullet" parent="." unique_id=117124398 instance=ExtResource("2_h2yge")]
-position = Vector2(0, 251)
-=======
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1702237248]
 layout_mode = 1
 anchors_preset = 8
@@ -67,4 +55,3 @@ offset_bottom = 50.0
 grow_horizontal = 0
 theme_override_font_sizes/font_size = 20
 text = "目錄"
->>>>>>> 1e117bf6e76abe51d0e8b6efedf84895643d357f
