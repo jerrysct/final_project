@@ -22,7 +22,9 @@ enum AttackPattern {
 	RADIAL,
 	BURST
 }
+
 @onready var health_bar: ProgressBar = $HealthBar
+
 @export var max_hp: int = 1000
 @export var normal_damage: int = 30
 @export var sequence_damage: int = 200
@@ -51,10 +53,12 @@ enum AttackPattern {
 @export var slow_bullet_chance: float = 0.2
 @export var phase_two_slow_bullet_chance: float = 0.35
 
-@export var move_speed: float = 55.0
-@export var move_range_x: float = 220.0
-@export var move_range_y: float = 120.0
-@export var arrive_distance: float = 10.0
+@export var move_speed: float = 28.0
+@export var move_range_x: float = 180.0
+@export var move_range_y: float = 90.0
+@export var arrive_distance: float = 12.0
+@export var move_smooth: float = 3.0
+@export var idle_after_arrive: float = 0.6
 
 @export var prism_spawn_range_x: float = 260.0
 @export var prism_spawn_range_y: float = 140.0
@@ -76,6 +80,8 @@ var color_reversed: bool = false
 
 var start_position: Vector2
 var target_position: Vector2
+var move_velocity: Vector2 = Vector2.ZERO
+var is_waiting_for_next_move: bool = false
 
 var current_pattern: AttackPattern = AttackPattern.NORMAL
 var skill_loop_running: bool = false
@@ -105,6 +111,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	if state == BossState.STUN:
+		move_velocity = Vector2.ZERO
 		return
 
 	move_boss(delta)
@@ -122,6 +129,7 @@ func change_state(new_state: BossState) -> void:
 
 		BossState.STUN:
 			fire_timer.stop()
+			move_velocity = Vector2.ZERO
 			stun_timer.start(stun_time)
 
 		BossState.DEAD:
@@ -162,16 +170,17 @@ func skill_loop() -> void:
 		print("攻擊模式：遲緩子彈")
 		await get_tree().create_timer(slow_pattern_time).timeout
 		await pattern_break()
-		
+
 		current_pattern = AttackPattern.RADIAL
 		print("攻擊模式：環形彈幕")
 		await get_tree().create_timer(radial_pattern_time).timeout
 		await pattern_break()
-		
+
 		current_pattern = AttackPattern.BURST
 		print("攻擊模式：大球爆散環形彈幕")
 		await get_tree().create_timer(burst_pattern_time).timeout
 		await pattern_break()
+
 
 func pattern_break() -> void:
 	if state == BossState.DEAD:
@@ -185,13 +194,36 @@ func pattern_break() -> void:
 
 
 func move_boss(delta: float) -> void:
+	if is_waiting_for_next_move:
+		move_velocity = move_velocity.move_toward(Vector2.ZERO, move_speed * delta)
+		global_position += move_velocity * delta
+		return
+
 	var direction_to_target = target_position - global_position
 
 	if direction_to_target.length() <= arrive_distance:
-		choose_new_target_position()
+		wait_then_choose_new_target()
 		return
 
-	global_position += direction_to_target.normalized() * move_speed * delta
+	var desired_velocity = direction_to_target.normalized() * move_speed
+	move_velocity = move_velocity.lerp(desired_velocity, move_smooth * delta)
+
+	global_position += move_velocity * delta
+
+
+func wait_then_choose_new_target() -> void:
+	if is_waiting_for_next_move:
+		return
+
+	is_waiting_for_next_move = true
+	move_velocity = Vector2.ZERO
+
+	await get_tree().create_timer(idle_after_arrive).timeout
+
+	if state != BossState.DEAD and state != BossState.STUN:
+		choose_new_target_position()
+
+	is_waiting_for_next_move = false
 
 
 func choose_new_target_position() -> void:
@@ -274,7 +306,7 @@ func take_damage(amount: int) -> void:
 
 	print("Boss HP:", hp)
 
-	if hp <= max_hp / 2 and not is_phase_two:
+	if hp <= max_hp / 2.0 and not is_phase_two:
 		enter_phase_two()
 
 	if hp <= 0:
@@ -293,7 +325,9 @@ func enter_phase_two() -> void:
 	color_reversed = true
 
 	fire_timer.wait_time = phase_two_fire_interval
-	move_speed += 15.0
+	move_speed += 8.0
+	move_range_x += 40.0
+	move_range_y += 20.0
 
 	print("Boss 進入二階段：半血反轉")
 
@@ -373,13 +407,14 @@ func fire_spread_bullets(count: int, phantom: bool, slow_bullet: bool) -> void:
 				slow_bullet
 			)
 
+
 func fire_radial_bullets() -> void:
 	var bullet_count = 12
-	var bullet_speed = 220.0
+	var bullet_speed = 150.0
 
 	if is_phase_two:
 		bullet_count = 20
-		bullet_speed = 260.0
+		bullet_speed = 185.0
 
 	for i in range(bullet_count):
 		var bullet = bullet_scene.instantiate()
@@ -406,6 +441,7 @@ func fire_radial_bullets() -> void:
 				bullet_speed
 			)
 
+
 func fire_burst_bullet() -> void:
 	if bullet_scene == null:
 		print("尚未指定 bullet_scene")
@@ -424,10 +460,12 @@ func fire_burst_bullet() -> void:
 			bullet_direction,
 			false,
 			false,
-			160.0,
+			100.0,
 			1,
 			is_phase_two
 		)
+
+
 func spawn_prism_fields() -> void:
 	if prism_field_scene == null:
 		print("尚未指定 prism_field_scene")
@@ -487,3 +525,8 @@ func update_sequence_ui() -> void:
 
 	if sequence_ui.has_method("set_sequence"):
 		sequence_ui.set_sequence(target_sequence, player_sequence_index)
+
+
+func _input(event):
+	if event.is_action_pressed("ui_accept"):
+		take_damage(100)

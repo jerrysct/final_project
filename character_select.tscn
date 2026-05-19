@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://d2ewprkp85hex"]
+
+[ext_resource type="Script" uid="uid://bsjp263qawcsn" path="res://control.gd" id="1_tddig"]
+[ext_resource type="Texture2D" uid="uid://dk7n8oaqtvmvg" path="res://icon.svg" id="2_5duen"]
+
+[node name="CharacterSelect" type="Node2D" unique_id=579652414]
+
+[node name="Control" type="Control" parent="." unique_id=1415778839]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_tddig")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control" unique_id=660656266]
+custom_minimum_size = Vector2(600, 300)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 200.0
+offset_right = 900.0
+offset_bottom = 500.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/ScrollContainer" unique_id=313323072]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Character1" type="TextureButton" parent="Control/ScrollContainer/HBoxContainer" unique_id=1013993154]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+texture_normal = ExtResource("2_5duen")
+
+[node name="Character2" type="TextureButton" parent="Control/ScrollContainer/HBoxContainer" unique_id=1078829923]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+texture_normal = ExtResource("2_5duen")
+
+[node name="Character3" type="TextureButton" parent="Control/ScrollContainer/HBoxContainer" unique_id=239980451]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+texture_normal = ExtResource("2_5duen")

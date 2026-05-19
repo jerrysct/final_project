@@ -31,6 +31,7 @@ var color_type: int = BulletColor.RED
 var bullet_type: int = BulletType.NORMAL
 
 var is_reflected: bool = false
+var is_absorbed: bool = false
 var is_phantom: bool = false
 var can_slow_player: bool = false
 var is_phase_two: bool = false
@@ -137,7 +138,7 @@ func reflect(new_direction: Vector2, multiplier: float = 1.0) -> void:
 	is_reflected = true
 	direction = new_direction.normalized()
 	speed *= 1.2
-	damage *= multiplier
+	damage = int(damage * multiplier)
 
 	modulate = Color.WHITE
 
@@ -179,6 +180,12 @@ func _on_body_entered(body: Node) -> void:
 	if bullet_type == BulletType.BURST:
 		return
 
+<<<<<<< HEAD
+	if is_absorbed:
+		return
+
+=======
+>>>>>>> 1e117bf6e76abe51d0e8b6efedf84895643d357f
 	if is_reflected and body.has_method("receive_reflected_bullet"):
 		body.receive_reflected_bullet(color_type, is_phantom)
 		queue_free()

@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://cjkrbp5sra854"]
+
+[ext_resource type="PackedScene" uid="uid://dxj5il4u0ibe8" path="res://Boss1.tscn" id="1_6f7f2"]
+[ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://ChatGPT Image 2026年5月18日 下午09_39_38.png" id="1_r6kx4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r6kx4"]
+size = Vector2(700, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xb4eh"]
+size = Vector2(700, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5yl58"]
+size = Vector2(24, 500)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yq10e"]
+size = Vector2(24, 500)
+
+[node name="BossRoom" type="Node2D" unique_id=1767539128]
+
+[node name="Floor" type="Sprite2D" parent="." unique_id=754397698]
+position = Vector2(0.99997705, 8.583069e-06)
+scale = Vector2(0.4401042, 0.46289063)
+texture = ExtResource("1_r6kx4")
+
+[node name="WallTop" type="StaticBody2D" parent="." unique_id=308624505]
+position = Vector2(0, -250)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop" unique_id=2012980522]
+shape = SubResource("RectangleShape2D_r6kx4")
+
+[node name="WallBottom" type="StaticBody2D" parent="." unique_id=1092831311]
+position = Vector2(0, 250)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallBottom" unique_id=1137973731]
+shape = SubResource("RectangleShape2D_xb4eh")
+
+[node name="WallLeft" type="StaticBody2D" parent="." unique_id=1562384323]
+position = Vector2(-350, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=1714029320]
+shape = SubResource("RectangleShape2D_5yl58")
+
+[node name="WallRight" type="StaticBody2D" parent="." unique_id=242822482]
+position = Vector2(350, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=120228062]
+shape = SubResource("RectangleShape2D_yq10e")
+
+[node name="BossSpawnPoint" type="Marker2D" parent="." unique_id=1805048722]
+
+[node name="PlayerSpawnPoint" type="Marker2D" parent="." unique_id=1579005560]
+
+[node name="Boss" parent="." unique_id=737443956 instance=ExtResource("1_6f7f2")]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=851601317]
+zoom = Vector2(3, 3)
+limit_enabled = false
+
+[node name="CanvasLayer" type="Node2D" parent="." unique_id=63614279]
+
+[node name="SequenceUI" type="Node2D" parent="CanvasLayer" unique_id=461644759]
+position = Vector2(-20, -528)
+
+[node name="BossHealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=1717798632]
+offset_right = 4.0
+offset_bottom = 27.0

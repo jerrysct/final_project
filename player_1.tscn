@@ -29,7 +29,6 @@ metadata/_edit_horizontal_guides_ = [34.0]
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1199489429]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=68443044]
-position = Vector2(1.2000008, -0.79999924)
 shape = SubResource("CircleShape2D_buxg0")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=492225163]
@@ -38,18 +37,17 @@ scale = Vector2(0.3, 0.3)
 
 [node name="AimLine" type="Line2D" parent="." unique_id=282183723]
 top_level = true
-position = Vector2(-216.8, -347.8)
-points = PackedVector2Array(219, 346)
-width = 2.0
+z_index = 100
+width = 3.0
 default_color = Color(0.7921569, 1, 1, 1)
 
 [node name="BounceZone" type="Area2D" parent="." unique_id=316898556]
-position = Vector2(1.2000008, -0.79999924)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BounceZone" unique_id=1002421943]
 shape = SubResource("CircleShape2D_bxx23")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=336286500]
+follow_viewport_enabled = true
 
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=1564527792]
 offset_left = 456.0
@@ -64,8 +62,10 @@ offset_top = 510.0
 offset_right = 735.0
 offset_bottom = 537.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_qh3su")
+value = 100.0
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=554437804]
+follow_viewport_enabled = true
 
 [node name="ChargeBar" type="ProgressBar" parent="CanvasLayer2" unique_id=203638426]
 offset_left = 458.0
