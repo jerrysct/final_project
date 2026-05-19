@@ -5,6 +5,7 @@ var direction = Vector2.RIGHT
 var speed = 200.0
 var damage = 10.0
 var is_reflected = false
+var is_absorbed = false
 
 func _physics_process(delta):
 	position += direction * speed * delta
