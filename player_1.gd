@@ -9,6 +9,7 @@ extends CharacterBody2D
 
 # 指示圈畫在子節點上，避免被 Sprite2D 蓋住
 @onready var skill_indicator = $SkillIndicator
+@onready var release_burst_particles = $ReleaseBurstParticles
 
 # --- 狀態變數 ---
 var current_hp: float
@@ -60,15 +61,17 @@ func _physics_process(delta):
 			execute_instant_parry()  # 放開按鍵時才判定反彈
 			is_parry_preparing = false  # 判定完關閉指示圈
 
-	# 2. 吸收子彈 (Absorb)
+	# 2. 吸收子彈 (Absorb) — 按住期間持續吸收，避免受傷判定讓玩家閃爍/消失
 	if Input.is_action_pressed("absorb"):
-		is_absorb_preparing = true  # 按住時，維持 true 讓 _draw() 畫出指示圈
+		is_absorb_preparing = true
+		execute_absorb_action()
 	else:
-		if is_absorb_preparing:
-			execute_absorb_action()  # 放開按鍵時才判定吸收
-			is_absorb_preparing = false  # 判定完關閉指示圈
+		is_absorb_preparing = false
 			
 	handle_aim_and_release()
+
+	if Input.is_action_just_released("skill_release"):
+		play_release_burst_particles()
 	
 	skill_indicator.is_parry_preparing = is_parry_preparing
 	skill_indicator.is_absorb_preparing = is_absorb_preparing
@@ -79,11 +82,12 @@ func _physics_process(delta):
 
 # --- 受傷判定 ---
 func _on_hurtbox_area_entered(area):
+	if is_parry_preparing or is_absorb_preparing or is_invincible:
+		return
 	if area.has_method("reflect") and not area.get("is_reflected") and not area.get("is_absorbed"):
-		if not is_invincible:
-			var damage_amount = area.get("damage") if "damage" in area else 10.0
-			take_damage(damage_amount)
-			area.queue_free()
+		var damage_amount = area.get("damage") if "damage" in area else 10.0
+		take_damage(damage_amount)
+		area.queue_free()
 
 func take_damage(amount: float):
 	if is_invincible: return
@@ -144,10 +148,6 @@ func absorb_bullet(bullet):
 		bullet.visible = false
 		bullet.set_deferred("monitorable", false)
 		bullet.set_deferred("monitoring", false)
-		# 脫離發射者，避免子彈被刪除時連帶影響
-		var scene_root = get_tree().current_scene
-		if scene_root and bullet.get_parent() != scene_root:
-			bullet.reparent(scene_root)
 
 func _update_aim_line() -> void:
 	if aim_line.get_point_count() < 2:
@@ -188,7 +188,11 @@ func handle_aim_and_release():
 		aim_line.visible = false
 		launch_captured_bullets()
 
-# --- 發射邏輯 ---
+func play_release_burst_particles() -> void:
+	if not is_instance_valid(release_burst_particles):
+		return
+	release_burst_particles.restart()
+
 func launch_captured_bullets():
 	var power_multiplier = 1.0 + (captured_bullets.size() * 0.2)
 	var target_dir = (get_global_mouse_position() - global_position).normalized()

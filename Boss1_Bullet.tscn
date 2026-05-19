@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cdje0jmk62aye" path="res://Boss1_Bullet.gd" id="1_bwx05"]
 [ext_resource type="Texture2D" uid="uid://o664b1i0b8qf" path="res://圖片4.png" id="2_b2ldk"]
-[ext_resource type="PackedScene" uid="uid://bfesk12q31j0l" path="res://player_1.tscn" id="3_bghil"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ypvc5"]
 radius = 8.7

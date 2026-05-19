@@ -15,5 +15,3 @@ func reflect(new_direction: Vector2, multiplier: float = 1.0):
 	direction = new_direction
 	damage *= multiplier
 	is_reflected = true
-	# 改變顏色或特效來區分
-	modulate = Color.GOLD

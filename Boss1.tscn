@@ -4,7 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://bjxcqjnkf8tf2" path="res://Boss1_Bullet.tscn" id="2_ohn0q"]
 [ext_resource type="Script" uid="uid://pin3fcqem2v4" path="res://SequenceUI.gd" id="3_ohn0q"]
 [ext_resource type="PackedScene" uid="uid://fe4qq74r4nr5" path="res://Boss1_skill.tscn" id="3_r2dsk"]
+<<<<<<< Updated upstream
 [ext_resource type="Texture2D" uid="uid://j7yjhknavyfw" path="res://BossImage.png" id="4_yjrng"]
+=======
+[ext_resource type="PackedScene" uid="uid://bmmtamxfqkkfo" path="res://player_1.tscn" id="5_r2dsk"]
+>>>>>>> Stashed changes
 [ext_resource type="Script" uid="uid://cpgxgawsgn4ue" path="res://bossHealBar.gd" id="6_yjrng"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_paxtu"]

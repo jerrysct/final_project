@@ -1,6 +1,9 @@
-[gd_scene format=3 uid="uid://bfesk12q31j0l"]
+[gd_scene format=3 uid="uid://bmmtamxfqkkfo"]
 
 [ext_resource type="Script" uid="uid://ixgihuvnvkgm" path="res://playerdate_in_game.gd" id="1_bxx23"]
+
+[ext_resource type="Texture2D" uid="uid://dk7n8oaqtvmvg" path="res://icon.svg" id="2_tex"]
+[ext_resource type="Script" uid="uid://c14o3o0faeeld" path="res://skill_indicator.gd" id="2_skill"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_buxg0"]
 radius = 19.026299
@@ -29,25 +32,52 @@ metadata/_edit_horizontal_guides_ = [34.0]
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1199489429]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=68443044]
+position = Vector2(1.2000008, -0.79999924)
 shape = SubResource("CircleShape2D_buxg0")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=492225163]
 position = Vector2(1.2000008, -0.79999924)
 scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_tex")
+
+[node name="SkillIndicator" type="Node2D" parent="."]
+position = Vector2(1.2000008, -0.79999924)
+z_index = 10
+script = ExtResource("2_skill")
+
+[node name="ReleaseBurstParticles" type="CPUParticles2D" parent="."]
+position = Vector2(1.2000008, -0.79999924)
+z_index = 20
+emitting = false
+amount = 36
+lifetime = 0.45
+one_shot = true
+explosiveness = 1.0
+randomness = 0.35
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 90.0
+initial_velocity_max = 220.0
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+scale_amount_min = 2.0
+scale_amount_max = 5.0
+color = Color(0.25, 0.75, 1, 0.95)
 
 [node name="AimLine" type="Line2D" parent="." unique_id=282183723]
 top_level = true
-z_index = 100
-width = 3.0
+position = Vector2(-216.8, -347.8)
+points = PackedVector2Array(219, 346)
+width = 2.0
 default_color = Color(0.7921569, 1, 1, 1)
 
 [node name="BounceZone" type="Area2D" parent="." unique_id=316898556]
+position = Vector2(1.2000008, -0.79999924)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BounceZone" unique_id=1002421943]
 shape = SubResource("CircleShape2D_bxx23")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=336286500]
-follow_viewport_enabled = true
 
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=1564527792]
 offset_left = 456.0
@@ -62,10 +92,8 @@ offset_top = 510.0
 offset_right = 735.0
 offset_bottom = 537.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_qh3su")
-value = 100.0
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=554437804]
-follow_viewport_enabled = true
 
 [node name="ChargeBar" type="ProgressBar" parent="CanvasLayer2" unique_id=203638426]
 offset_left = 458.0
