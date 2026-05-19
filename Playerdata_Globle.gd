@@ -13,12 +13,9 @@ const ITEMS = [
 
 var current_slot: int = 0  # 記錄目前使用哪個存檔槽
 
-<<<<<<< HEAD
 # === 【核心修正】加入角色選擇變數，預設為空字串 ===
 var selected_character: String = ""
 
-=======
->>>>>>> 1e117bf6e76abe51d0e8b6efedf84895643d357f
 # 數值上限
 var max_hp: float = 100.0
 var max_stamina: float = 100.0
@@ -35,11 +32,8 @@ var dash_stamina_cost: float = 30.0
 var absorb_mp_cost: float = 20.0
 # 金幣
 var gold: int = 1000
-<<<<<<< HEAD
 var max_bullet_storage: int = 5      # 吸收子彈的上限次數
 var bullet_time_scale: float = 0.3    # 蓄力釋放時的子彈時間倍率（0.3 代表慢動作 30%）
-=======
->>>>>>> 1e117bf6e76abe51d0e8b6efedf84895643d357f
 # 裝備系統
 var purchased_items: Array = []
 var inventory: Array = []

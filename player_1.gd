@@ -50,29 +50,6 @@ func _physics_process(delta):
 	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	handle_movement(direction)
 	
-<<<<<<< HEAD
-	if Input.is_action_just_pressed("parry"):
-		execute_instant_parry()
-		
-	handle_absorb_logic(delta)
-	handle_aim_and_release()
-	
-	move_and_slide()
-
-# --- 吸收邏輯 (右鍵) ---
-func handle_absorb_logic(delta):
-	if Input.is_action_pressed("absorb"):
-		if captured_bullets.size() < max_bullet_storage:
-			var targets = bounce_zone.get_overlapping_areas()
-			for bullet in targets:
-				if bullet.has_method("reflect") and not bullet.get("is_reflected"):
-					if not captured_bullets.has(bullet):
-						absorb_bullet(bullet)
-		
-		if not captured_bullets.is_empty():
-			charge_bar.visible = true
-			charge_bar.value = captured_bullets.size()
-=======
 	# --- 技能邏輯 ---
 	
 	# 1. 瞬間反彈 (Parry)
@@ -179,7 +156,6 @@ func _update_aim_line() -> void:
 		aim_line.add_point(Vector2.ZERO)
 	aim_line.set_point_position(0, global_position)
 	aim_line.set_point_position(1, get_global_mouse_position())
->>>>>>> be5c19ee36917d871be718d99306600bfaa086f2
 
 # --- 指向瞄準與釋放 (F 鍵) ---
 func handle_aim_and_release():
@@ -194,7 +170,6 @@ func handle_aim_and_release():
 		is_aiming = true
 		Engine.time_scale = Playerdata_Globle.bullet_time_scale
 		aim_line.visible = true
-<<<<<<< HEAD
 		
 		# --- 終極修正方案 ---
 		# 1. 強制重設起點為玩家中心
@@ -208,10 +183,6 @@ func handle_aim_and_release():
 		aim_line.set_point_position(1, target_pos)
 		
 	if Input.is_action_just_released("skill_release") and is_aiming:
-=======
-		_update_aim_line()
-	elif Input.is_action_just_released("skill_release"):
->>>>>>> be5c19ee36917d871be718d99306600bfaa086f2
 		is_aiming = false
 		Engine.time_scale = 1.0
 		aim_line.visible = false
