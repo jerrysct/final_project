@@ -61,11 +61,7 @@ func reflect(new_direction: Vector2, multiplier: float = 1.0) -> void:
 	modulate = Color.GOLD
 
 func _on_area_entered(area: Area2D) -> void:
-<<<<<<< HEAD
 	if is_reflected or is_absorbed:
-=======
-	if is_reflected:
->>>>>>> 1e117bf6e76abe51d0e8b6efedf84895643d357f
 		return
 	if area.name != "Hurtbox":
 		return
