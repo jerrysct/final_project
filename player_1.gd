@@ -186,8 +186,6 @@ func handle_resources(delta: float) -> void:
 
 		# 脫離發射者，避免子彈被刪除時連帶影響
 		var scene_root = get_tree().current_scene
-		if scene_root and bullet.get_parent() != scene_root:
-			bullet.reparent(scene_root)
 
 
 func _update_aim_line() -> void:
