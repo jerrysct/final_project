@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://ibhr0yox1fcc"]
+
+[ext_resource type="Script" uid="uid://dio36x2sh7c0t" path="res://Boss3_Ranged.gd" id="1_bs1s8"]
+[ext_resource type="Texture2D" uid="uid://bagpyv5fswdmh" path="res://boss遠程.png" id="1_hdcdk"]
+[ext_resource type="PackedScene" uid="uid://cb1anm22lo0hn" path="res://Boss3_HomingBullet2.tscn" id="2_bs1s8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7nwss"]
+
+[node name="Boss3Ranged" type="CharacterBody2D" unique_id=1120405388]
+script = ExtResource("1_bs1s8")
+bullet_scene = ExtResource("2_bs1s8")
+debug_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1105495807]
+position = Vector2(853.75, 258.5)
+scale = Vector2(0.20361325, 0.20214842)
+texture = ExtResource("1_hdcdk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1418570543]
+shape = SubResource("CircleShape2D_7nwss")
+
+[node name="BulletSpawnPoint" type="Node2D" parent="." unique_id=800646731]
+position = Vector2(50, 0)

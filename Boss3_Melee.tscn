@@ -13,7 +13,8 @@ radius = 120.0
 script = ExtResource("1_mdmya")
 fire_scene = ExtResource("2_nkiiy")
 homing_bullet_scene = ExtResource("3_ukpb7")
-dive_chance = 0.25
+homing_bullet_chance = 1.0
+dive_chance = 0.02
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1568842799]
 scale = Vector2(0.25, 0.25)
