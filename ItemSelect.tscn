@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://b1t0ioywafyw2"]
+
+[ext_resource type="Script" uid="uid://dmj6h03m8vsac" path="res://ItemSelect.gd" id="1_ob8j4"]
+
+[node name="ItemSelect_tscn" type="Control" unique_id=1437240159]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ob8j4")
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=1067863205]
+custom_minimum_size = Vector2(1152, 648)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 1155.0
+offset_bottom = 651.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 8

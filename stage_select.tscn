@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://rpw763uji7is"]
+
+[ext_resource type="Script" uid="uid://bus1ebhecpcuq" path="res://stage_select.gd" id="1_d2q2k"]
+[ext_resource type="Texture2D" uid="uid://3ksnjkexosvv" path="res://Bossimage.png" id="2_q55ev"]
+[ext_resource type="Texture2D" uid="uid://clkf6kx0otbbe" path="res://boss3_melee.png" id="3_i5ytr"]
+
+[node name="stage_select" type="Node2D" unique_id=1708047513]
+
+[node name="Control" type="Control" parent="." unique_id=1706979374]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_d2q2k")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control" unique_id=735309058]
+custom_minimum_size = Vector2(800, 450)
+layout_mode = 0
+offset_left = 200.0
+offset_top = 100.0
+offset_right = 1000.0
+offset_bottom = 550.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/ScrollContainer" unique_id=830600763]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
+
+[node name="Boss1" type="Button" parent="Control/ScrollContainer/HBoxContainer" unique_id=407599545]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+icon = ExtResource("2_q55ev")
+expand_icon = true
+
+[node name="Boss2" type="Button" parent="Control/ScrollContainer/HBoxContainer" unique_id=1219861439]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+icon = ExtResource("3_i5ytr")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Boss3" type="Button" parent="Control/ScrollContainer/HBoxContainer" unique_id=2076301601]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+icon = ExtResource("3_i5ytr")
+expand_icon = true
+
+[node name="FinalBoss" type="Button" parent="Control/ScrollContainer/HBoxContainer" unique_id=1781697451]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+
+[node name="StartBattleButton" type="Button" parent="Control" unique_id=2077085537]
+custom_minimum_size = Vector2(200, 70)
+layout_mode = 0
+offset_left = 900.0
+offset_top = 550.0
+offset_right = 1100.0
+offset_bottom = 620.0
+text = "開始戰鬥"

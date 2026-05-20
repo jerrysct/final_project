@@ -1,0 +1,139 @@
+[gd_scene format=3 uid="uid://c7rst4a6axfir"]
+
+[ext_resource type="Script" uid="uid://bkwn444l2qtbm" path="res://SaveSelect.gd" id="1_euigg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_euigg"]
+bg_color = Color(0.16442978, 0.16242719, 0.15277904, 0.9882353)
+
+[node name="SaveSelect" type="Control" unique_id=838354549]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_euigg")
+
+[node name="SlotsContainer" type="VBoxContainer" parent="." unique_id=1098084048]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -222.0
+offset_top = -124.0
+offset_right = 207.0
+offset_bottom = 124.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Slot0" type="HBoxContainer" parent="SlotsContainer" unique_id=2020277046]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+
+[node name="SlotButton" type="Button" parent="SlotsContainer/Slot0" unique_id=994781666]
+custom_minimum_size = Vector2(250, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "存檔1"
+
+[node name="DeleteButton" type="Button" parent="SlotsContainer/Slot0" unique_id=966653271]
+custom_minimum_size = Vector2(120, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "🗑"
+
+[node name="Slot1" type="HBoxContainer" parent="SlotsContainer" unique_id=138181320]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+
+[node name="SlotButton" type="Button" parent="SlotsContainer/Slot1" unique_id=1498046040]
+custom_minimum_size = Vector2(250, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "存檔2"
+
+[node name="DeleteButton" type="Button" parent="SlotsContainer/Slot1" unique_id=1008315806]
+custom_minimum_size = Vector2(120, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "🗑"
+
+[node name="Slot2" type="HBoxContainer" parent="SlotsContainer" unique_id=1031178118]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+
+[node name="SlotButton" type="Button" parent="SlotsContainer/Slot2" unique_id=1206334844]
+custom_minimum_size = Vector2(250, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "存檔3"
+
+[node name="DeleteButton" type="Button" parent="SlotsContainer/Slot2" unique_id=1402574752]
+custom_minimum_size = Vector2(120, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "🗑"
+
+[node name="QuitGame" type="Button" parent="." unique_id=580041193]
+custom_minimum_size = Vector2(200, 70)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -70.0
+offset_right = 200.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 22
+text = "結束遊戲"
+
+[node name="ConfirmPanel" type="Panel" parent="." unique_id=1604024847]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -271.0
+offset_top = -201.0
+offset_right = 271.0
+offset_bottom = 201.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_euigg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConfirmPanel" unique_id=2112788566]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -46.5
+offset_right = 48.0
+offset_bottom = 46.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 40
+
+[node name="Label" type="Label" parent="ConfirmPanel/VBoxContainer" unique_id=1506221882]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ConfirmPanel/VBoxContainer" unique_id=477959726]
+layout_mode = 2
+
+[node name="ConfirmNo" type="Button" parent="ConfirmPanel/VBoxContainer/HBoxContainer" unique_id=1980488576]
+custom_minimum_size = Vector2(200, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "取消"
+
+[node name="ConfirmYes" type="Button" parent="ConfirmPanel/VBoxContainer/HBoxContainer" unique_id=118309455]
+custom_minimum_size = Vector2(200, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "確定刪除"

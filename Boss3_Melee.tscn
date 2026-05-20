@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://n8io3ewieojt" path="res://Boss3_Fire.tscn" id="2_nkiiy"]
 [ext_resource type="Texture2D" uid="uid://clkf6kx0otbbe" path="res://boss3_melee.png" id="2_o76aw"]
 [ext_resource type="PackedScene" uid="uid://b2e51s2slqvaw" path="res://Boss3_HomingBullet.tscn" id="3_ukpb7"]
+[ext_resource type="PackedScene" uid="uid://bmmtamxfqkkfo" path="res://player_1.tscn" id="5_r88pm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_olbf4"]
 radius = 120.0
@@ -29,3 +30,6 @@ shape = SubResource("CircleShape2D_olbf4")
 [node name="FireSpawnPoint" type="Marker2D" parent="." unique_id=1858704145]
 
 [node name="BulletSpawnPoint" type="Marker2D" parent="." unique_id=449475848]
+
+[node name="Node2D" parent="." unique_id=516929009 instance=ExtResource("5_r88pm")]
+position = Vector2(664, 261)

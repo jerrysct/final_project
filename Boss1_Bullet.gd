@@ -31,6 +31,7 @@ var color_type: int = BulletColor.RED
 var bullet_type: int = BulletType.NORMAL
 
 var is_reflected: bool = false
+var is_absorbed: bool = false
 var is_phantom: bool = false
 var can_slow_player: bool = false
 var is_phase_two: bool = false
@@ -40,13 +41,23 @@ var is_phase_two: bool = false
 
 func _ready() -> void:
 	add_to_group("bullets")
-	body_entered.connect(_on_body_entered)
-	area_entered.connect(_on_area_entered)
+
+	if not body_entered.is_connected(_on_body_entered):
+		body_entered.connect(_on_body_entered)
+
+	if not area_entered.is_connected(_on_area_entered):
+		area_entered.connect(_on_area_entered)
+
 	update_visual()
 
 
-
 func _physics_process(delta: float) -> void:
+	if is_absorbed:
+		return
+
+	if direction == Vector2.ZERO:
+		direction = Vector2.DOWN
+
 	global_position += direction.normalized() * speed * delta
 
 	if sprite != null:
@@ -63,13 +74,15 @@ func setup(
 	phase_two: bool = false
 ) -> void:
 	color_type = new_color
-	direction = new_direction.normalized()
+	direction = new_direction.normalized() if new_direction != Vector2.ZERO else Vector2.DOWN
 	is_phantom = phantom
 	can_slow_player = slow_bullet
 	bullet_type = new_bullet_type
 	is_phase_two = phase_two
+	is_reflected = false
+	is_absorbed = false
 
-	if new_speed > 0:
+	if new_speed > 0.0:
 		speed = new_speed
 
 	update_visual()
@@ -78,27 +91,28 @@ func setup(
 		start_burst_timer()
 	else:
 		start_life_timer()
+
+
 func start_life_timer() -> void:
 	await get_tree().create_timer(life_time).timeout
-	
-	if is_instance_valid(self):
+
+	if is_instance_valid(self) and not is_absorbed:
 		queue_free()
 
 
 func start_burst_timer() -> void:
 	await get_tree().create_timer(burst_travel_time).timeout
-	
-	if is_instance_valid(self):
+
+	if is_instance_valid(self) and not is_absorbed:
 		explode_into_ring()
 
 
 func explode_into_ring() -> void:
-	var ring_count = burst_ring_count
-	var ring_speed = burst_ring_speed
+	if bullet_type != BulletType.BURST:
+		return
 
-	if is_phase_two:
-		ring_count = phase_two_burst_ring_count
-		ring_speed = phase_two_burst_ring_speed
+	var ring_count = phase_two_burst_ring_count if is_phase_two else burst_ring_count
+	var ring_speed = phase_two_burst_ring_speed if is_phase_two else burst_ring_speed
 
 	for i in range(ring_count):
 		var bullet = duplicate()
@@ -135,11 +149,18 @@ func reflect(new_direction: Vector2, multiplier: float = 1.0) -> void:
 		return
 
 	is_reflected = true
-	direction = new_direction.normalized()
+	is_absorbed = false
+	direction = new_direction.normalized() if new_direction != Vector2.ZERO else -direction.normalized()
 	speed *= 1.2
-	damage *= multiplier
+	damage = int(float(damage) * multiplier)
+
+	visible = true
+	set_physics_process(true)
+	set_deferred("monitorable", true)
+	set_deferred("monitoring", true)
 
 	modulate = Color.WHITE
+	update_visual()
 
 
 func change_color(new_color: int) -> void:
@@ -154,13 +175,10 @@ func update_visual() -> void:
 	match color_type:
 		BulletColor.RED:
 			sprite.modulate = Color.RED
-
 		BulletColor.BLUE:
 			sprite.modulate = Color.BLUE
-
 		BulletColor.GREEN:
 			sprite.modulate = Color.GREEN
-
 		BulletColor.YELLOW:
 			sprite.modulate = Color.YELLOW
 
@@ -176,7 +194,14 @@ func update_visual() -> void:
 
 
 func _on_body_entered(body: Node) -> void:
+	if body.is_in_group("wall"):
+		queue_free()
+		return
+
 	if bullet_type == BulletType.BURST:
+		return
+
+	if is_absorbed:
 		return
 
 	if is_reflected and body.has_method("receive_reflected_bullet"):
@@ -199,6 +224,9 @@ func _on_body_entered(body: Node) -> void:
 
 func _on_area_entered(area: Area2D) -> void:
 	if bullet_type == BulletType.BURST:
+		return
+
+	if is_absorbed:
 		return
 
 	if area.has_method("refract_bullet"):

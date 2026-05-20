@@ -7,6 +7,7 @@ extends Area2D
 
 var direction: Vector2 = Vector2.RIGHT
 var is_reflected: bool = false
+var is_absorbed: bool = false
 
 var _target: Node2D = null
 
@@ -60,7 +61,7 @@ func reflect(new_direction: Vector2, multiplier: float = 1.0) -> void:
 	modulate = Color.GOLD
 
 func _on_area_entered(area: Area2D) -> void:
-	if is_reflected:
+	if is_reflected or is_absorbed:
 		return
 	if area.name != "Hurtbox":
 		return
