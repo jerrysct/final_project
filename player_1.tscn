@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bmmtamxfqkkfo"]
+[gd_scene format=3 uid="uid://bfesk12q31j0l"]
 
 [ext_resource type="Script" uid="uid://dil0so24fmf0d" path="res://player_1.gd" id="1_squ5q"]
 [ext_resource type="Script" uid="uid://c14o3o0faeeld" path="res://skill_indicator.gd" id="2_skill"]
@@ -31,7 +31,6 @@ metadata/_edit_horizontal_guides_ = [34.0]
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1199489429]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=68443044]
-position = Vector2(1.2000008, -0.79999924)
 shape = SubResource("CircleShape2D_buxg0")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=492225163]
@@ -75,12 +74,12 @@ width = 2.0
 default_color = Color(0.7921569, 1, 1, 1)
 
 [node name="BounceZone" type="Area2D" parent="." unique_id=316898556]
-position = Vector2(1.2000008, -0.79999924)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BounceZone" unique_id=1002421943]
 shape = SubResource("CircleShape2D_bxx23")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=336286500]
+follow_viewport_enabled = true
 
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=1564527792]
 offset_left = 456.0
@@ -95,8 +94,10 @@ offset_top = 510.0
 offset_right = 735.0
 offset_bottom = 537.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_qh3su")
+value = 100.0
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=554437804]
+follow_viewport_enabled = true
 
 [node name="ChargeBar" type="ProgressBar" parent="CanvasLayer2" unique_id=203638426]
 offset_left = 458.0
@@ -104,5 +105,8 @@ offset_top = 554.0
 offset_right = 737.0
 offset_bottom = 581.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_bxx23")
+
+[node name="SkillIndicator" type="Node2D" parent="." unique_id=617943539]
+script = ExtResource("2_bxx23")
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

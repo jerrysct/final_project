@@ -12,7 +12,7 @@ radius = 505.59372
 
 [node name="Boss" type="CharacterBody2D" unique_id=737443956]
 position = Vector2(0, 1.1920929e-07)
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.3, 0.3)
 script = ExtResource("1_dtosr")
 bullet_scene = ExtResource("2_ohn0q")
 prism_field_scene = ExtResource("3_r2dsk")

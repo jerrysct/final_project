@@ -58,6 +58,7 @@ func reflect(new_direction: Vector2, multiplier: float = 1.0) -> void:
 	if new_direction.length_squared() > 0.0001:
 		direction = new_direction.normalized()
 	damage *= multiplier
+	modulate = Color.GOLD
 
 func _on_area_entered(area: Area2D) -> void:
 	if is_reflected or is_absorbed:

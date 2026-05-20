@@ -29,6 +29,7 @@ func _ready() -> void:
 	health_bar.max_value = Playerdata_Globle.max_hp
 	health_bar.value = current_hp
 	health_bar.show_percentage = true
+
 	stamina_bar.max_value = Playerdata_Globle.max_stamina
 	stamina_bar.value = current_stamina
 
@@ -76,7 +77,6 @@ func _physics_process(delta: float) -> void:
 	# 吸收子彈（右鍵按住持續吸收）
 	if Input.is_action_pressed("absorb"):
 		is_absorb_preparing = true
-		execute_absorb_action()
 	else:
 		is_absorb_preparing = false
 
@@ -117,6 +117,7 @@ func play_hit_effect() -> void:
 	tween.tween_property(sprite, "modulate", Color.RED, 0.1)
 	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
 	tween.set_loops(3)
+
 	await get_tree().create_timer(0.6).timeout
 	is_invincible = false
 
@@ -183,11 +184,18 @@ func handle_resources(delta: float) -> void:
 			regen = Playerdata_Globle.stamina_regen_move
 		current_stamina = minf(current_stamina + regen * delta, Playerdata_Globle.max_stamina)
 
+		# 脫離發射者，避免子彈被刪除時連帶影響
+		var scene_root = get_tree().current_scene
+		if scene_root and bullet.get_parent() != scene_root:
+			bullet.reparent(scene_root)
+
+
 func _update_aim_line() -> void:
 	if aim_line.get_point_count() < 2:
 		aim_line.clear_points()
 		aim_line.add_point(Vector2.ZERO)
 		aim_line.add_point(Vector2.ZERO)
+
 	aim_line.set_point_position(0, global_position)
 	aim_line.set_point_position(1, get_global_mouse_position())
 
@@ -196,6 +204,7 @@ func handle_aim_and_release() -> void:
 		if is_aiming:
 			is_aiming = false
 			Engine.time_scale = 1.0
+
 		aim_line.visible = false
 		return
 

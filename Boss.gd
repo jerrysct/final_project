@@ -54,8 +54,11 @@ enum AttackPattern {
 @export var phase_two_slow_bullet_chance: float = 0.35
 
 @export var move_speed: float = 28.0
-@export var move_range_x: float = 180.0
-@export var move_range_y: float = 90.0
+@export var player_group_name: String = "player"
+@export var room_left: float = -300.0
+@export var room_right: float = 300.0
+@export var room_top: float = -200.0
+@export var room_bottom: float = 200.0
 @export var arrive_distance: float = 12.0
 @export var move_smooth: float = 3.0
 @export var idle_after_arrive: float = 0.6
@@ -68,6 +71,10 @@ enum AttackPattern {
 @onready var stun_timer: Timer = $StunTimer
 @onready var bullet_spawn_point: Marker2D = $BulletSpawnPoint
 @onready var sequence_ui: Node = $SequenceUI
+
+@onready var boss_sprite: Sprite2D = $Sprite2D
+
+var player: Node2D = null
 
 var hp: int
 var state: BossState = BossState.IDLE
@@ -91,6 +98,7 @@ func _ready() -> void:
 	hp = max_hp
 	health_bar.setup(max_hp)
 	randomize()
+	find_player()
 
 	start_position = global_position
 	choose_new_target_position()
@@ -227,10 +235,10 @@ func wait_then_choose_new_target() -> void:
 
 
 func choose_new_target_position() -> void:
-	var random_x = randf_range(-move_range_x, move_range_x)
-	var random_y = randf_range(-move_range_y, move_range_y)
+	var random_x = randf_range(room_left, room_right)
+	var random_y = randf_range(room_top, room_bottom)
 
-	target_position = start_position + Vector2(random_x, random_y)
+	target_position = Vector2(random_x, random_y)
 
 
 func generate_sequence() -> void:
@@ -303,6 +311,7 @@ func take_damage(amount: int) -> void:
 	hp -= amount
 	hp = max(hp, 0)
 	health_bar.update_hp(hp)
+	play_hit_effect()
 
 	print("Boss HP:", hp)
 
@@ -326,8 +335,6 @@ func enter_phase_two() -> void:
 
 	fire_timer.wait_time = phase_two_fire_interval
 	move_speed += 8.0
-	move_range_x += 40.0
-	move_range_y += 20.0
 
 	print("Boss 進入二階段：半血反轉")
 
@@ -371,7 +378,7 @@ func fire_single_bullet(phantom: bool, slow_bullet: bool) -> void:
 	bullet.global_position = bullet_spawn_point.global_position
 
 	var selected_color = get_random_color()
-	var bullet_direction = Vector2.DOWN.rotated(randf_range(-0.5, 0.5))
+	var bullet_direction = get_direction_to_player().rotated(randf_range(-0.18, 0.18))
 
 	if bullet.has_method("setup"):
 		bullet.setup(
@@ -397,7 +404,7 @@ func fire_spread_bullets(count: int, phantom: bool, slow_bullet: bool) -> void:
 			t = float(i) / float(count - 1)
 
 		var angle = lerp(start_angle, end_angle, t)
-		var bullet_direction = Vector2.DOWN.rotated(angle)
+		var bullet_direction = get_direction_to_player().rotated(angle)
 
 		if bullet.has_method("setup"):
 			bullet.setup(
@@ -414,7 +421,7 @@ func fire_radial_bullets() -> void:
 
 	if is_phase_two:
 		bullet_count = 20
-		bullet_speed = 185.0
+		bullet_speed = 155.0
 
 	for i in range(bullet_count):
 		var bullet = bullet_scene.instantiate()
@@ -452,7 +459,7 @@ func fire_burst_bullet() -> void:
 
 	bullet.global_position = bullet_spawn_point.global_position
 
-	var bullet_direction = Vector2.DOWN.rotated(randf_range(-0.35, 0.35))
+	var bullet_direction = get_direction_to_player().rotated(randf_range(-0.35, 0.35))
 
 	if bullet.has_method("setup"):
 		bullet.setup(
@@ -530,3 +537,59 @@ func update_sequence_ui() -> void:
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
 		take_damage(100)
+		
+func find_player() -> void:
+	player = get_tree().get_first_node_in_group(player_group_name) as Node2D
+
+	if player != null:
+		return
+
+	var scene_root = get_tree().current_scene
+	if scene_root == null:
+		return
+
+	# 備用搜尋：如果玩家還沒有加入 player 群組，就用常見節點名稱尋找。
+	var possible_names = [
+		"Player_1",
+		"player_1",
+		"Player",
+		"No"
+	]
+
+	for node_name in possible_names:
+		var found_node = scene_root.find_child(node_name, true, false)
+		if found_node is Node2D:
+			player = found_node
+			return
+
+
+func get_direction_to_player() -> Vector2:
+	if player == null or not is_instance_valid(player):
+		find_player()
+
+	if player == null or not is_instance_valid(player):
+		return Vector2.DOWN
+
+	var direction = player.global_position - bullet_spawn_point.global_position
+	if direction.length() <= 0.001:
+		return Vector2.DOWN
+
+	return direction.normalized()
+
+func play_hit_effect() -> void:
+	if boss_sprite == null:
+		return
+
+	var original_modulate = boss_sprite.modulate
+	var original_position = boss_sprite.position
+
+	boss_sprite.modulate = Color.WHITE
+	boss_sprite.position += Vector2(randf_range(-4, 4), randf_range(-4, 4))
+
+	await get_tree().create_timer(0.06).timeout
+
+	if boss_sprite == null:
+		return
+
+	boss_sprite.modulate = original_modulate
+	boss_sprite.position = original_position
