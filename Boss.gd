@@ -72,6 +72,8 @@ enum AttackPattern {
 @onready var bullet_spawn_point: Marker2D = $BulletSpawnPoint
 @onready var sequence_ui: Node = $SequenceUI
 
+@onready var boss_sprite: Sprite2D = $Sprite2D
+
 var player: Node2D = null
 
 var hp: int
@@ -309,6 +311,7 @@ func take_damage(amount: int) -> void:
 	hp -= amount
 	hp = max(hp, 0)
 	health_bar.update_hp(hp)
+	play_hit_effect()
 
 	print("Boss HP:", hp)
 
@@ -572,3 +575,21 @@ func get_direction_to_player() -> Vector2:
 		return Vector2.DOWN
 
 	return direction.normalized()
+
+func play_hit_effect() -> void:
+	if boss_sprite == null:
+		return
+
+	var original_modulate = boss_sprite.modulate
+	var original_position = boss_sprite.position
+
+	boss_sprite.modulate = Color.WHITE
+	boss_sprite.position += Vector2(randf_range(-4, 4), randf_range(-4, 4))
+
+	await get_tree().create_timer(0.06).timeout
+
+	if boss_sprite == null:
+		return
+
+	boss_sprite.modulate = original_modulate
+	boss_sprite.position = original_position
