@@ -50,15 +50,8 @@ shape = SubResource("RectangleShape2D_yq10e")
 
 [node name="BossSpawnPoint" type="Marker2D" parent="." unique_id=1805048722]
 
-[node name="PlayerSpawnPoint" type="Marker2D" parent="." unique_id=1579005560]
-position = Vector2(0, 120)
-
-[node name="Node2D" parent="." unique_id=516929009 instance=ExtResource("2_xb4eh")]
-position = Vector2(-2, 150)
-
-[node name="Camera2D" type="Camera2D" parent="Node2D" unique_id=851601317]
-zoom = Vector2(3, 3)
-limit_enabled = false
+[node name="PlayerSpawnPoint" type="Marker2D" parent="." unique_id=1952492710]
+position = Vector2(0, 140)
 
 [node name="Boss" parent="." unique_id=737443956 instance=ExtResource("1_6f7f2")]
 move_speed = 28.0
