@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dxj5il4u0ibe8" path="res://Boss1.tscn" id="1_6f7f2"]
 [ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://ChatGPT Image 2026年5月18日 下午09_39_38.png" id="1_r6kx4"]
 [ext_resource type="Script" uid="uid://dmunu0ftgq2dx" path="res://BossRoom.gd" id="1_room"]
+[ext_resource type="PackedScene" uid="uid://bfesk12q31j0l" path="res://player_1.tscn" id="2_xb4eh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r6kx4"]
 size = Vector2(700, 24)
