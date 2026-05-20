@@ -1,13 +1,6 @@
 [gd_scene format=3 uid="uid://bqxxx55tqqj5a"]
 
-<<<<<<< HEAD
-[ext_resource type="PackedScene" uid="uid://bfesk12q31j0l" path="res://player_1.tscn" id="1_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://bvmhowfgfeq8l" path="res://bullet.tscn" id="2_h2yge"]
-[ext_resource type="PackedScene" uid="uid://ibhr0yox1fcc" path="res://Boss3_Ranged.tscn" id="3_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://rfhwlcbsfea3" path="res://Boss3_Melee.tscn" id="3_h2yge"]
-=======
 [ext_resource type="Script" uid="uid://r1supnu5b6b2" path="res://main.gd" id="1_ig7tw"]
->>>>>>> a5bf110e3350f6df459761fefbf84bb98c288d8d
 
 [node name="Control" type="Control" unique_id=124240756]
 layout_mode = 3
@@ -33,15 +26,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 <<<<<<< HEAD
-[node name="Boss3Melee" parent="." unique_id=2037844958 instance=ExtResource("3_h2yge")]
-position = Vector2(893, 278)
-fire_scene = null
-homing_bullet_scene = null
-dive_chance = 0.35
-
-[node name="Boss3Ranged" parent="." unique_id=1120405388 instance=ExtResource("3_1bvp3")]
-position = Vector2(-748, -198)
-=======
 [node name="商店" type="Button" parent="VBoxContainer" unique_id=612858888]
 custom_minimum_size = Vector2(250, 70)
 layout_mode = 2
