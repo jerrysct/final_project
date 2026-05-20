@@ -73,13 +73,13 @@ func _physics_process(delta: float) -> void:
 		if is_parry_preparing:
 			execute_instant_parry()
 			is_parry_preparing = false
-
-	# 吸收子彈（右鍵按住持續吸收）
 	if Input.is_action_pressed("absorb"):
+		print("主程式：有按住吸收鍵！")  # <--- 加入這行來測試
 		is_absorb_preparing = true
+		execute_absorb_action() 
 	else:
 		is_absorb_preparing = false
-
+	# 吸收子彈（右鍵按住持續吸收）
 	handle_aim_and_release()
 
 	skill_indicator.is_parry_preparing = is_parry_preparing
@@ -109,6 +109,8 @@ func take_damage(amount: float) -> void:
 	current_hp = maxf(current_hp, 0.0)
 	play_hit_effect()
 	if current_hp <= 0.0:
+		# 【修復】等待受擊動畫播放完畢，避免直接重載導致玩家看不到死亡特效
+		await get_tree().create_timer(0.6).timeout 
 		get_tree().reload_current_scene()
 
 func play_hit_effect() -> void:
@@ -149,6 +151,15 @@ func absorb_bullet(bullet: Node) -> void:
 	if captured_bullets.has(bullet):
 		return
 	captured_bullets.append(bullet)
+	
+	# 【修復】將子彈脫離發射者，防止發射者死亡時子彈跟著被刪除
+	var scene_root = get_tree().current_scene
+	if bullet.get_parent() != scene_root:
+		var global_pos = bullet.global_position
+		bullet.get_parent().remove_child(bullet)
+		scene_root.add_child(bullet)
+		bullet.global_position = global_pos
+		
 	if "is_absorbed" in bullet:
 		bullet.is_absorbed = true
 	bullet.set_physics_process(false)
@@ -183,11 +194,6 @@ func handle_resources(delta: float) -> void:
 		if velocity != Vector2.ZERO:
 			regen = Playerdata_Globle.stamina_regen_move
 		current_stamina = minf(current_stamina + regen * delta, Playerdata_Globle.max_stamina)
-
-		# 脫離發射者，避免子彈被刪除時連帶影響
-		var scene_root = get_tree().current_scene
-		if scene_root and bullet.get_parent() != scene_root:
-			bullet.reparent(scene_root)
 
 
 func _update_aim_line() -> void:
@@ -237,8 +243,10 @@ func launch_captured_bullets() -> void:
 	var target_dir := (get_global_mouse_position() - global_position).normalized()
 
 	for bullet in captured_bullets:
-		if not is_instance_valid(bullet):
+		# 【修復】雙重檢查，確保該子彈實體存在且還在場景樹中
+		if not is_instance_valid(bullet) or not bullet.is_inside_tree():
 			continue
+			
 		if "is_absorbed" in bullet:
 			bullet.is_absorbed = false
 		bullet.visible = true
