@@ -13,8 +13,20 @@ const ITEMS = [
 
 var current_slot: int = 0  # 記錄目前使用哪個存檔槽
 
-# === 【核心修正】加入角色選擇變數，預設為空字串 ===
+# 角色選擇（由 character_select 寫入）
 var selected_character: String = ""
+
+# 角色 ID → 玩家場景路徑（之後有新角色只要加在這裡）
+const CHARACTER_SCENE_PATHS := {
+	"Character1": "res://player_1.tscn",
+	"Character2": "res://player_1.tscn",
+	"Character3": "res://player_1.tscn",
+}
+
+func get_selected_character_scene_path() -> String:
+	if selected_character in CHARACTER_SCENE_PATHS:
+		return CHARACTER_SCENE_PATHS[selected_character]
+	return CHARACTER_SCENE_PATHS["Character1"]
 
 # 數值上限
 var max_hp: float = 100.0

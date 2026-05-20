@@ -1,9 +1,8 @@
 [gd_scene format=3 uid="uid://bmmtamxfqkkfo"]
 
-[ext_resource type="Script" uid="uid://ixgihuvnvkgm" path="res://playerdate_in_game.gd" id="1_bxx23"]
-
-[ext_resource type="Texture2D" uid="uid://dk7n8oaqtvmvg" path="res://icon.svg" id="2_tex"]
+[ext_resource type="Script" uid="uid://dil0so24fmf0d" path="res://player_1.gd" id="1_squ5q"]
 [ext_resource type="Script" uid="uid://c14o3o0faeeld" path="res://skill_indicator.gd" id="2_skill"]
+[ext_resource type="Texture2D" uid="uid://dk7n8oaqtvmvg" path="res://icon.svg" id="2_tex"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_buxg0"]
 radius = 19.026299
@@ -17,16 +16,16 @@ bg_color = Color(0.7813404, 0, 0.19627443, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxx23"]
 bg_color = Color(0.80784315, 0.57254905, 0, 1)
 
+[sub_resource type="Gradient" id="Gradient_burst"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.7, 0.95, 1, 1, 0.25, 0.8, 1, 0.9, 0.05, 0.4, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_burst"]
+gradient = SubResource("Gradient_burst")
+
 [node name="Node2D" type="CharacterBody2D" unique_id=516929009 groups=["player"]]
 position = Vector2(-2, 0)
-script = ExtResource("1_bxx23")
-walk_speed = null
-dash_speed = null
-max_stamina = null
-stamina_regen_idle = null
-stamina_regen_move = null
-energy_max = null
-absorb_energy_cost = null
+script = ExtResource("1_squ5q")
 metadata/_edit_horizontal_guides_ = [34.0]
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1199489429]
@@ -40,34 +39,38 @@ position = Vector2(1.2000008, -0.79999924)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("2_tex")
 
-[node name="SkillIndicator" type="Node2D" parent="."]
-position = Vector2(1.2000008, -0.79999924)
+[node name="SkillIndicator" type="Node2D" parent="." unique_id=2092052044]
 z_index = 10
+position = Vector2(1.2000008, -0.79999924)
 script = ExtResource("2_skill")
 
-[node name="ReleaseBurstParticles" type="CPUParticles2D" parent="."]
-position = Vector2(1.2000008, -0.79999924)
+[node name="ReleaseBurstParticles" type="CPUParticles2D" parent="." unique_id=389536976]
+modulate = Color(0.4, 0.85, 1, 1)
 z_index = 20
+position = Vector2(1.2000008, -0.79999924)
 emitting = false
-amount = 36
-lifetime = 0.45
+amount = 56
+lifetime = 0.55
 one_shot = true
 explosiveness = 1.0
 randomness = 0.35
+emission_shape = 1
+emission_sphere_radius = 8.0
+direction = Vector2(0, -1)
 spread = 180.0
 gravity = Vector2(0, 0)
-initial_velocity_min = 90.0
-initial_velocity_max = 220.0
-angular_velocity_min = -360.0
-angular_velocity_max = 360.0
-scale_amount_min = 2.0
-scale_amount_max = 5.0
-color = Color(0.25, 0.75, 1, 0.95)
+initial_velocity_min = 140.0
+initial_velocity_max = 300.0
+angular_velocity_min = -480.0
+angular_velocity_max = 480.0
+scale_amount_min = 5.0
+scale_amount_max = 12.0
+color = Color(0.35, 0.9, 1, 1)
+color_ramp = SubResource("GradientTexture1D_burst")
 
 [node name="AimLine" type="Line2D" parent="." unique_id=282183723]
 top_level = true
-position = Vector2(-216.8, -347.8)
-points = PackedVector2Array(219, 346)
+points = PackedVector2Array(0, 0, 0, 0)
 width = 2.0
 default_color = Color(0.7921569, 1, 1, 1)
 

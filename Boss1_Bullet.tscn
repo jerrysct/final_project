@@ -7,16 +7,13 @@
 radius = 8.7
 
 [node name="BossBullet" type="Area2D" unique_id=1400497496]
-scale = Vector2(0.1, 0.1)
 script = ExtResource("1_bwx05")
-speed = 140.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1148182119]
 modulate = Color(1.1031533, 1.353692, 1.4909492, 0.35000002)
-position = Vector2(-0.13184333, -0.10353106)
+position = Vector2(0, -5.293956e-23)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_b2ldk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1300918764]
-scale = Vector2(0.1, 0.1)
-shape = SubResource("CircleShape2D_b2ldk")
+shape = SubResource("CircleShape2D_ypvc5")

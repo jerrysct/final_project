@@ -12,9 +12,10 @@ const ABSORB_ANIM_SPEED := 1.8
 func _process(delta: float) -> void:
 	if is_absorb_preparing:
 		_absorb_anim_time += delta * ABSORB_ANIM_SPEED
-		queue_redraw()
 	elif _absorb_anim_time != 0.0:
 		_absorb_anim_time = 0.0
+
+	if is_parry_preparing or is_absorb_preparing or is_aiming:
 		queue_redraw()
 
 func _get_radius() -> float:

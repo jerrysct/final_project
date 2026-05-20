@@ -1,14 +1,21 @@
 extends Control
 
+const BOSS1_ROOM_PATH := "res://BossRoom.tscn"
+
 # 用變數記錄目前「被選中」的關卡場景路徑（預設為空）
 var selected_stage_path: String = ""
 
 func _ready():
-	# 1. 連結各個 Boss 關卡按鈕的點擊事件
-	# 當點擊 Boss 按鈕時，只會「記錄目標關卡」，不會馬上切換場景
-	$ScrollContainer/HBoxContainer/Boss1.pressed.connect(func(): _on_stage_selected("res://scenes/Boss1.tscn"))
-	$ScrollContainer/HBoxContainer/Boss2.pressed.connect(func(): _on_stage_selected("res://scenes/Boss2.tscn"))
-	$ScrollContainer/HBoxContainer/Boss3.pressed.connect(func(): _on_stage_selected("res://scenes/Boss3_Melee.tscn"))
+	# 點選 Boss 按鈕只記錄關卡，按「開始戰鬥」才切換場景
+	$ScrollContainer/HBoxContainer/Boss1.pressed.connect(
+		func(): _on_stage_selected(BOSS1_ROOM_PATH)
+	)
+	$ScrollContainer/HBoxContainer/Boss2.pressed.connect(
+		func(): _on_stage_selected("res://scenes/Boss2.tscn")
+	)
+	$ScrollContainer/HBoxContainer/Boss3.pressed.connect(
+		func(): _on_stage_selected("res://scenes/Boss3_Melee.tscn")
+	)
 	
 	# 2. 連結右下角「開始戰鬥」按鈕
 	$StartBattleButton.pressed.connect(_on_start_battle_pressed)
@@ -28,6 +35,10 @@ func _on_stage_selected(stage_path: String):
 
 # 當玩家按下右下角的「開始戰鬥」時觸發
 func _on_start_battle_pressed():
+	if Playerdata_Globle.selected_character.is_empty():
+		print("請先選擇角色")
+		get_tree().change_scene_to_file("res://character_select.tscn")
+		return
 	if selected_stage_path != "":
 		print("正式進入戰鬥！載入：", selected_stage_path)
 		get_tree().change_scene_to_file(selected_stage_path)
