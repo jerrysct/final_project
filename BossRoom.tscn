@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dxj5il4u0ibe8" path="res://Boss1.tscn" id="1_6f7f2"]
 [ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://ChatGPT Image 2026年5月18日 下午09_39_38.png" id="1_r6kx4"]
+[ext_resource type="PackedScene" uid="uid://bfesk12q31j0l" path="res://player_1.tscn" id="2_xb4eh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r6kx4"]
 size = Vector2(700, 24)
@@ -22,25 +23,25 @@ position = Vector2(0.99997705, 8.583069e-06)
 scale = Vector2(0.4401042, 0.46289063)
 texture = ExtResource("1_r6kx4")
 
-[node name="WallTop" type="StaticBody2D" parent="." unique_id=308624505]
+[node name="WallTop" type="StaticBody2D" parent="." unique_id=308624505 groups=["wall"]]
 position = Vector2(0, -250)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop" unique_id=2012980522]
 shape = SubResource("RectangleShape2D_r6kx4")
 
-[node name="WallBottom" type="StaticBody2D" parent="." unique_id=1092831311]
+[node name="WallBottom" type="StaticBody2D" parent="." unique_id=1092831311 groups=["wall"]]
 position = Vector2(0, 250)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallBottom" unique_id=1137973731]
 shape = SubResource("RectangleShape2D_xb4eh")
 
-[node name="WallLeft" type="StaticBody2D" parent="." unique_id=1562384323]
+[node name="WallLeft" type="StaticBody2D" parent="." unique_id=1562384323 groups=["wall"]]
 position = Vector2(-350, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=1714029320]
 shape = SubResource("RectangleShape2D_5yl58")
 
-[node name="WallRight" type="StaticBody2D" parent="." unique_id=242822482]
+[node name="WallRight" type="StaticBody2D" parent="." unique_id=242822482 groups=["wall"]]
 position = Vector2(350, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=120228062]
@@ -50,11 +51,15 @@ shape = SubResource("RectangleShape2D_yq10e")
 
 [node name="PlayerSpawnPoint" type="Marker2D" parent="." unique_id=1579005560]
 
-[node name="Boss" parent="." unique_id=737443956 instance=ExtResource("1_6f7f2")]
+[node name="Node2D" parent="." unique_id=516929009 instance=ExtResource("2_xb4eh")]
+position = Vector2(-2, 150)
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=851601317]
+[node name="Camera2D" type="Camera2D" parent="Node2D" unique_id=851601317]
 zoom = Vector2(3, 3)
 limit_enabled = false
+
+[node name="Boss" parent="." unique_id=737443956 instance=ExtResource("1_6f7f2")]
+move_speed = 28.0
 
 [node name="CanvasLayer" type="Node2D" parent="." unique_id=63614279]
 
