@@ -1,6 +1,7 @@
 extends Control
 
 func _ready():
+	$Back.pressed.connect(_on_Back_pressed)
 	# 使用匿名函式並綁定參數，將角色名稱傳入 _select_character
 	$ScrollContainer/HBoxContainer/Character1.pressed.connect(func(): _select_character("Character1"))
 	$ScrollContainer/HBoxContainer/Character2.pressed.connect(func(): _select_character("Character2"))
@@ -11,3 +12,6 @@ func _select_character(character_name: String):
 	
 	# 【修改這裡】選完角色後，改為跳轉到你的關卡選擇場景（請確認你的關卡選擇檔名與路徑是否為 res://stage_select.tscn）
 	get_tree().change_scene_to_file("res://stage_select.tscn")
+
+func _on_Back_pressed():
+	get_tree().change_scene_to_file("res://main.tscn")
