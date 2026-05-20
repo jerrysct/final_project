@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bfesk12q31j0l" path="res://player_1.tscn" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bvmhowfgfeq8l" path="res://bullet.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://ibhr0yox1fcc" path="res://Boss3_Ranged.tscn" id="3_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://rfhwlcbsfea3" path="res://Boss3_Melee.tscn" id="3_h2yge"]
 
 [node name="main" type="Node2D" unique_id=1501841022]
@@ -12,6 +13,12 @@ position = Vector2(0, 251)
 
 [node name="Boss3Melee" parent="." unique_id=2037844958 instance=ExtResource("3_h2yge")]
 position = Vector2(893, 278)
+fire_scene = null
+homing_bullet_scene = null
+dive_chance = 0.35
+
+[node name="Boss3Ranged" parent="." unique_id=1120405388 instance=ExtResource("3_1bvp3")]
+position = Vector2(-748, -198)
 
 [node name="player_1" parent="." unique_id=516929009 instance=ExtResource("1_0xm2m")]
 position = Vector2(283, 260)

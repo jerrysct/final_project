@@ -393,7 +393,7 @@ func _try_fire_homing_bullets() -> void:
 	var bullet_count: int = randi_range(homing_bullet_count_min, homing_bullet_count_max)
 	var spawn_pos: Vector2 = _get_bullet_spawn_position()
 
-	for i in bullet_count:
+	for i in range(bullet_count):
 		var bullet: Node = homing_bullet_scene.instantiate()
 		get_tree().current_scene.add_child(bullet)
 
@@ -567,6 +567,15 @@ func take_damage(amount: int) -> void:
 		state = State.DEAD
 		_set_sprite_modulate(SPRITE_COLOR_NORMAL)
 		die()
+		
+func heal(amount: int) -> void:
+	if state == State.DEAD:
+		return
+
+	hp = min(hp + amount, max_hp)
+
+	if debug_enabled:
+		print("Boss3 近戰 Heal:", amount, " HP:", hp)
 
 
 func die() -> void:
