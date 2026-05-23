@@ -10,15 +10,12 @@ radius = 19.026299
 [sub_resource type="CircleShape2D" id="CircleShape2D_bxx23"]
 radius = 80.86335
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qh3su"]
-bg_color = Color(0.7813404, 0, 0.19627443, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxx23"]
-bg_color = Color(0.80784315, 0.57254905, 0, 1)
-
 [sub_resource type="Curve" id="Curve_qh3su"]
 
 [sub_resource type="Gradient" id="Gradient_buxg0"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qh3su"]
+radius = 19.026299
 
 [node name="Node2D" type="CharacterBody2D" unique_id=516929009 groups=["player"]]
 position = Vector2(-2, 0)
@@ -49,30 +46,8 @@ shape = SubResource("CircleShape2D_bxx23")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=336286500]
 follow_viewport_enabled = true
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=1564527792]
-offset_left = 456.0
-offset_top = 598.0
-offset_right = 737.0
-offset_bottom = 625.0
-value = 50.0
-
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=143379986]
-offset_left = 457.0
-offset_top = 510.0
-offset_right = 735.0
-offset_bottom = 537.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_qh3su")
-value = 100.0
-
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=554437804]
 follow_viewport_enabled = true
-
-[node name="ChargeBar" type="ProgressBar" parent="CanvasLayer2" unique_id=203638426]
-offset_left = 458.0
-offset_top = 554.0
-offset_right = 737.0
-offset_bottom = 581.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_bxx23")
 
 [node name="SkillIndicator" type="Node2D" parent="." unique_id=762262312]
 script = ExtResource("2_skill")
@@ -91,7 +66,10 @@ color = Color(1, 0.92941177, 0, 1)
 color_ramp = SubResource("Gradient_buxg0")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=318197320]
-zoom = Vector2(3, 3)
+zoom = Vector2(2, 2)
 limit_enabled = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=712600816]
+shape = SubResource("CircleShape2D_qh3su")
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

@@ -1,9 +1,9 @@
 extends CharacterBody2D
 
 # --- 節點引用 ---
-@onready var health_bar: ProgressBar = $CanvasLayer/HealthBar
-@onready var stamina_bar: ProgressBar = $CanvasLayer/ProgressBar
-@onready var charge_bar: ProgressBar = $CanvasLayer2/ChargeBar
+@onready var stamina_bar = get_tree().current_scene.get_node("CanvasLayer/ProgressBar")
+@onready var health_bar = get_tree().current_scene.get_node("CanvasLayer/HealthBar")
+@onready var charge_bar = get_tree().current_scene.get_node("CanvasLayer/ChargeBar")
 @onready var bounce_zone: Area2D = $BounceZone
 @onready var bounce_collision: CollisionShape2D = $BounceZone/CollisionShape2D
 @onready var aim_line: Line2D = $AimLine
