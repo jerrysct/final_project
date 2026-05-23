@@ -4,17 +4,15 @@
 [ext_resource type="Texture2D" uid="uid://dotcnfd8pgf4a" path="res://火球.jpg" id="2_gg3y1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fire"]
-radius = 32.0
+radius = 14.0
 
 [node name="Boss3_Fire" type="Area2D" unique_id=1099399205]
-collision_layer = 0
-monitorable = false
 script = ExtResource("1_fire")
 damage = 1.5
 damage_tick_interval = 2.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=782211264]
-scale = Vector2(0.1, 0.1)
+scale = Vector2(0.05, 0.05)
 texture = ExtResource("2_gg3y1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1231776307]

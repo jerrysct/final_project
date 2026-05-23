@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c04d01bemf5t3"]
+
+[ext_resource type="Texture2D" uid="uid://cws2fkk4vp1t3" path="res://觸手.png" id="1_lcmc6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7vqx8"]
+radius = 28.01785
+
+[node name="Tentacle" type="CharacterBody2D" unique_id=406880788]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1212853171]
+position = Vector2(0, 4)
+scale = Vector2(0.05340577, 0.06652834)
+texture = ExtResource("1_lcmc6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1131616231]
+position = Vector2(0, 5)
+shape = SubResource("CircleShape2D_7vqx8")
