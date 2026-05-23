@@ -7,11 +7,13 @@ enum State {
 	DEAD,
 }
 
+
 enum AttackType {
 	BURST,
 	FAN,
 	CHARGE_SHOT,
 	HEAL_MELEE,
+	BUFF_MELEE   # ✅新技能
 }
 
 const SPRITE_COLOR_NORMAL: Color = Color(1, 1, 1)
@@ -43,12 +45,16 @@ const SPRITE_COLOR_HEAL: Color = Color(0.35, 1.0, 0.45)
 @export var heal_chance: float = 0.25
 @export var heal_prepare_time: float = 0.8
 @export var heal_cooldown: float = 5.0
+@export var link_scene: PackedScene
+var _link_instance: Node = null
 
 var hp: int
 var state: State = State.IDLE
 var player: Node2D = null
 
 var _attack_cooldown_left: float = 0.0
+var _home_position: Vector2 = Vector2.ZERO
+var _has_home_position: bool = false
 var _state_time: float = 0.0
 var _is_attacking: bool = false
 
@@ -57,25 +63,71 @@ var _same_attack_count: int = 0
 
 var _heal_cooldown_left: float = 0.0
 
+var _is_enraged: bool = false
+
+var _base_attack_cooldown_min: float
+var _base_attack_cooldown_max: float
+var _base_burst_count_min: int
+var _base_burst_count_max: int
+var _base_fan_bullet_count: int
+var _base_charge_prepare_time: float
+
 
 func _ready() -> void:
 	hp = max_hp
+
+	_base_attack_cooldown_min = attack_cooldown_min
+	_base_attack_cooldown_max = attack_cooldown_max
+	_base_burst_count_min = burst_count_min
+	_base_burst_count_max = burst_count_max
+	_base_fan_bullet_count = fan_bullet_count
+	_base_charge_prepare_time = charge_prepare_time
+
 	find_player()
 	_roll_attack_cooldown()
 
-	if debug_enabled:
-		print("Boss3_Ranged ready")
+
+func enter_enraged_mode() -> void:
+	if _is_enraged:
+		return
+
+	_is_enraged = true
+
+	attack_cooldown_min *= 0.6
+	attack_cooldown_max *= 0.6
+
+	burst_count_min += 2
+	burst_count_max += 2
+	fan_bullet_count += 2
+
+	charge_prepare_time *= 0.7
+
+	modulate = Color(1, 0.3, 0.3)  # 紅色
+
+	print("Boss3_Ranged 狂暴了🔥")
+	
+
+func set_home_position(pos: Vector2) -> void:
+	_home_position = pos
+	_has_home_position = true
+	global_position = _home_position
 
 
 func _physics_process(delta: float) -> void:
 	if state == State.DEAD:
 		return
 
-	if _heal_cooldown_left > 0.0:
-		_heal_cooldown_left -= delta
+	if _has_home_position:
+		global_position = _home_position
 
 	velocity = Vector2.ZERO
 	move_and_slide()
+
+	if _has_home_position:
+		global_position = _home_position
+
+	if _heal_cooldown_left > 0.0:
+		_heal_cooldown_left -= delta
 
 	if player == null or not is_instance_valid(player):
 		find_player()
@@ -90,8 +142,6 @@ func _physics_process(delta: float) -> void:
 			pass
 		State.RECOVER:
 			_update_recover(delta)
-		State.DEAD:
-			pass
 
 
 func _update_idle(delta: float) -> void:
@@ -137,6 +187,8 @@ func _run_attack(attack_type: AttackType) -> void:
 			await _attack_charge_shot()
 		AttackType.HEAL_MELEE:
 			await _attack_heal_melee()
+		AttackType.BUFF_MELEE:
+			await _attack_buff_melee()
 
 	if state == State.DEAD:
 		return
@@ -194,6 +246,45 @@ func _attack_charge_shot() -> void:
 	_spawn_bullet(locked_dir)
 
 
+func _attack_buff_melee() -> void:
+	print("BUFF_MELEE 開始執行")
+
+	_set_sprite_modulate(Color(0.3, 0.5, 1.0))
+
+	await get_tree().create_timer(0.5).timeout
+
+	var melee_boss := get_node_or_null(melee_boss_path)
+
+	if melee_boss == null:
+		print("BUFF_MELEE 失敗：找不到 melee_boss")
+		_set_sprite_modulate(SPRITE_COLOR_NORMAL)
+		return
+
+	print("BUFF_MELEE 找到近戰王：", melee_boss.name)
+
+	if link_scene == null:
+		print("BUFF_MELEE 警告：link_scene 沒有指定")
+	else:
+		print("BUFF_MELEE 正在生成連線")
+		_link_instance = link_scene.instantiate()
+		get_tree().current_scene.add_child(_link_instance)
+
+		if _link_instance.has_method("setup"):
+			_link_instance.setup(self, melee_boss)
+
+	if melee_boss.has_method("apply_buff"):
+		melee_boss.apply_buff(4.0)
+		print("BUFF_MELEE 已套用 apply_buff")
+
+	await get_tree().create_timer(4.0).timeout
+
+	if _link_instance != null and is_instance_valid(_link_instance):
+		_link_instance.queue_free()
+
+	_link_instance = null
+	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
+	
+	
 func _attack_heal_melee() -> void:
 	_set_sprite_modulate(SPRITE_COLOR_HEAL)
 

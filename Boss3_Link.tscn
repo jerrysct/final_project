@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cev2pcrpfr6l1"]
+
+[ext_resource type="Script" uid="uid://88htrb54p4yo" path="res:// Boss3_Link.gd" id="1_jugb2"]
+
+[node name="Boss3Link" type="Node2D" unique_id=727874972]
+script = ExtResource("1_jugb2")
+
+[node name="Line2D" type="Line2D" parent="." unique_id=1907470248]
+width = 6.0
+default_color = Color(0.58383155, 0.79476964, 1, 1)
+texture_mode = 2

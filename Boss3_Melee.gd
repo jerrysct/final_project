@@ -89,14 +89,66 @@ var _charge_hit_player: bool = false
 var _dive_hit_player: bool = false
 
 
+var _base_charge_cd_min: float
+var _base_charge_cd_max: float
+var _base_fire_chance: float
+var _base_homing_chance: float
+
+var _is_buffed: bool = false
+
+
+func apply_buff(duration: float) -> void:
+	if _is_buffed:
+		return
+
+	_is_buffed = true
+
+	move_speed *= 1.3
+	charge_speed *= 1.4
+
+	modulate = Color(0.4, 0.7, 1.0)
+
+	await get_tree().create_timer(duration).timeout
+
+	move_speed /= 1.3
+	charge_speed /= 1.4
+
+	modulate = Color(1,1,1)
+	_is_buffed = false
+
+
 func _ready() -> void:
 	hp = max_hp
-	_cache_base_stats()
+
+	_base_move_speed = move_speed
+	_base_charge_speed = charge_speed
+	_base_charge_cd_min = charge_cooldown_min
+	_base_charge_cd_max = charge_cooldown_max
+	_base_fire_chance = fire_spawn_chance
+	_base_homing_chance = homing_bullet_chance
+
 	find_player()
 	_charge_cooldown_left = _roll_charge_cooldown()
 
-	if debug_enabled:
-		print("Boss3_Melee ready")
+
+func enter_enraged_mode() -> void:
+	if _is_enraged:
+		return
+
+	_is_enraged = true
+
+	move_speed *= 1.4
+	charge_speed *= 1.5
+
+	charge_cooldown_min *= 0.6
+	charge_cooldown_max *= 0.6
+
+	fire_spawn_chance = min(1.0, _base_fire_chance + 0.3)
+	homing_bullet_chance = min(1.0, _base_homing_chance + 0.3)
+
+	modulate = Color(1, 0.25, 0.25)
+
+	print("Boss3_Melee 狂暴🔥")
 
 
 func _cache_base_stats() -> void:
@@ -538,20 +590,6 @@ func _debug_state_to_string(s: State) -> String:
 			return "DEAD"
 		_:
 			return str(s)
-
-
-func enter_enraged_mode() -> void:
-	if _is_enraged:
-		return
-
-	_is_enraged = true
-
-	move_speed = _base_move_speed * ENRAGED_MOVE_SPEED_MULT
-	charge_speed = _base_charge_speed * ENRAGED_CHARGE_SPEED_MULT
-	charge_cooldown = _base_charge_cooldown * ENRAGED_CHARGE_COOLDOWN_MULT
-
-	if state != State.DEAD and state == State.CHASE:
-		_charge_cooldown_left = minf(_charge_cooldown_left, charge_cooldown)
 
 
 func take_damage(amount: int) -> void:

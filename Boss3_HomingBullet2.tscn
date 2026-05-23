@@ -4,8 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://pxte4thdpkmg" path="res://bullet_2.png" id="1_nhjlf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dkp6q"]
+radius = 7.0
 
 [node name="Boss3HomingBullet2" type="Area2D" unique_id=815449120]
+position = Vector2(-6, 0)
 script = ExtResource("1_dkp6q")
 speed = null
 turn_speed = null
@@ -15,9 +17,10 @@ homing_enabled = null
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=575252548]
 z_index = 10
-position = Vector2(6.8251553, -8.25)
-scale = Vector2(0.07846649, 0.091308594)
+position = Vector2(6, 0)
+scale = Vector2(0.011889858, 0.011176109)
 texture = ExtResource("1_nhjlf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=86706868]
+top_level = true
 shape = SubResource("CircleShape2D_dkp6q")
