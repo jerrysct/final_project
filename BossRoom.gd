@@ -3,14 +3,28 @@ extends Node2D
 @onready var player_spawn: Marker2D = $PlayerSpawnPoint
 @onready var boss_spawn: Marker2D = $BossSpawnPoint
 
+# --- 結算畫面 UI 參考 ---
+@onready var end_screen: Panel = $CanvasLayer/EndScreen
+@onready var title_label: Label = $CanvasLayer/EndScreen/VBoxContainer/TitleLabel
+@onready var gold_label: Label = $CanvasLayer/EndScreen/VBoxContainer/GoldLabel
+@onready var return_button: Button = $CanvasLayer/EndScreen/VBoxContainer/ReturnButton
+
 var player: Node2D = null
 var camera: Camera2D = null
+
+const MAIN_SCENE_PATH: String = "res://main.tscn"
 
 
 func _ready() -> void:
 	_spawn_selected_player()
 	_position_boss()
 	_setup_camera()
+	if end_screen:
+		end_screen.hide()
+		
+	# 綁定按鈕點擊信號
+	if return_button:
+		return_button.pressed.connect(_on_return_button_pressed)
 
 
 func _spawn_selected_player() -> void:
@@ -67,3 +81,39 @@ func _setup_camera() -> void:
 
 	camera.enabled = true
 	camera.make_current()
+	
+	
+# 當 Boss 死亡時呼叫此函數
+# 當 Boss 死亡時呼叫此函數
+func show_victory() -> void:
+	# 根據全域變數的倍率計算實際獲得的金幣
+	var earned_gold: int = int(100 * Playerdata_Globle.reward_multiplier)
+	
+	title_label.text = "Victory"
+	gold_label.text = "+%d Gold" % earned_gold
+	gold_label.show()
+	end_screen.show()
+	
+	# 將金幣加進全域變數中
+	Playerdata_Globle.gold += earned_gold
+	print("戰鬥勝利！獲得金幣：", earned_gold, "，目前總金幣：", Playerdata_Globle.gold)
+	
+	# 暫停遊戲，避免背景繼續運作
+	get_tree().paused = true
+
+# 當 Player 死亡時呼叫此函數
+func show_defeat() -> void:
+	title_label.text = "You Loss"
+	gold_label.hide() # 輸了不顯示金幣
+	end_screen.show()
+	
+	# 選擇性：暫停遊戲
+	get_tree().paused = true
+
+## 按鈕回呼函數
+func _on_return_button_pressed() -> void:
+	# 1. 先解除暫停
+	get_tree().paused = false 
+	
+	# 2. 直接切換場景
+	get_tree().change_scene_to_file(MAIN_SCENE_PATH)

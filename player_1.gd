@@ -1,9 +1,9 @@
 extends CharacterBody2D
 
-# --- 節點引用 ---
-@onready var stamina_bar = get_tree().current_scene.get_node("CanvasLayer/ProgressBar")
-@onready var health_bar = get_tree().current_scene.get_node("CanvasLayer/HealthBar")
-@onready var charge_bar = get_tree().current_scene.get_node("CanvasLayer/ChargeBar")
+# --- 節點引用 (已加上防呆機制) ---
+@onready var stamina_bar = get_tree().current_scene.get_node_or_null("CanvasLayer/ProgressBar")
+@onready var health_bar = get_tree().current_scene.get_node_or_null("CanvasLayer/HealthBar")
+@onready var charge_bar = get_tree().current_scene.get_node_or_null("CanvasLayer/ChargeBar")
 @onready var bounce_zone: Area2D = $BounceZone
 @onready var bounce_collision: CollisionShape2D = $BounceZone/CollisionShape2D
 @onready var aim_line: Line2D = $AimLine
@@ -26,41 +26,58 @@ func _ready() -> void:
 	current_hp = Playerdata_Globle.max_hp
 	current_stamina = Playerdata_Globle.max_stamina
 
+<<<<<<< HEAD
 	health_bar.max_value = Playerdata_Globle.max_hp
 	health_bar.value = current_hp
+=======
+	if health_bar:
+		health_bar.max_value = Playerdata_Globle.max_hp
+		health_bar.value = current_hp
+		health_bar.show_percentage = true
+>>>>>>> 3c84d8e0e6fee50109a44a349f38f4681227c55a
 
-	stamina_bar.max_value = Playerdata_Globle.max_stamina
-	stamina_bar.value = current_stamina
+	if stamina_bar:
+		stamina_bar.max_value = Playerdata_Globle.max_stamina
+		stamina_bar.value = current_stamina
 
-	charge_bar.max_value = float(Playerdata_Globle.max_bullet_storage)
-	charge_bar.value = 0.0
-	charge_bar.visible = false
+	if charge_bar:
+		charge_bar.max_value = float(Playerdata_Globle.max_bullet_storage)
+		charge_bar.value = 0.0
+		charge_bar.visible = false
 
-	aim_line.visible = false
-	aim_line.top_level = true
-	aim_line.position = Vector2.ZERO
-	aim_line.clear_points()
-	aim_line.add_point(Vector2.ZERO)
-	aim_line.add_point(Vector2.ZERO)
+	if aim_line:
+		aim_line.visible = false
+		aim_line.top_level = true
+		aim_line.position = Vector2.ZERO
+		aim_line.clear_points()
+		aim_line.add_point(Vector2.ZERO)
+		aim_line.add_point(Vector2.ZERO)
 
 	# 技能圈用世界座標繪製，避免被父節點縮放影響
-	skill_indicator.top_level = true
-	skill_indicator.z_index = 50
-	release_burst_particles.top_level = true
-	release_burst_particles.z_index = 51
+	if skill_indicator:
+		skill_indicator.top_level = true
+		skill_indicator.z_index = 50
+	if release_burst_particles:
+		release_burst_particles.top_level = true
+		release_burst_particles.z_index = 51
+		
 	_sync_effect_nodes_position()
 
 func _sync_effect_nodes_position() -> void:
 	var feet_offset := Vector2(1.2000008, -0.79999924)
-	skill_indicator.global_position = global_position + feet_offset
-	release_burst_particles.global_position = global_position + feet_offset
+	if skill_indicator:
+		skill_indicator.global_position = global_position + feet_offset
+	if release_burst_particles:
+		release_burst_particles.global_position = global_position + feet_offset
 
 func _physics_process(delta: float) -> void:
 	_sync_effect_nodes_position()
 	handle_resources(delta)
 
-	health_bar.value = current_hp
-	stamina_bar.value = current_stamina
+	if health_bar:
+		health_bar.value = current_hp
+	if stamina_bar:
+		stamina_bar.value = current_stamina
 
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	handle_movement(direction)
@@ -72,20 +89,24 @@ func _physics_process(delta: float) -> void:
 		if is_parry_preparing:
 			execute_instant_parry()
 			is_parry_preparing = false
+			
 	if Input.is_action_pressed("absorb"):
 		print("主程式：有按住吸收鍵！")  # <--- 加入這行來測試
 		is_absorb_preparing = true
 		execute_absorb_action() 
 	else:
 		is_absorb_preparing = false
+		
 	# 吸收子彈（右鍵按住持續吸收）
 	handle_aim_and_release()
 
-	skill_indicator.is_parry_preparing = is_parry_preparing
-	skill_indicator.is_absorb_preparing = is_absorb_preparing
-	skill_indicator.is_aiming = is_aiming
-	skill_indicator.bounce_collision = bounce_collision
-	skill_indicator.queue_redraw()
+	if skill_indicator:
+		skill_indicator.is_parry_preparing = is_parry_preparing
+		skill_indicator.is_absorb_preparing = is_absorb_preparing
+		skill_indicator.is_aiming = is_aiming
+		if bounce_collision:
+			skill_indicator.bounce_collision = bounce_collision
+		skill_indicator.queue_redraw()
 
 	move_and_slide()
 
@@ -107,10 +128,17 @@ func take_damage(amount: float) -> void:
 	current_hp -= amount
 	current_hp = maxf(current_hp, 0.0)
 	play_hit_effect()
+	
 	if current_hp <= 0.0:
-		# 【修復】等待受擊動畫播放完畢，避免直接重載導致玩家看不到死亡特效
+		# 等待受擊動畫播放完畢
 		await get_tree().create_timer(0.6).timeout 
-		get_tree().reload_current_scene()
+		
+		# 呼叫 BossRoom 的結算畫面
+		var room = get_parent()
+		if room != null and room.has_method("show_defeat"):
+			room.show_defeat()
+		else:
+			get_tree().reload_current_scene()
 
 func play_hit_effect() -> void:
 	is_invincible = true
@@ -123,6 +151,7 @@ func play_hit_effect() -> void:
 	is_invincible = false
 
 func execute_instant_parry() -> void:
+	if not bounce_zone: return
 	for area in bounce_zone.get_overlapping_areas():
 		if not area.has_method("reflect"):
 			continue
@@ -134,6 +163,7 @@ func execute_instant_parry() -> void:
 		area.reflect(reflect_dir, 1.5)
 
 func execute_absorb_action() -> void:
+	if not bounce_zone: return
 	for area in bounce_zone.get_overlapping_areas():
 		if not area.has_method("reflect"):
 			continue
@@ -143,15 +173,16 @@ func execute_absorb_action() -> void:
 			break
 		absorb_bullet(area)
 
-	charge_bar.visible = not captured_bullets.is_empty()
-	charge_bar.value = float(captured_bullets.size())
+	if charge_bar:
+		charge_bar.visible = not captured_bullets.is_empty()
+		charge_bar.value = float(captured_bullets.size())
 
 func absorb_bullet(bullet: Node) -> void:
 	if captured_bullets.has(bullet):
 		return
 	captured_bullets.append(bullet)
 	
-	# 【修復】將子彈脫離發射者，防止發射者死亡時子彈跟著被刪除
+	# 將子彈脫離發射者
 	var scene_root = get_tree().current_scene
 	if bullet.get_parent() != scene_root:
 		var global_pos = bullet.global_position
@@ -196,6 +227,7 @@ func handle_resources(delta: float) -> void:
 
 
 func _update_aim_line() -> void:
+	if not aim_line: return
 	if aim_line.get_point_count() < 2:
 		aim_line.clear_points()
 		aim_line.add_point(Vector2.ZERO)
@@ -210,18 +242,18 @@ func handle_aim_and_release() -> void:
 			is_aiming = false
 			Engine.time_scale = 1.0
 
-		aim_line.visible = false
+		if aim_line: aim_line.visible = false
 		return
 
 	if Input.is_action_pressed("skill_release"):
 		is_aiming = true
 		Engine.time_scale = Playerdata_Globle.bullet_time_scale
-		aim_line.visible = true
+		if aim_line: aim_line.visible = true
 		_update_aim_line()
 	elif Input.is_action_just_released("skill_release") and is_aiming:
 		is_aiming = false
 		Engine.time_scale = 1.0
-		aim_line.visible = false
+		if aim_line: aim_line.visible = false
 		launch_captured_bullets()
 
 func play_release_burst_particles() -> void:
@@ -242,7 +274,6 @@ func launch_captured_bullets() -> void:
 	var target_dir := (get_global_mouse_position() - global_position).normalized()
 
 	for bullet in captured_bullets:
-		# 【修復】雙重檢查，確保該子彈實體存在且還在場景樹中
 		if not is_instance_valid(bullet) or not bullet.is_inside_tree():
 			continue
 			
@@ -256,7 +287,7 @@ func launch_captured_bullets() -> void:
 		bullet.reflect(target_dir, power_multiplier)
 
 	captured_bullets.clear()
-	charge_bar.visible = false
+	if charge_bar: charge_bar.visible = false
 
 func apply_slow(multiplier: float, duration: float) -> void:
 	move_speed_multiplier *= multiplier
