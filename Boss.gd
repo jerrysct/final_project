@@ -23,7 +23,8 @@ enum AttackPattern {
 	BURST
 }
 
-@onready var health_bar: ProgressBar = get_tree().current_scene.get_node("CanvasLayer/BossHealthBar")
+@onready var health_bar: ProgressBar = get_tree().current_scene.get_node_or_null("CanvasLayer/BossHealthBar") as ProgressBar
+@onready var health_label: Label = get_tree().current_scene.get_node_or_null("CanvasLayer/BossHealthLabel") as Label
 
 @export var max_hp: int = 1000
 @export var normal_damage: int = 30
@@ -73,7 +74,7 @@ enum AttackPattern {
 @onready var fire_timer: Timer = $FireTimer
 @onready var stun_timer: Timer = $StunTimer
 @onready var bullet_spawn_point: Marker2D = $BulletSpawnPoint
-@onready var sequence_ui: Node = $"../CanvasLayer/SequenceUI"
+@onready var sequence_ui: Node = get_tree().current_scene.get_node_or_null("CanvasLayer/SequenceUI")
 
 @onready var boss_sprite: Sprite2D = $Sprite2D
 
@@ -101,8 +102,13 @@ var color_map: Dictionary = {}
 
 func _ready() -> void:
 	hp = max_hp
+
 	if health_bar:
 		health_bar.setup(max_hp)
+		health_bar.show_percentage = false
+
+	update_boss_hp_ui()
+
 	randomize()
 	find_player()
 
@@ -151,7 +157,7 @@ func change_state(new_state: BossState) -> void:
 			stun_timer.stop()
 			skill_loop_running = false
 			print("Boss 死亡")
-			queue_free()
+			call_deferred("queue_free")
 
 
 func start_skill_loop() -> void:
@@ -308,8 +314,8 @@ func get_actual_color(color: int) -> int:
 func take_damage(amount: int) -> void:
 	hp -= amount
 	hp = max(hp, 0)
-	if health_bar:
-		health_bar.update_hp(hp)
+
+	update_boss_hp_ui()
 	play_hit_effect()
 
 	print("Boss HP:", hp)
@@ -324,8 +330,22 @@ func take_damage(amount: int) -> void:
 func heal(amount: int) -> void:
 	hp += amount
 	hp = min(hp, max_hp)
-	health_bar.update_hp(hp)
+
+	update_boss_hp_ui()
+
 	print("Boss 回血，目前 HP:", hp)
+
+
+func update_boss_hp_ui() -> void:
+	if health_bar:
+		if health_bar.has_method("update_hp"):
+			health_bar.update_hp(hp)
+		else:
+			health_bar.max_value = max_hp
+			health_bar.value = hp
+
+	if health_label:
+		health_label.text = str(hp) + " / " + str(max_hp)
 
 
 func enter_phase_two() -> void:
@@ -528,6 +548,11 @@ func _on_stun_timer_timeout() -> void:
 
 
 func update_sequence_ui() -> void:
+	if sequence_ui == null:
+		var scene_root = get_tree().current_scene
+		if scene_root != null:
+			sequence_ui = scene_root.get_node_or_null("CanvasLayer/SequenceUI")
+
 	if sequence_ui == null:
 		return
 

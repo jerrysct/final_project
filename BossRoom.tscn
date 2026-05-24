@@ -116,6 +116,13 @@ show_percentage = false
 script = ExtResource("4_5yl58")
 metadata/_edit_use_anchors_ = true
 
+[node name="BossHealthLabel" type="Label" parent="CanvasLayer" unique_id=1017405694]
+z_index = 10
+offset_left = 406.0
+offset_top = 591.0
+offset_right = 446.0
+offset_bottom = 615.0
+
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=108827037]
 offset_left = 18.0
 offset_top = 107.0
@@ -123,6 +130,12 @@ offset_right = 299.0
 offset_bottom = 134.0
 value = 50.0
 show_percentage = false
+
+[node name="StaminaLabel" type="Label" parent="CanvasLayer" unique_id=247071207]
+offset_left = 24.0
+offset_top = 107.0
+offset_right = 66.0
+offset_bottom = 133.0
 
 [node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=1237567835]
 offset_left = 19.0
@@ -133,6 +146,14 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_yq10e")
 value = 100.0
 show_percentage = false
 
+[node name="HealthLabel" type="Label" parent="CanvasLayer" unique_id=1809726343]
+z_index = 10
+offset_left = 24.0
+offset_top = 19.0
+offset_right = 67.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
 [node name="ChargeBar" type="ProgressBar" parent="CanvasLayer" unique_id=1398691203]
 offset_left = 20.0
 offset_top = 63.0
@@ -140,6 +161,12 @@ offset_right = 299.0
 offset_bottom = 90.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_aoosn")
 show_percentage = false
+
+[node name="ChargeLabel" type="Label" parent="CanvasLayer" unique_id=1898286903]
+offset_left = 24.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 89.0
 
 [node name="SequenceUI" type="Node2D" parent="CanvasLayer" unique_id=1611063624]
 position = Vector2(516, 561)

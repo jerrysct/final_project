@@ -6,6 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://ibhr0yox1fcc" path="res://Boss3_Ranged.tscn" id="4_bompc"]
 [ext_resource type="Script" uid="uid://b830t6q4520qv" path="res://Boss3_Fire.gd" id="5_bompc"]
 [ext_resource type="Texture2D" uid="uid://dotcnfd8pgf4a" path="res://火球.jpg" id="6_g3v01"]
+[ext_resource type="Script" uid="uid://dhg3x7x530yia" path="res://ConsumableUI.gd" id="7_jsreo"]
+[ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://血量瓶.png" id="8_7l4to"]
+[ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="9_lx4ah"]
+[ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="10_ynflw"]
+[ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://無敵瓶.png" id="11_ad1r5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r6kx4"]
 size = Vector2(1400, 24)
@@ -36,6 +41,58 @@ _bundled = {
 "variants": [0, false, ExtResource("5_bompc"), 1.5, 2.0, Vector2(0.05, 0.05), ExtResource("6_g3v01"), SubResource("CircleShape2D_fire"), Color(0.9563138, 0.19541636, 0.20988896, 0.41960785)],
 "version": 3
 }
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bompc"]
+bg_color = Color(0.7813404, 0, 0.19627443, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3v01"]
+bg_color = Color(0.80784315, 0.57254905, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r7pb6"]
+bg_color = Color(0, 0, 0, 0.90000004)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.8235294, 0.27450982, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mshhk"]
+bg_color = Color(0.6666667, 0.11764706, 0.11764706, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7p1pk"]
+bg_color = Color(0, 0, 0, 0.9019608)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.8235294, 0.27450982, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsreo"]
+bg_color = Color(0.19607843, 0.47058824, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [node name="BossRoom3" type="Node2D" unique_id=1767539128]
 script = ExtResource("1_v2we0")
@@ -101,52 +158,174 @@ fire_scene = SubResource("PackedScene_r7pb6")
 homing_bullet_chance = 0.7
 dive_chance = 0.3
 
-[node name="CanvasLayer" type="Node2D" parent="." unique_id=63614279]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=165801557]
 
 [node name="SequenceUI" type="Node2D" parent="CanvasLayer" unique_id=461644759]
 position = Vector2(-20, -528)
 
-[node name="BossUI" type="VBoxContainer" parent="CanvasLayer" unique_id=211982518]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -32.0
-offset_top = -80.0
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=1704448070]
+offset_left = 18.0
+offset_top = 107.0
+offset_right = 299.0
+offset_bottom = 134.0
+value = 50.0
+show_percentage = false
+
+[node name="StaminaLabel" type="Label" parent="CanvasLayer" unique_id=1834519377]
+offset_left = 23.0
+offset_top = 107.0
+offset_right = 65.0
+offset_bottom = 134.0
+
+[node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=34645884]
+offset_left = 19.0
+offset_top = 19.0
+offset_right = 297.0
+offset_bottom = 46.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_bompc")
+value = 100.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="CanvasLayer" unique_id=1660237883]
+z_index = 10
+offset_left = 24.0
+offset_top = 19.0
+offset_right = 67.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="ChargeBar" type="ProgressBar" parent="CanvasLayer" unique_id=412899422]
+offset_left = 20.0
+offset_top = 63.0
+offset_right = 299.0
+offset_bottom = 90.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_g3v01")
+show_percentage = false
+
+[node name="ChargeLabel" type="Label" parent="CanvasLayer" unique_id=1489968896]
+offset_left = 25.0
+offset_top = 64.0
+offset_right = 67.0
+offset_bottom = 90.0
+
+[node name="BossUI" type="Control" parent="CanvasLayer" unique_id=231061847]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 393.0
+offset_top = 580.0
+offset_right = 913.0
+offset_bottom = 635.0
+
+[node name="MeleeRow" type="Control" parent="CanvasLayer/BossUI" unique_id=995777623]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MeleeHP" type="ProgressBar" parent="CanvasLayer/BossUI/MeleeRow" unique_id=1714166907]
+layout_mode = 0
+offset_right = 420.0
+offset_bottom = 27.0
+theme_override_styles/background = SubResource("StyleBoxFlat_r7pb6")
+theme_override_styles/fill = SubResource("StyleBoxFlat_mshhk")
+show_percentage = false
+
+[node name="MeleeLabel" type="Label" parent="CanvasLayer/BossUI/MeleeRow" unique_id=644702149]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 1.0
+offset_right = 440.0
+offset_bottom = 24.0
+
+[node name="RangedRow" type="Control" parent="CanvasLayer/BossUI" unique_id=381655703]
+anchors_preset = 0
+offset_top = 28.0
+offset_right = 40.0
+offset_bottom = 68.0
+
+[node name="RangedHP" type="ProgressBar" parent="CanvasLayer/BossUI/RangedRow" unique_id=1410614365]
+layout_mode = 0
+offset_right = 420.0
+offset_bottom = 27.0
+theme_override_styles/background = SubResource("StyleBoxFlat_7p1pk")
+theme_override_styles/fill = SubResource("StyleBoxFlat_jsreo")
+show_percentage = false
+
+[node name="RangedLabel" type="Label" parent="CanvasLayer/BossUI/RangedRow" unique_id=119913942]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 2.0
+offset_right = 50.0
+offset_bottom = 25.0
+
+[node name="ConsumableUI" type="Control" parent="CanvasLayer" unique_id=1107452342]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 26.0
+offset_top = 455.0
+offset_right = 276.0
+offset_bottom = 575.0
+script = ExtResource("7_jsreo")
+
+[node name="HPPotionIcon" type="TextureRect" parent="CanvasLayer/ConsumableUI" unique_id=1701665021]
+layout_mode = 0
+offset_top = 4.0
 offset_right = 32.0
-offset_bottom = -3.0
-grow_horizontal = 2
-grow_vertical = 0
+offset_bottom = 36.0
+texture = ExtResource("8_7l4to")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="BossName" type="Label" parent="CanvasLayer/BossUI" unique_id=1297403973]
-layout_mode = 2
-size_flags_vertical = 8
-text = "雙生魔龍"
-horizontal_alignment = 1
+[node name="HPPotionLabel" type="Label" parent="CanvasLayer/ConsumableUI" unique_id=855848912]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 4.0
+offset_right = 240.0
+offset_bottom = 28.0
 
-[node name="MeleeRow" type="HBoxContainer" parent="CanvasLayer/BossUI" unique_id=2115351221]
-layout_mode = 2
-alignment = 1
+[node name="StaminaPotionIcon" type="TextureRect" parent="CanvasLayer/ConsumableUI" unique_id=18820409]
+layout_mode = 0
+offset_top = 44.0
+offset_right = 32.0
+offset_bottom = 76.0
+texture = ExtResource("9_lx4ah")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="MeleeHP" type="ProgressBar" parent="CanvasLayer/BossUI/MeleeRow" unique_id=104673654]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-max_value = 350.0
-show_percentage = false
+[node name="StaminaPotionLabel" type="Label" parent="CanvasLayer/ConsumableUI" unique_id=1148113942]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 44.0
+offset_right = 240.0
+offset_bottom = 68.0
 
-[node name="MeleeLabel" type="Label" parent="CanvasLayer/BossUI/MeleeRow" unique_id=1002749864]
-layout_mode = 2
+[node name="MPPotionIcon" type="TextureRect" parent="CanvasLayer/ConsumableUI" unique_id=2009200940]
+layout_mode = 0
+offset_top = 84.0
+offset_right = 32.0
+offset_bottom = 116.0
+texture = ExtResource("10_ynflw")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="RangedRow" type="HBoxContainer" parent="CanvasLayer/BossUI" unique_id=819379686]
-layout_mode = 2
-alignment = 1
+[node name="MPPotionLabel" type="Label" parent="CanvasLayer/ConsumableUI" unique_id=1768796026]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 84.0
+offset_right = 240.0
+offset_bottom = 108.0
 
-[node name="RangedHP" type="ProgressBar" parent="CanvasLayer/BossUI/RangedRow" unique_id=634959984]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-max_value = 350.0
-show_percentage = false
+[node name="InvincibleIcon" type="TextureRect" parent="CanvasLayer/ConsumableUI" unique_id=1855833683]
+layout_mode = 0
+offset_top = 124.0
+offset_right = 32.0
+offset_bottom = 156.0
+texture = ExtResource("11_ad1r5")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="RangedLabel" type="Label" parent="CanvasLayer/BossUI/RangedRow" unique_id=118544108]
-layout_mode = 2
+[node name="InvincibleLabel" type="Label" parent="CanvasLayer/ConsumableUI" unique_id=935095222]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 124.0
+offset_right = 240.0
+offset_bottom = 148.0

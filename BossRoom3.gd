@@ -11,16 +11,16 @@ extends Node2D
 @onready var player_spawn: Marker2D = $PlayerSpawnPoint
 @onready var melee_spawn: Marker2D = $MeleeSpawnPoint
 @onready var ranged_spawn: Marker2D = $RangedSpawnPoint
-@onready var camera: Camera2D = $Camera2D
 
 @onready var melee_boss: Node = $Boss3Melee
 @onready var ranged_boss: Node = $Boss3Ranged
 
+var player: Node2D = null
+var camera: Camera2D = null
 
 var _melee_dead: bool = false
 var _ranged_dead: bool = false
 var _room_cleared: bool = false
-
 
 
 func _ready() -> void:
@@ -32,13 +32,11 @@ func _ready() -> void:
 	_refresh_boss_player_targets()
 	_setup_camera()
 	_setup_boss_hp_ui()
-	_position_boss_ui()
+
 
 func _process(_delta: float) -> void:
 	_check_boss_clear()
 	_update_boss_hp_ui()
-	_position_boss_ui()
-
 
 
 func _spawn_selected_player() -> void:
@@ -57,12 +55,21 @@ func _spawn_selected_player() -> void:
 		push_error("找不到角色場景：%s" % scene_path)
 		return
 
-	var player: Node = player_scene.instantiate()
-	player.name = "Player"
-	add_child(player)
+	var new_player: Node = player_scene.instantiate()
+	new_player.name = "Player"
+	add_child(new_player)
 
-	if player_spawn != null and player is Node2D:
-		(player as Node2D).global_position = player_spawn.global_position
+	if new_player is Node2D:
+		player = new_player as Node2D
+
+		if player_spawn != null:
+			player.global_position = player_spawn.global_position
+
+		if not player.is_in_group("player"):
+			player.add_to_group("player")
+	else:
+		push_error("生成的玩家不是 Node2D，無法設定位置與 Camera2D")
+		return
 
 	print("BossRoom3 已生成 Player")
 
@@ -96,16 +103,23 @@ func _position_boss() -> void:
 		if ranged_boss.has_method("set_home_position"):
 			ranged_boss.set_home_position(ranged_spawn.global_position)
 
+
 func _setup_camera() -> void:
-	if camera == null:
+	if player == null:
+		player = get_node_or_null("Player") as Node2D
+
+	if player == null:
+		push_warning("找不到 Player，無法設定 Camera2D")
 		return
 
+	camera = player.get_node_or_null("Camera2D") as Camera2D
+
+	if camera == null:
+		push_warning("Player 底下找不到 Camera2D，請確認 Camera2D 是 Player 的直接子節點")
+		return
+
+	camera.enabled = true
 	camera.make_current()
-
-	var player: Node = get_node_or_null("Player")
-
-	if player != null and player is Node2D:
-		camera.global_position = (player as Node2D).global_position
 
 
 func _check_boss_clear() -> void:
@@ -152,6 +166,7 @@ func _debug_print_players(label: String) -> void:
 
 		print("player node = ", p.name, " path = ", p.get_path(), " parent = ", parent_name)
 
+
 func _refresh_boss_player_targets() -> void:
 	print("melee valid = ", is_instance_valid(melee_boss), " has find_player = ", melee_boss != null and melee_boss.has_method("find_player"))
 	print("ranged valid = ", is_instance_valid(ranged_boss), " has find_player = ", ranged_boss != null and ranged_boss.has_method("find_player"))
@@ -163,7 +178,6 @@ func _refresh_boss_player_targets() -> void:
 		ranged_boss.find_player()
 
 	print("BossRoom3：已要求兩隻 Boss 重新尋找 Player")
-	
 
 
 func _setup_boss_hp_ui() -> void:
@@ -202,27 +216,3 @@ func _update_boss_hp_ui() -> void:
 		else:
 			ranged_hp_bar.value = 0
 			ranged_hp_label.text = "0 / 0"
-
-
-func _position_boss_ui() -> void:
-	if boss_ui == null:
-		return
-
-	var viewport_size: Vector2 = get_viewport_rect().size
-
-	var ui_width: float = 520.0
-	var ui_height: float = 120.0
-	var bottom_margin: float = 70.0
-
-	boss_ui.anchor_left = 0.0
-	boss_ui.anchor_top = 0.0
-	boss_ui.anchor_right = 0.0
-	boss_ui.anchor_bottom = 0.0
-
-	boss_ui.size = Vector2(ui_width, ui_height)
-	boss_ui.position = Vector2(
-		(viewport_size.x - ui_width) * 0.5,
-		viewport_size.y - ui_height - bottom_margin
-	)
-
-	boss_ui.visible = true
