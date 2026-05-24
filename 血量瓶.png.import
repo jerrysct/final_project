@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://u2hhx7snykqj"
-path="res://.godot/imported/item_03_green_stamina_orb_transparent.png-90c15545145bc5fb1a7e39551914ca91.ctex"
+uid="uid://bulkml13llpky"
+path="res://.godot/imported/血量瓶.png-777553821a8d033b1d5d49f44b41cfd8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://item_03_green_stamina_orb_transparent.png"
-dest_files=["res://.godot/imported/item_03_green_stamina_orb_transparent.png-90c15545145bc5fb1a7e39551914ca91.ctex"]
+source_file="res://血量瓶.png"
+dest_files=["res://.godot/imported/血量瓶.png-777553821a8d033b1d5d49f44b41cfd8.ctex"]
 
 [params]
 

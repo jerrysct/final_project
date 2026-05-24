@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cowm1ospyjqto"
-path="res://.godot/imported/item_04_purple_reflect_relic_transparent.png-0c66a62508e00f8a569e348abc7c81bd.ctex"
+uid="uid://ujrl4f28rlm"
+path="res://.godot/imported/魔力瓶.png-74e034530788321b3d7c093fd8a1c683.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://item_04_purple_reflect_relic_transparent.png"
-dest_files=["res://.godot/imported/item_04_purple_reflect_relic_transparent.png-0c66a62508e00f8a569e348abc7c81bd.ctex"]
+source_file="res://魔力瓶.png"
+dest_files=["res://.godot/imported/魔力瓶.png-74e034530788321b3d7c093fd8a1c683.ctex"]
 
 [params]
 

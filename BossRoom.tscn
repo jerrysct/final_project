@@ -6,10 +6,10 @@
 [ext_resource type="Script" uid="uid://cpgxgawsgn4ue" path="res://bossHealBar.gd" id="4_5yl58"]
 [ext_resource type="Script" uid="uid://pin3fcqem2v4" path="res://SequenceUI.gd" id="5_yq10e"]
 [ext_resource type="Script" uid="uid://dhg3x7x530yia" path="res://ConsumableUI.gd" id="6_aoosn"]
-[ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://item_01_red_health_potion_transparent.png" id="7_yfkcr"]
-[ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://item_02_blue_mana_flask_transparent.png" id="8_epqb1"]
-[ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://item_03_green_stamina_orb_transparent.png" id="9_owky3"]
-[ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://item_04_purple_reflect_relic_transparent.png" id="10_nsjf7"]
+[ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://血量瓶.png" id="7_yfkcr"]
+[ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="8_epqb1"]
+[ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="9_owky3"]
+[ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://無敵瓶.png" id="10_nsjf7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r6kx4"]
 size = Vector2(1400, 24)
@@ -119,6 +119,7 @@ offset_top = 107.0
 offset_right = 299.0
 offset_bottom = 134.0
 value = 50.0
+show_percentage = false
 
 [node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=1237567835]
 offset_left = 19.0
@@ -127,6 +128,7 @@ offset_right = 297.0
 offset_bottom = 46.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_yq10e")
 value = 100.0
+show_percentage = false
 
 [node name="ChargeBar" type="ProgressBar" parent="CanvasLayer" unique_id=1398691203]
 offset_left = 20.0
@@ -134,6 +136,7 @@ offset_top = 63.0
 offset_right = 299.0
 offset_bottom = 90.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_aoosn")
+show_percentage = false
 
 [node name="SequenceUI" type="Node2D" parent="CanvasLayer" unique_id=1611063624]
 position = Vector2(516, 561)
@@ -162,11 +165,10 @@ metadata/_edit_use_anchors_ = true
 [node name="ConsumableUI" type="Control" parent="CanvasLayer" unique_id=1381210459]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 36.0
-offset_top = 365.0
-offset_right = 286.0
-offset_bottom = 485.0
-scale = Vector2(1.7, 1.7)
+offset_left = 26.0
+offset_top = 455.0
+offset_right = 276.0
+offset_bottom = 575.0
 script = ExtResource("6_aoosn")
 
 [node name="HPPotionIcon" type="TextureRect" parent="CanvasLayer/ConsumableUI" unique_id=97869703]

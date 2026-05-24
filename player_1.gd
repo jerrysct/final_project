@@ -28,7 +28,6 @@ func _ready() -> void:
 
 	health_bar.max_value = Playerdata_Globle.max_hp
 	health_bar.value = current_hp
-	health_bar.show_percentage = true
 
 	stamina_bar.max_value = Playerdata_Globle.max_stamina
 	stamina_bar.value = current_stamina
