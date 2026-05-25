@@ -27,6 +27,7 @@ radius = 19.104973
 position = Vector2(-2, 0)
 script = ExtResource("1_squ5q")
 absorb_cooldown = 1.0
+fired_bullet_scale = Vector2(0.5, 0.5)
 metadata/_edit_horizontal_guides_ = [34.0]
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1199489429]
@@ -63,7 +64,7 @@ value = 50.0
 [node name="Label" type="Label" parent="CanvasLayer/ProgressBar" unique_id=628237859]
 layout_mode = 0
 offset_right = 278.0
-offset_bottom = 25.0
+offset_bottom = 23.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -78,7 +79,7 @@ value = 100.0
 [node name="Label" type="Label" parent="CanvasLayer/HealthBar" unique_id=605542444]
 layout_mode = 0
 offset_right = 278.0
-offset_bottom = 26.0
+offset_bottom = 23.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -95,7 +96,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_bxx23")
 [node name="Label" type="Label" parent="CanvasLayer2/ChargeBar" unique_id=1671069501]
 layout_mode = 0
 offset_right = 278.0
-offset_bottom = 27.0
+offset_bottom = 23.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
