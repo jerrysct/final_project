@@ -1,0 +1,331 @@
+[gd_scene format=3 uid="uid://dpewt8ur54q04"]
+
+[ext_resource type="Script" uid="uid://cpd4kd2vu8e7r" path="res://BossRoom3.gd" id="1_v2we0"]
+[ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://ChatGPT Image 2026年5月18日 下午09_39_38.png" id="2_v2we0"]
+[ext_resource type="PackedScene" uid="uid://rfhwlcbsfea3" path="res://Boss3_Melee.tscn" id="3_4q06p"]
+[ext_resource type="PackedScene" uid="uid://ibhr0yox1fcc" path="res://Boss3_Ranged.tscn" id="4_bompc"]
+[ext_resource type="Script" uid="uid://b830t6q4520qv" path="res://Boss3_Fire.gd" id="5_bompc"]
+[ext_resource type="Texture2D" uid="uid://dotcnfd8pgf4a" path="res://火球.jpg" id="6_g3v01"]
+[ext_resource type="Script" uid="uid://dhg3x7x530yia" path="res://ConsumableUI.gd" id="7_jsreo"]
+[ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://血量瓶.png" id="8_7l4to"]
+[ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="9_lx4ah"]
+[ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="10_ynflw"]
+[ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://無敵瓶.png" id="11_ad1r5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r6kx4"]
+size = Vector2(1400, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xb4eh"]
+size = Vector2(1400, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5yl58"]
+size = Vector2(24, 900)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yq10e"]
+size = Vector2(24, 900)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fire"]
+radius = 14.0
+
+[sub_resource type="PackedScene" id="PackedScene_r7pb6"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"id_paths": [],
+"names": PackedStringArray("Boss3_Fire", "collision_layer", "monitorable", "script", "damage", "damage_tick_interval", "Area2D", "Sprite2D", "scale", "texture", "CollisionShape2D", "shape", "debug_color"),
+"node_count": 3,
+"node_ids": PackedInt32Array(1099399205, 782211264, 1231776307),
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 6, 0, -1, 5, 1, 0, 2, 1, 3, 2, 4, 3, 5, 4, 0, 0, 0, 7, 7, -1, 2, 8, 5, 9, 6, 0, 0, 0, 10, 10, -1, 2, 11, 7, 12, 8, 0),
+"variants": [0, false, ExtResource("5_bompc"), 1.5, 2.0, Vector2(0.05, 0.05), ExtResource("6_g3v01"), SubResource("CircleShape2D_fire"), Color(0.9563138, 0.19541636, 0.20988896, 0.41960785)],
+"version": 3
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bompc"]
+bg_color = Color(0.7813404, 0, 0.19627443, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3v01"]
+bg_color = Color(0.80784315, 0.57254905, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r7pb6"]
+bg_color = Color(0, 0, 0, 0.90000004)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.8235294, 0.27450982, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mshhk"]
+bg_color = Color(0.6666667, 0.11764706, 0.11764706, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7p1pk"]
+bg_color = Color(0, 0, 0, 0.9019608)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.8235294, 0.27450982, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsreo"]
+bg_color = Color(0.19607843, 0.47058824, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="BossRoom3" type="Node2D" unique_id=1767539128]
+script = ExtResource("1_v2we0")
+
+[node name="Floor" type="Sprite2D" parent="." unique_id=754397698]
+position = Vector2(0.00011634827, 1.21593475e-05)
+scale = Vector2(0.89583325, 0.85546875)
+texture = ExtResource("2_v2we0")
+
+[node name="WallTop" type="StaticBody2D" parent="." unique_id=308624505 groups=["wall"]]
+position = Vector2(0, -450)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop" unique_id=2012980522]
+shape = SubResource("RectangleShape2D_r6kx4")
+
+[node name="WallBottom" type="StaticBody2D" parent="." unique_id=1092831311 groups=["wall"]]
+position = Vector2(0, 450)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallBottom" unique_id=1137973731]
+shape = SubResource("RectangleShape2D_xb4eh")
+
+[node name="WallLeft" type="StaticBody2D" parent="." unique_id=1562384323 groups=["wall"]]
+position = Vector2(-700, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=1714029320]
+shape = SubResource("RectangleShape2D_5yl58")
+
+[node name="WallRight" type="StaticBody2D" parent="." unique_id=242822482 groups=["wall"]]
+position = Vector2(700, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=120228062]
+shape = SubResource("RectangleShape2D_yq10e")
+
+[node name="MeleeSpawnPoint" type="Marker2D" parent="." unique_id=210996753]
+position = Vector2(-67, 0)
+
+[node name="RangedSpawnPoint" type="Marker2D" parent="." unique_id=1805048722]
+position = Vector2(129, 0)
+
+[node name="PlayerSpawnPoint" type="Marker2D" parent="." unique_id=1952492710]
+position = Vector2(0, 140)
+
+[node name="Boss3Ranged" parent="." unique_id=1120405388 instance=ExtResource("4_bompc")]
+position = Vector2(118, -3)
+max_hp = 500
+debug_enabled = false
+burst_count_min = 5
+burst_count_max = 8
+melee_boss_path = NodePath("../Boss3Melee")
+heal_amount = 15
+heal_chance = 0.25
+heal_prepare_time = 1.0
+
+[node name="Boss3Melee" parent="." unique_id=2037844958 instance=ExtResource("3_4q06p")]
+position = Vector2(-67, 0)
+max_hp = 450
+move_speed = 150.0
+charge_speed = 350.0
+charge_cooldown_min = 1.4
+charge_cooldown_max = 2.2
+fire_spawn_chance = 0.6
+fire_scene = SubResource("PackedScene_r7pb6")
+homing_bullet_chance = 0.7
+dive_chance = 0.3
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=165801557]
+
+[node name="SequenceUI" type="Node2D" parent="CanvasLayer" unique_id=461644759]
+position = Vector2(-20, -528)
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=1704448070]
+offset_left = 18.0
+offset_top = 107.0
+offset_right = 299.0
+offset_bottom = 134.0
+value = 50.0
+show_percentage = false
+
+[node name="StaminaLabel" type="Label" parent="CanvasLayer" unique_id=1834519377]
+offset_left = 23.0
+offset_top = 107.0
+offset_right = 65.0
+offset_bottom = 134.0
+
+[node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=34645884]
+offset_left = 19.0
+offset_top = 19.0
+offset_right = 297.0
+offset_bottom = 46.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_bompc")
+value = 100.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="CanvasLayer" unique_id=1660237883]
+z_index = 10
+offset_left = 24.0
+offset_top = 19.0
+offset_right = 67.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="ChargeBar" type="ProgressBar" parent="CanvasLayer" unique_id=412899422]
+offset_left = 20.0
+offset_top = 63.0
+offset_right = 299.0
+offset_bottom = 90.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_g3v01")
+show_percentage = false
+
+[node name="ChargeLabel" type="Label" parent="CanvasLayer" unique_id=1489968896]
+offset_left = 25.0
+offset_top = 64.0
+offset_right = 67.0
+offset_bottom = 90.0
+
+[node name="BossUI" type="Control" parent="CanvasLayer" unique_id=231061847]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 393.0
+offset_top = 580.0
+offset_right = 913.0
+offset_bottom = 635.0
+
+[node name="MeleeRow" type="Control" parent="CanvasLayer/BossUI" unique_id=995777623]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MeleeHP" type="ProgressBar" parent="CanvasLayer/BossUI/MeleeRow" unique_id=1714166907]
+layout_mode = 0
+offset_right = 420.0
+offset_bottom = 27.0
+theme_override_styles/background = SubResource("StyleBoxFlat_r7pb6")
+theme_override_styles/fill = SubResource("StyleBoxFlat_mshhk")
+show_percentage = false
+
+[node name="MeleeLabel" type="Label" parent="CanvasLayer/BossUI/MeleeRow" unique_id=644702149]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 1.0
+offset_right = 440.0
+offset_bottom = 24.0
+
+[node name="RangedRow" type="Control" parent="CanvasLayer/BossUI" unique_id=381655703]
+anchors_preset = 0
+offset_top = 28.0
+offset_right = 40.0
+offset_bottom = 68.0
+
+[node name="RangedHP" type="ProgressBar" parent="CanvasLayer/BossUI/RangedRow" unique_id=1410614365]
+layout_mode = 0
+offset_right = 420.0
+offset_bottom = 27.0
+theme_override_styles/background = SubResource("StyleBoxFlat_7p1pk")
+theme_override_styles/fill = SubResource("StyleBoxFlat_jsreo")
+show_percentage = false
+
+[node name="RangedLabel" type="Label" parent="CanvasLayer/BossUI/RangedRow" unique_id=119913942]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 2.0
+offset_right = 50.0
+offset_bottom = 25.0
+
+[node name="ConsumableUI" type="Control" parent="CanvasLayer" unique_id=1107452342]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 26.0
+offset_top = 455.0
+offset_right = 276.0
+offset_bottom = 575.0
+script = ExtResource("7_jsreo")
+
+[node name="HPPotionIcon" type="TextureRect" parent="CanvasLayer/ConsumableUI" unique_id=1701665021]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 32.0
+offset_bottom = 36.0
+texture = ExtResource("8_7l4to")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HPPotionLabel" type="Label" parent="CanvasLayer/ConsumableUI" unique_id=855848912]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 4.0
+offset_right = 240.0
+offset_bottom = 28.0
+
+[node name="StaminaPotionIcon" type="TextureRect" parent="CanvasLayer/ConsumableUI" unique_id=18820409]
+layout_mode = 0
+offset_top = 44.0
+offset_right = 32.0
+offset_bottom = 76.0
+texture = ExtResource("9_lx4ah")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StaminaPotionLabel" type="Label" parent="CanvasLayer/ConsumableUI" unique_id=1148113942]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 44.0
+offset_right = 240.0
+offset_bottom = 68.0
+
+[node name="MPPotionIcon" type="TextureRect" parent="CanvasLayer/ConsumableUI" unique_id=2009200940]
+layout_mode = 0
+offset_top = 84.0
+offset_right = 32.0
+offset_bottom = 116.0
+texture = ExtResource("10_ynflw")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MPPotionLabel" type="Label" parent="CanvasLayer/ConsumableUI" unique_id=1768796026]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 84.0
+offset_right = 240.0
+offset_bottom = 108.0
+
+[node name="InvincibleIcon" type="TextureRect" parent="CanvasLayer/ConsumableUI" unique_id=1855833683]
+layout_mode = 0
+offset_top = 124.0
+offset_right = 32.0
+offset_bottom = 156.0
+texture = ExtResource("11_ad1r5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="InvincibleLabel" type="Label" parent="CanvasLayer/ConsumableUI" unique_id=935095222]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 124.0
+offset_right = 240.0
+offset_bottom = 148.0

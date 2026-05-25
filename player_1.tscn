@@ -10,12 +10,6 @@ radius = 19.026299
 [sub_resource type="CircleShape2D" id="CircleShape2D_bxx23"]
 radius = 80.86335
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qh3su"]
-bg_color = Color(0.7813404, 0, 0.19627443, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxx23"]
-bg_color = Color(0.80784315, 0.57254905, 0, 1)
-
 [sub_resource type="Curve" id="Curve_qh3su"]
 
 [sub_resource type="Gradient" id="Gradient_buxg0"]
