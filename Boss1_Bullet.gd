@@ -36,6 +36,10 @@ var is_phantom: bool = false
 var can_slow_player: bool = false
 var is_phase_two: bool = false
 
+# --- 【新增】用來讓玩家判斷能不能吸收的變數 ---
+var can_be_absorbed: bool = true
+# ----------------------------------------
+
 @onready var sprite: Sprite2D = $Sprite2D
 
 
@@ -81,6 +85,11 @@ func setup(
 	is_phase_two = phase_two
 	is_reflected = false
 	is_absorbed = false
+
+	# --- 【重要新增】自動判斷此子彈是否能被吸收 ---
+	# 條件：不是半透明 (phantom) 且 不是爆裂大子彈 (BURST)
+	can_be_absorbed = (not is_phantom) and (bullet_type != BulletType.BURST)
+	# ----------------------------------------
 
 	if new_speed > 0.0:
 		speed = new_speed

@@ -44,7 +44,7 @@ var dash_stamina_cost: float = 30.0
 var absorb_mp_cost: float = 20.0
 # 金幣
 var gold: int = 1000
-var max_bullet_storage: int = 5      # 吸收子彈的上限次數
+var max_bullet_storage: int = 3      # 吸收子彈的上限次數
 var bullet_time_scale: float = 0.3    # 蓄力釋放時的子彈時間倍率（0.3 代表慢動作 30%）
 # 裝備系統
 var purchased_items: Array = []
