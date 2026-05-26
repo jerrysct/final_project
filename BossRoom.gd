@@ -19,8 +19,12 @@ func _ready() -> void:
 	_spawn_selected_player()
 	_position_boss()
 	_setup_camera()
+	
 	if end_screen:
 		end_screen.hide()
+		# 【重要修改】設定結算畫面在遊戲暫停時 (paused = true) 依然持續運作
+		# 這樣 ReturnButton 才點得下去
+		end_screen.process_mode = Node.PROCESS_MODE_ALWAYS
 		
 	# 綁定按鈕點擊信號
 	if return_button:
@@ -63,6 +67,8 @@ func _position_boss() -> void:
 		return
 
 	boss.global_position = boss_spawn.global_position
+	if boss.has_signal("died") and not boss.is_connected("died", show_victory):
+		boss.died.connect(show_victory)
 
 
 func _setup_camera() -> void:
@@ -84,7 +90,6 @@ func _setup_camera() -> void:
 	
 	
 # 當 Boss 死亡時呼叫此函數
-# 當 Boss 死亡時呼叫此函數
 func show_victory() -> void:
 	# 根據全域變數的倍率計算實際獲得的金幣
 	var earned_gold: int = int(100 * Playerdata_Globle.reward_multiplier)
@@ -96,6 +101,7 @@ func show_victory() -> void:
 	
 	# 將金幣加進全域變數中
 	Playerdata_Globle.gold += earned_gold
+	SaveManager.save_slot(Playerdata_Globle.current_slot)
 	print("戰鬥勝利！獲得金幣：", earned_gold, "，目前總金幣：", Playerdata_Globle.gold)
 	
 	# 暫停遊戲，避免背景繼續運作
@@ -107,12 +113,13 @@ func show_defeat() -> void:
 	gold_label.hide() # 輸了不顯示金幣
 	end_screen.show()
 	
-	# 選擇性：暫停遊戲
+	# 暫停遊戲
 	get_tree().paused = true
+
 
 ## 按鈕回呼函數
 func _on_return_button_pressed() -> void:
-	# 1. 先解除暫停
+	# 1. 先解除暫停 (因為前面 _ready 已經設定了 ALWAYS，所以這裡的點擊可以成功觸發)
 	get_tree().paused = false 
 	
 	# 2. 直接切換場景

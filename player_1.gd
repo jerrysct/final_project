@@ -302,7 +302,7 @@ func take_damage(amount: float) -> void:
 
 	if current_hp <= 0.0:
 		await get_tree().create_timer(0.6).timeout 
-		ar room = get_parent()
+		var room = get_parent()
 		if room != null and room.has_method("show_defeat"):
 			room.show_defeat()
 		else:
