@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dmunu0ftgq2dx" path="res://BossRoom.gd" id="1_room"]
 [ext_resource type="Script" uid="uid://cpgxgawsgn4ue" path="res://bossHealBar.gd" id="4_5yl58"]
 [ext_resource type="Script" uid="uid://pin3fcqem2v4" path="res://SequenceUI.gd" id="5_yq10e"]
-[ext_resource type="Script" uid="uid://dhg3x7x530yia" path="res://ConsumableUI.gd" id="6_aoosn"]
+[ext_resource type="Script" path="res://ConsumableUI.gd" id="6_aoosn"]
 [ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://血量瓶.png" id="7_yfkcr"]
 [ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="8_epqb1"]
 [ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="9_owky3"]
@@ -131,11 +131,11 @@ offset_bottom = 134.0
 value = 50.0
 show_percentage = false
 
-[node name="StaminaLabel" type="Label" parent="CanvasLayer" unique_id=247071207]
-offset_left = 24.0
-offset_top = 107.0
-offset_right = 66.0
-offset_bottom = 133.0
+[node name="Label" type="Label" parent="CanvasLayer/ProgressBar" unique_id=247071207]
+layout_mode = 0
+offset_left = 6.0
+offset_right = 48.0
+offset_bottom = 26.0
 
 [node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=1237567835]
 offset_left = 19.0
@@ -146,15 +146,15 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_yq10e")
 value = 100.0
 show_percentage = false
 
-[node name="HealthLabel" type="Label" parent="CanvasLayer" unique_id=1809726343]
+[node name="Label" type="Label" parent="CanvasLayer/HealthBar" unique_id=1809726343]
 z_index = 10
-offset_left = 24.0
-offset_top = 19.0
-offset_right = 67.0
-offset_bottom = 46.0
+layout_mode = 0
+offset_left = 5.0
+offset_right = 48.0
+offset_bottom = 27.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 
-[node name="ChargeBar" type="ProgressBar" parent="CanvasLayer" unique_id=1398691203]
+[node name="MPBar" type="ProgressBar" parent="CanvasLayer" unique_id=1398691203]
 offset_left = 20.0
 offset_top = 63.0
 offset_right = 299.0
@@ -162,11 +162,11 @@ offset_bottom = 90.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_aoosn")
 show_percentage = false
 
-[node name="ChargeLabel" type="Label" parent="CanvasLayer" unique_id=1898286903]
-offset_left = 24.0
-offset_top = 63.0
-offset_right = 66.0
-offset_bottom = 89.0
+[node name="Label" type="Label" parent="CanvasLayer/MPBar" unique_id=1898286903]
+layout_mode = 0
+offset_left = 4.0
+offset_right = 46.0
+offset_bottom = 26.0
 
 [node name="SequenceUI" type="Node2D" parent="CanvasLayer" unique_id=1611063624]
 position = Vector2(516, 561)
@@ -222,7 +222,7 @@ layout_mode = 0
 offset_top = 44.0
 offset_right = 32.0
 offset_bottom = 76.0
-texture = ExtResource("8_epqb1")
+texture = ExtResource("9_owky3")
 expand_mode = 1
 stretch_mode = 5
 
@@ -238,7 +238,7 @@ layout_mode = 0
 offset_top = 84.0
 offset_right = 32.0
 offset_bottom = 116.0
-texture = ExtResource("9_owky3")
+texture = ExtResource("8_epqb1")
 expand_mode = 1
 stretch_mode = 5
 
