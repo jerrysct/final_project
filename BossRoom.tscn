@@ -55,6 +55,10 @@ bg_color = Color(0.80784315, 0.57254905, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yfkcr"]
 bg_color = Color(0.050510757, 0.050510764, 0.050510712, 1)
 
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yfkcr"]
+bg_color = Color(0.050510757, 0.050510764, 0.050510712, 1)
+
 [node name="BossRoom" type="Node2D" unique_id=1767539128]
 script = ExtResource("1_room")
 
@@ -264,6 +268,56 @@ offset_left = 40.0
 offset_top = 124.0
 offset_right = 240.0
 offset_bottom = 148.0
+
+[node name="EndScreen" type="Panel" parent="CanvasLayer" unique_id=643080577]
+process_mode = 3
+custom_minimum_size = Vector2(400, 400)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yfkcr")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/EndScreen" unique_id=624094840]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -31.0
+offset_right = 4.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/EndScreen/VBoxContainer" unique_id=1102299002]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+
+[node name="GoldLabel" type="Label" parent="CanvasLayer/EndScreen/VBoxContainer" unique_id=1950377473]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+
+[node name="ReturnButton" type="Button" parent="CanvasLayer/EndScreen/VBoxContainer" unique_id=1077238096]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Back
+"
 
 [node name="EndScreen" type="Panel" parent="CanvasLayer" unique_id=643080577]
 process_mode = 3
