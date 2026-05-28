@@ -12,8 +12,7 @@ grow_vertical = 2
 script = ExtResource("1_ig7tw")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1702237248]
-layout_mode = 1
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -25,24 +24,24 @@ offset_bottom = 50.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="商店" type="Button" parent="VBoxContainer" unique_id=612858888]
-custom_minimum_size = Vector2(250, 70)
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "商店"
-
-[node name="裝備" type="Button" parent="VBoxContainer" unique_id=1787515676]
-custom_minimum_size = Vector2(250, 70)
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "裝備
-"
-
 [node name="開始遊戲" type="Button" parent="VBoxContainer" unique_id=732273926]
 custom_minimum_size = Vector2(250, 70)
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "開始遊戲"
+
+[node name="商店" type="Button" parent="VBoxContainer" unique_id=1484016653]
+custom_minimum_size = Vector2(250, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "商店"
+
+[node name="裝備" type="Button" parent="VBoxContainer" unique_id=1745340748]
+custom_minimum_size = Vector2(250, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "裝備
+"
 
 [node name="MenuButton" type="Button" parent="." unique_id=1421214871]
 custom_minimum_size = Vector2(120, 50)

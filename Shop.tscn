@@ -132,7 +132,8 @@ horizontal_alignment = 1
 [node name="MP 回復 + 10" type="Button" parent="VBoxContainer" unique_id=972065303]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
-text = "MP 回復 + 10"
+text = "MP 回復 + 0.2
+"
 
 [node name="Price_Label" type="Label" parent="VBoxContainer/MP 回復 + 10" unique_id=1046072014]
 layout_mode = 1

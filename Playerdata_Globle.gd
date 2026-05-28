@@ -6,7 +6,7 @@ const ITEMS = [
 	{ "name": "MP + 100",       "cost": 10, "mp": 100.0 },
 	{ "name": "血量回復 + 0.1", "cost": 10, "hp_regen": 0.1 },
 	{ "name": "體力回復 + 10",  "cost": 10, "stamina_regen": 10.0 },
-	{ "name": "MP 回復 + 10",   "cost": 10, "mp_regen": 10.0 },
+	{ "name": "MP 回復 + 0.2",   "cost": 10, "mp_regen": 0.2 },
 	{ "name": "位移消耗 - 10",  "cost": 10, "dash_cost": -10.0 },
 	{ "name": "蓄力消耗 - 10",  "cost": 10, "absorb_cost": -10.0 }
 ]
@@ -37,14 +37,14 @@ var walk_speed: float = 200.0
 var dash_speed: float = 1000.0
 var stamina_regen_idle: float = 20.0
 var stamina_regen_move: float = 5.0
-var mp_regen_speed: float = 5.0
-var hp_regen_speed: float = 0.01
+var mp_regen_speed: float = 0.01
+var hp_regen_speed: float = 0.2
 # 動作消耗數值
 var dash_stamina_cost: float = 30.0
-var absorb_mp_cost: float = 20.0
+var absorb_mp_cost: float = 10.0
 # 金幣
 var gold: int = 1000
-var max_bullet_storage: int = 5      # 吸收子彈的上限次數
+var max_bullet_storage: int = 3      # 吸收子彈的上限次數
 var bullet_time_scale: float = 0.3    # 蓄力釋放時的子彈時間倍率（0.3 代表慢動作 30%）
 # 裝備系統
 var purchased_items: Array = []
@@ -96,6 +96,10 @@ func apply_item_effect(item_index: int):
 
 # 移除裝備效果
 func remove_item_effect(item_index: int):
+	# 【新增】防呆判斷：如果是空欄位 (-1) 或超出範圍，直接中斷
+	if item_index < 0 or item_index >= ITEMS.size():
+		return
+		
 	var item = ITEMS[item_index]
 	if item.has("hp"):            max_hp -= item["hp"]
 	if item.has("stamina"):       max_stamina -= item["stamina"]

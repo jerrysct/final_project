@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal died
+
 enum BulletColor {
 	RED,
 	BLUE,
@@ -23,7 +25,8 @@ enum AttackPattern {
 	BURST
 }
 
-@onready var health_bar: ProgressBar = $HealthBar
+@onready var health_bar: ProgressBar = get_tree().current_scene.get_node_or_null("CanvasLayer/BossHealthBar") as ProgressBar
+@onready var health_label: Label = get_tree().current_scene.get_node_or_null("CanvasLayer/BossHealthLabel") as Label
 
 @export var max_hp: int = 1000
 @export var normal_damage: int = 30
@@ -67,10 +70,13 @@ enum AttackPattern {
 @export var prism_spawn_range_y: float = 140.0
 @export var prism_lifetime: float = 5.0
 
+@export var prism_spawn_center: Vector2 = Vector2.ZERO
+@export var prism_spawn_size: Vector2 = Vector2(400, 250)
+
 @onready var fire_timer: Timer = $FireTimer
 @onready var stun_timer: Timer = $StunTimer
 @onready var bullet_spawn_point: Marker2D = $BulletSpawnPoint
-@onready var sequence_ui: Node = $SequenceUI
+@onready var sequence_ui: Node = get_tree().current_scene.get_node_or_null("CanvasLayer/SequenceUI")
 
 @onready var boss_sprite: Sprite2D = $Sprite2D
 
@@ -93,10 +99,18 @@ var is_waiting_for_next_move: bool = false
 var current_pattern: AttackPattern = AttackPattern.NORMAL
 var skill_loop_running: bool = false
 
+var color_map: Dictionary = {}
+
 
 func _ready() -> void:
 	hp = max_hp
-	health_bar.setup(max_hp)
+
+	if health_bar:
+		health_bar.setup(max_hp)
+		health_bar.show_percentage = false
+
+	update_boss_hp_ui()
+
 	randomize()
 	find_player()
 
@@ -145,7 +159,8 @@ func change_state(new_state: BossState) -> void:
 			stun_timer.stop()
 			skill_loop_running = false
 			print("Boss 死亡")
-			queue_free()
+			died.emit()
+			call_deferred("queue_free")
 
 
 func start_skill_loop() -> void:
@@ -158,35 +173,34 @@ func start_skill_loop() -> void:
 
 func skill_loop() -> void:
 	while skill_loop_running and state != BossState.DEAD:
-		current_pattern = AttackPattern.NORMAL
-		print("攻擊模式：普通彈幕")
-		await get_tree().create_timer(normal_pattern_time).timeout
-		await pattern_break()
+		current_pattern = choose_next_pattern()
 
-		current_pattern = AttackPattern.PHANTOM
-		print("攻擊模式：幻影殘響")
-		await get_tree().create_timer(phantom_pattern_time).timeout
-		await pattern_break()
+		match current_pattern:
+			AttackPattern.NORMAL:
+				print("攻擊模式：普通彈幕")
+				await get_tree().create_timer(normal_pattern_time).timeout
 
-		current_pattern = AttackPattern.PRISM
-		print("攻擊模式：稜鏡折射")
-		spawn_prism_fields()
-		await get_tree().create_timer(prism_pattern_time).timeout
-		await pattern_break()
+			AttackPattern.PHANTOM:
+				print("攻擊模式：幻影殘響")
+				await get_tree().create_timer(phantom_pattern_time).timeout
 
-		current_pattern = AttackPattern.SLOW
-		print("攻擊模式：遲緩子彈")
-		await get_tree().create_timer(slow_pattern_time).timeout
-		await pattern_break()
+			AttackPattern.PRISM:
+				print("攻擊模式：稜鏡折射")
+				spawn_prism_fields()
+				await get_tree().create_timer(prism_pattern_time).timeout
 
-		current_pattern = AttackPattern.RADIAL
-		print("攻擊模式：環形彈幕")
-		await get_tree().create_timer(radial_pattern_time).timeout
-		await pattern_break()
+			AttackPattern.SLOW:
+				print("攻擊模式：遲緩子彈")
+				await get_tree().create_timer(slow_pattern_time).timeout
 
-		current_pattern = AttackPattern.BURST
-		print("攻擊模式：大球爆散環形彈幕")
-		await get_tree().create_timer(burst_pattern_time).timeout
+			AttackPattern.RADIAL:
+				print("攻擊模式：環形彈幕")
+				await get_tree().create_timer(radial_pattern_time).timeout
+
+			AttackPattern.BURST:
+				print("攻擊模式：大球爆散環形彈幕")
+				await get_tree().create_timer(burst_pattern_time).timeout
+
 		await pattern_break()
 
 
@@ -294,15 +308,8 @@ func get_actual_color(color: int) -> int:
 	if not color_reversed:
 		return color
 
-	match color:
-		BulletColor.RED:
-			return BulletColor.BLUE
-		BulletColor.BLUE:
-			return BulletColor.RED
-		BulletColor.GREEN:
-			return BulletColor.YELLOW
-		BulletColor.YELLOW:
-			return BulletColor.GREEN
+	if color_map.has(color):
+		return color_map[color]
 
 	return color
 
@@ -310,7 +317,8 @@ func get_actual_color(color: int) -> int:
 func take_damage(amount: int) -> void:
 	hp -= amount
 	hp = max(hp, 0)
-	health_bar.update_hp(hp)
+
+	update_boss_hp_ui()
 	play_hit_effect()
 
 	print("Boss HP:", hp)
@@ -325,18 +333,34 @@ func take_damage(amount: int) -> void:
 func heal(amount: int) -> void:
 	hp += amount
 	hp = min(hp, max_hp)
-	health_bar.update_hp(hp)
+
+	update_boss_hp_ui()
+
 	print("Boss 回血，目前 HP:", hp)
+
+
+func update_boss_hp_ui() -> void:
+	if health_bar:
+		if health_bar.has_method("update_hp"):
+			health_bar.update_hp(hp)
+		else:
+			health_bar.max_value = max_hp
+			health_bar.value = hp
+
+	if health_label:
+		health_label.text = str(hp) + " / " + str(max_hp)
 
 
 func enter_phase_two() -> void:
 	is_phase_two = true
 	color_reversed = true
 
+	generate_random_color_map()
+
 	fire_timer.wait_time = phase_two_fire_interval
 	move_speed += 8.0
 
-	print("Boss 進入二階段：半血反轉")
+	print("Boss 進入二階段：半血隨機顏色反轉")
 
 
 func _on_fire_timer_timeout() -> void:
@@ -485,16 +509,16 @@ func spawn_prism_fields() -> void:
 
 	for i in range(prism_count):
 		var prism = prism_field_scene.instantiate()
-		get_tree().current_scene.add_child(prism)
 
 		var random_x = randf_range(-prism_spawn_range_x, prism_spawn_range_x)
 		var random_y = randf_range(-prism_spawn_range_y, prism_spawn_range_y)
 
 		prism.global_position = start_position + Vector2(random_x, random_y)
 
-		if prism.has_method("set_lifetime"):
-			prism.set_lifetime(prism_lifetime)
+		get_tree().current_scene.call_deferred("add_child", prism)
 
+		if prism.has_method("set_lifetime"):
+			prism.call_deferred("set_lifetime", prism_lifetime)
 
 func get_random_color() -> int:
 	var colors = [
@@ -527,6 +551,11 @@ func _on_stun_timer_timeout() -> void:
 
 
 func update_sequence_ui() -> void:
+	if sequence_ui == null:
+		var scene_root = get_tree().current_scene
+		if scene_root != null:
+			sequence_ui = scene_root.get_node_or_null("CanvasLayer/SequenceUI")
+
 	if sequence_ui == null:
 		return
 
@@ -593,3 +622,47 @@ func play_hit_effect() -> void:
 
 	boss_sprite.modulate = original_modulate
 	boss_sprite.position = original_position
+	
+func generate_random_color_map() -> void:
+	var original_colors = [
+		BulletColor.RED,
+		BulletColor.BLUE,
+		BulletColor.GREEN,
+		BulletColor.YELLOW
+	]
+
+	var shuffled_colors = original_colors.duplicate()
+	shuffled_colors.shuffle()
+
+	color_map.clear()
+
+	for i in range(original_colors.size()):
+		color_map[original_colors[i]] = shuffled_colors[i]
+
+	print("二階段顏色對應：", color_map)
+	
+func choose_next_pattern() -> AttackPattern:
+	var patterns = [
+		AttackPattern.NORMAL,
+		AttackPattern.PHANTOM,
+		AttackPattern.PRISM,
+		AttackPattern.SLOW,
+		AttackPattern.RADIAL,
+		AttackPattern.BURST
+	]
+
+	if not is_phase_two:
+		return patterns.pick_random()
+
+	# 二階段提高危險招式出現率
+	var phase_two_patterns = [
+		AttackPattern.PHANTOM,
+		AttackPattern.PRISM,
+		AttackPattern.RADIAL,
+		AttackPattern.RADIAL,
+		AttackPattern.BURST,
+		AttackPattern.BURST,
+		AttackPattern.SLOW
+	]
+
+	return phase_two_patterns.pick_random()

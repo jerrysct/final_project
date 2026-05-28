@@ -7,15 +7,13 @@
 size = Vector2(107.24921, 112.51062)
 
 [node name="PrimsField" type="Area2D" unique_id=444656274]
-position = Vector2(-6, 0)
 script = ExtResource("1_mj8yi")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=188011669]
-position = Vector2(370, 239)
-scale = Vector2(-0.09565943, -0.25621036)
+position = Vector2(-8.008275, -8.008272)
+scale = Vector2(-0.09695074, -0.25427338)
 texture = ExtResource("2_wlj7y")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2134183752]
-position = Vector2(376.58017, 246.5)
 scale = Vector2(1.1640146, 0.6666036)
 shape = SubResource("RectangleShape2D_v2eey")

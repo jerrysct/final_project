@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://c04d01bemf5t3"]
+[gd_scene format=3 uid="uid://la3xsng3h7yv"]
 
 [ext_resource type="Script" uid="uid://dtdc04r7pakpl" path="res://Boss2_Tentacle.gd" id="1_unmsi"]
 [ext_resource type="PackedScene" uid="uid://np7dd6p6bbhp" path="res://boss2/Boss2_ToxicBullet.tscn" id="2_7vbgc"]
