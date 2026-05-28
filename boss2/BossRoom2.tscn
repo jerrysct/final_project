@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://b4s4gg3vxbtif"]
 
 [ext_resource type="Script" uid="uid://bf5k21l6bnhjc" path="res://BossRoom2.gd" id="1_x7esj"]
-[ext_resource type="PackedScene" uid="uid://c04d01bemf5t3" path="res://boss2/Boss2_Tentacle.tscn" id="2_lb4xa"]
+[ext_resource type="PackedScene" uid="uid://c04d01bemf5t3" path="res://Boss2_Tentacle.tscn" id="2_gi0iw"]
 [ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://ChatGPT Image 2026年5月18日 下午09_39_38.png" id="2_v5n53"]
+[ext_resource type="PackedScene" uid="uid://dcggsh5j4mpvq" path="res://boss2/boss2.tscn" id="4_pfg5e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r6kx4"]
 size = Vector2(700, 24)
@@ -16,10 +17,10 @@ size = Vector2(24, 500)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yq10e"]
 size = Vector2(24, 500)
 
-[node name="BossRoom" type="Node2D" unique_id=1767539128]
+[node name="BossRoom2" type="Node2D" unique_id=1767539128]
 position = Vector2(347, 260)
 script = ExtResource("1_x7esj")
-tentacle_scene = ExtResource("2_lb4xa")
+tentacle_scene = ExtResource("2_gi0iw")
 
 [node name="Floor" type="Sprite2D" parent="." unique_id=754397698]
 position = Vector2(0.99997705, 8.583069e-06)
@@ -28,24 +29,28 @@ texture = ExtResource("2_v5n53")
 
 [node name="WallTop" type="StaticBody2D" parent="." unique_id=308624505 groups=["wall"]]
 position = Vector2(0, -250)
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop" unique_id=2012980522]
 shape = SubResource("RectangleShape2D_r6kx4")
 
 [node name="WallBottom" type="StaticBody2D" parent="." unique_id=1092831311 groups=["wall"]]
 position = Vector2(0, 250)
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallBottom" unique_id=1137973731]
 shape = SubResource("RectangleShape2D_xb4eh")
 
 [node name="WallLeft" type="StaticBody2D" parent="." unique_id=1562384323 groups=["wall"]]
 position = Vector2(-350, 0)
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=1714029320]
 shape = SubResource("RectangleShape2D_5yl58")
 
 [node name="WallRight" type="StaticBody2D" parent="." unique_id=242822482 groups=["wall"]]
 position = Vector2(350, 0)
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=120228062]
 shape = SubResource("RectangleShape2D_yq10e")
@@ -65,4 +70,4 @@ offset_right = 4.0
 offset_bottom = 27.0
 metadata/_edit_use_anchors_ = true
 
-[node name="Boss2" type="CharacterBody2D" parent="." unique_id=265414177]
+[node name="Boss2" parent="." unique_id=1327634662 instance=ExtResource("4_pfg5e")]

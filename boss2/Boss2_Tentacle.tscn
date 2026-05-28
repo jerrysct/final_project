@@ -1,17 +1,22 @@
 [gd_scene format=3 uid="uid://c04d01bemf5t3"]
 
-[ext_resource type="Texture2D" uid="uid://cws2fkk4vp1t3" path="res://觸手.png" id="1_lcmc6"]
+[ext_resource type="Script" uid="uid://dtdc04r7pakpl" path="res://Boss2_Tentacle.gd" id="1_10p7p"]
+[ext_resource type="Texture2D" uid="uid://dwodfbblsbyhd" path="res://觸手圖.png" id="2_10p7p"]
+[ext_resource type="PackedScene" uid="uid://np7dd6p6bbhp" path="res://boss2/Boss2_ToxicBullet.tscn" id="2_f5j7s"]
+[ext_resource type="PackedScene" uid="uid://dxjlq4jcew5c5" path="res://boss2/Boss2_SlamWarning.tscn" id="3_l4n2y"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7vqx8"]
-radius = 28.01785
+radius = 40.792156
 
 [node name="Tentacle" type="CharacterBody2D" unique_id=406880788]
+script = ExtResource("1_10p7p")
+toxic_bullet_scene = ExtResource("2_f5j7s")
+slam_warning_scene = ExtResource("3_l4n2y")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1212853171]
-position = Vector2(0, 4)
-scale = Vector2(0.05340577, 0.06652834)
-texture = ExtResource("1_lcmc6")
+scale = Vector2(0.06771851, 0.08404542)
+texture = ExtResource("2_10p7p")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1131616231]
-position = Vector2(0, 5)
+position = Vector2(0, -3)
 shape = SubResource("CircleShape2D_7vqx8")

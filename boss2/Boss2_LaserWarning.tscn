@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cmi7lwffxex1r"]
+
+[ext_resource type="Script" uid="uid://cw0f0dok88cyx" path="res://Boss2_LaserWarning.gd" id="1_4fava"]
+
+[node name="Boss2LaserWarning" type="Node2D" unique_id=506589310]
+script = ExtResource("1_4fava")

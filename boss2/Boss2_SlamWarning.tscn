@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dxjlq4jcew5c5"]
+
+[ext_resource type="Script" uid="uid://420q55c28gba" path="res://Boss2_SlamWarning.gd" id="1_tfy14"]
+[ext_resource type="Texture2D" uid="uid://ddnw1qam0p5h1" path="res://警戒圈.png" id="2_2jd7r"]
+
+[node name="Boss2SlamWarning" type="Node2D" unique_id=1054521918]
+position = Vector2(0, -1)
+script = ExtResource("1_tfy14")
+radius = 15.0
+texture_radius = 15.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1022432547]
+position = Vector2(2, 0)
+scale = Vector2(0.0009765625, 0.0009765625)
+texture = ExtResource("2_2jd7r")
