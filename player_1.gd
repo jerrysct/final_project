@@ -1,12 +1,12 @@
 extends CharacterBody2D
 
 # --- 節點引用 ---
-@onready var health_bar: ProgressBar = $CanvasLayer/HealthBar
-@onready var hp_label: Label = $CanvasLayer/HealthBar/Label
-@onready var stamina_bar: ProgressBar = $CanvasLayer/ProgressBar
-@onready var stamina_label: Label = $CanvasLayer/ProgressBar/Label # 新增體力文字
-@onready var mp_bar: ProgressBar = $CanvasLayer/MPBar
-@onready var mp_label: Label = $CanvasLayer/MPBar/Label   # 新增魔力文字
+@onready var health_bar: ProgressBar = null
+@onready var hp_label: Label = null
+@onready var stamina_bar: ProgressBar = null
+@onready var stamina_label: Label = null
+@onready var mp_bar: ProgressBar = null
+@onready var mp_label: Label = null
 
 @onready var bounce_zone: Area2D = $BounceZone
 @onready var bounce_collision: CollisionShape2D = $BounceZone/CollisionShape2D
@@ -56,6 +56,10 @@ var has_infinite_mp: bool = false # 【新增】無限魔力狀態
 
 
 func _ready() -> void:
+	var own_canvas := get_node_or_null("CanvasLayer")
+	if own_canvas:
+		own_canvas.visible = false
+		
 	_find_ui_nodes()
 
 	current_hp = Playerdata_Globle.max_hp
