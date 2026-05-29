@@ -305,12 +305,12 @@ func take_damage(amount: float) -> void:
 	play_hit_effect()
 
 	if current_hp <= 0.0:
-		if head_bullet_display:
-			for child in head_bullet_display.get_children():
-				child.queue_free()
-			
-		await get_tree().create_timer(0.6).timeout
-		get_tree().reload_current_scene()
+		await get_tree().create_timer(0.6).timeout 
+		var room = get_parent()
+		if room != null and room.has_method("show_defeat"):
+			room.show_defeat()
+		else:
+			get_tree().reload_current_scene()
 
 
 func play_hit_effect() -> void:

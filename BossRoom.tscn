@@ -287,6 +287,7 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_yfkcr")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/EndScreen" unique_id=624094840]
+process_mode = 3
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -302,23 +303,41 @@ grow_vertical = 2
 theme_override_constants/separation = 10
 
 [node name="TitleLabel" type="Label" parent="CanvasLayer/EndScreen/VBoxContainer" unique_id=1102299002]
+process_mode = 3
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 
 [node name="GoldLabel" type="Label" parent="CanvasLayer/EndScreen/VBoxContainer" unique_id=1950377473]
+process_mode = 3
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 
 [node name="ReturnButton" type="Button" parent="CanvasLayer/EndScreen/VBoxContainer" unique_id=1077238096]
+process_mode = 3
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Back
 "
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/EndScreen" unique_id=83800780]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -31.0
+offset_right = 4.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
 
 [node name="PrismSpawnArea" type="Node2D" parent="." unique_id=1674009427]
 

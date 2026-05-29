@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal died
+
 enum BulletColor {
 	RED,
 	BLUE,
@@ -185,6 +187,8 @@ func change_state(new_state: BossState) -> void:
 			fire_timer.stop()
 			stun_timer.stop()
 			skill_loop_running = false
+			print("Boss 死亡")
+			died.emit()
 			call_deferred("queue_free")
 
 
