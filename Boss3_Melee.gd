@@ -44,7 +44,7 @@ const SPRITE_COLOR_PREPARE_RANGED: Color = Color(0.4, 0.8, 1.0)
 @export var crash_homing_speed: float = 350.0           
 @export var crash_stop_homing_distance: float = 180.0  
 @export var crash_warning_time: float = 0.6             
-@export var crash_aoe_radius: float = 80.0              
+@export var crash_aoe_radius: float = 160.0              
 @export var crash_slide_speed: float = 450.0            
 @export var crash_slide_duration: float = 0.25          
 @export var crash_scene: PackedScene                    
@@ -54,9 +54,9 @@ const SPRITE_COLOR_PREPARE_RANGED: Color = Color(0.4, 0.8, 1.0)
 @export var fire_charge_prepare_time: float = 0.6
 @export var fire_drop_interval: float = 0.05 
 @export var fire_scene: PackedScene 
-@export var fire_charge_max_bounces: int = 5
+@export var dead_charge_max_bounces: int = 5
 @export var fire_charge_shotgun_interval: float = 1.0 # 👈 衝刺途中每隔 1 秒發射
-@export var fire_charge_max_duration: float = 4.0 
+@export var dead_charge_shotgun_bullet_speed: float = 350.0 
 
 # 3. 衝刺散彈
 @export var shotgun_charge_speed: float = 450.0
@@ -66,6 +66,7 @@ const SPRITE_COLOR_PREPARE_RANGED: Color = Color(0.4, 0.8, 1.0)
 @export var shotgun_spread_angle: float = 60.0 
 @export var shotgun_bullet_speed: float = 300.0 
 @export var shotgun_wave_delay: float = 0.2 
+@export var fire_charge_max_bounces: int = 3
 
 # 4. 遠程攻擊 (追蹤彈)
 @export var ranged_prepare_time: float = 0.5
@@ -97,6 +98,7 @@ var _fire_drop_timer: float = 0.0
 var _fire_charge_bounce_count: int = 0
 var _fire_charge_shotgun_timer: float = 0.0
 
+var _shotgun_charge_bounce_count: int = 0
 var _shotgun_wave_count: int = 0
 var _shotgun_shoot_timer: float = 0.0
 
@@ -117,6 +119,7 @@ func _ready() -> void:
 	_base_move_speed = move_speed
 	find_player()
 	_attack_cooldown_left = _roll_attack_cooldown()
+	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 
 func apply_buff(duration: float) -> void:
 	if _is_buffed: return
@@ -270,6 +273,17 @@ func _execute_crash_impact() -> void:
 		var crash_obj = crash_scene.instantiate()
 		get_tree().current_scene.add_child(crash_obj)
 		crash_obj.global_position = _crash_target_pos 
+	
+	# --- 新增需求：停留一秒後射擊 ---
+	# 我們在原地停留 1 秒
+	await get_tree().create_timer(1.0).timeout
+	
+	# 停留結束後，朝玩家方向發射一次散彈
+	if player != null and is_instance_valid(player):
+		var to_player = player.global_position - global_position
+		if to_player.length_squared() > 0.0001:
+			_locked_charge_direction = to_player.normalized()
+		_fire_shotgun_wave(0) # 發射第一波散彈 (5 顆)
 		
 	_start_retreat()
 
@@ -324,7 +338,6 @@ func _update_prepare_fire_charge(delta: float) -> void:
 
 func _update_fire_charge(delta: float) -> void:
 	_state_elapsed += delta
-	velocity = _locked_charge_direction * fire_charge_speed
 	
 	_fire_drop_timer -= delta
 	if _fire_drop_timer <= 0.0:
@@ -337,42 +350,52 @@ func _update_fire_charge(delta: float) -> void:
 			_fire_enraged_bouncing_shotgun()
 			_fire_charge_shotgun_timer = fire_charge_shotgun_interval
 
-	# 👈 【完美的彈珠台核心邏輯】
-	var wall_normal = _get_real_wall_normal()
+	# 使用 move_and_collide 達成精確反射，避免貼牆滑行
+	var move_vec = _locked_charge_direction * fire_charge_speed * delta
+	var collision = move_and_collide(move_vec)
 	
-	# 只有在「真的摸到牆」且「不在冷卻時間內」才允許反彈
-	if wall_normal != Vector2.ZERO and _bounce_cooldown <= 0.0:
-		if not _is_enraged or _state_elapsed >= fire_charge_max_duration:
-			_start_retreat()
-		else:
+	if collision:
+		var wall_normal = collision.get_normal()
+		var collider = collision.get_collider()
+		
+		# 只有在撞到非玩家物體（牆壁）時才執行反彈
+		if collider != null and not collider.is_in_group("player"):
 			_fire_charge_bounce_count += 1
 			
-			if _fire_charge_bounce_count >= fire_charge_max_bounces:
+			if _fire_charge_bounce_count >= dead_charge_max_bounces:
 				_start_retreat()
 			else:
-				# 1. 計算原本的反射角
-				var new_dir = _locked_charge_direction.bounce(wall_normal).normalized()
-				
-				# 2. 【防滑牆修正】：檢查夾角。如果反彈後的方向太貼近牆壁 (內積 < 0.25)
-				var dot_product = new_dir.dot(wall_normal)
-				if dot_product < 0.25:
-					# 強制把方向稍微往牆壁外推，強迫產生明顯的折射角
-					new_dir = (new_dir + wall_normal * 0.4).normalized()
+				# 預測玩家 1 秒後的位置
+				var target_dir = _locked_charge_direction.bounce(wall_normal).normalized() # 預設反射作為保險
+				if player != null and is_instance_valid(player):
+					var player_vel = player.velocity
+					var predicted_pos = player.global_position + player_vel * 1.0
+					target_dir = (predicted_pos - global_position).normalized()
 					
-				_locked_charge_direction = new_dir
-				
-				# 3. 給予物理位置上的些微位移，瞬間將 Boss 拔出牆面判定區
-				global_position += wall_normal * 6.0 
-				
-				# 4. 鎖定反彈冷卻，0.15 秒內就算貼牆滑行也絕對不會再次觸發撞牆
-				_bounce_cooldown = 0.15
+					# 預防朝向牆內衝刺 (如果預測方向與撞到的牆法線夾角為負，代表想衝進牆裡)
+					if target_dir.dot(wall_normal) < 0.1:
+						# 如果預測方向太靠近牆，則改回物理反射
+						target_dir = _locked_charge_direction.bounce(wall_normal).normalized()
 
-	# 如果衝過頭超時了，也要強制結束
-	elif _state_elapsed >= fire_charge_max_duration:
-		_start_retreat()
+				_locked_charge_direction = target_dir
+				global_position += wall_normal * 2.0
+		else:
+			# 如果撞到玩家，執行接觸傷害並結束衝刺
+			_try_deal_contact_damage()
+			_start_retreat()
+
+	# 這裡設定 velocity 為零，防止物理程序結尾的 move_and_slide 再次移動
+	velocity = Vector2.ZERO
 
 func _fire_enraged_bouncing_shotgun() -> void:
 	if shotgun_bullet_scene == null: return
+	
+	# 計算朝向玩家的方向作為散彈中心
+	var base_fire_dir = _locked_charge_direction
+	if player != null and is_instance_valid(player):
+		var to_player = player.global_position - global_position
+		if to_player.length_squared() > 0.0001:
+			base_fire_dir = to_player.normalized()
 	
 	var bullet_count: int = 5
 	var total_angle_rad: float = deg_to_rad(shotgun_spread_angle)
@@ -384,7 +407,7 @@ func _fire_enraged_bouncing_shotgun() -> void:
 		get_tree().current_scene.add_child(bullet)
 		
 		var current_angle: float = start_angle + (i * angle_step)
-		var fire_direction: Vector2 = _locked_charge_direction.rotated(current_angle)
+		var fire_direction: Vector2 = base_fire_dir.rotated(current_angle)
 		
 		if bullet is Node2D:
 			bullet.global_position = global_position
@@ -393,12 +416,13 @@ func _fire_enraged_bouncing_shotgun() -> void:
 		if "color_type" in bullet and bullet.has_method("setup"):
 			bullet.setup(3, fire_direction)
 			bullet.modulate = Color(1.0, 0.5, 0.0)
-			if "speed" in bullet: bullet.speed = shotgun_bullet_speed
+			if "speed" in bullet: bullet.speed = dead_charge_shotgun_bullet_speed
 			
-			if "max_bounces" in bullet: bullet.max_bounces = 2
+			if "max_bounces" in bullet: bullet.max_bounces = 3
 		else:
 			if bullet.has_method("setup"): bullet.setup(global_position, fire_direction)
-			if "max_bounces" in bullet: bullet.max_bounces = 2
+			if "speed" in bullet: bullet.speed = dead_charge_shotgun_bullet_speed
+			if "max_bounces" in bullet: bullet.max_bounces = 3
 
 # ================= 招式 3：衝刺散彈 =================
 func _start_prepare_shotgun_charge() -> void:
@@ -406,6 +430,7 @@ func _start_prepare_shotgun_charge() -> void:
 	_state_elapsed = 0.0
 	_set_sprite_modulate(SPRITE_COLOR_PREPARE_SHOTGUN)
 	_lock_direction_to_player()
+	_shotgun_charge_bounce_count = 0
 
 func _update_prepare_shotgun_charge(delta: float) -> void:
 	_state_elapsed += delta
@@ -417,15 +442,48 @@ func _update_prepare_shotgun_charge(delta: float) -> void:
 
 func _update_shotgun_charge(delta: float) -> void:
 	_state_elapsed += delta
+	
 	var dist_to_player: float = 9999.0
 	if player != null and is_instance_valid(player):
 		dist_to_player = global_position.distance_to(player.global_position)
 		
-	if dist_to_player <= shotgun_stop_distance or _state_elapsed >= 1.5 or _get_real_wall_normal() != Vector2.ZERO:
+	# 靠近玩家就直接進入射擊
+	if dist_to_player <= shotgun_stop_distance:
 		_start_shoot_shotgun()
 		return
 
-	velocity = _locked_charge_direction * shotgun_charge_speed
+	# 使用 move_and_collide 達成精確反射
+	var move_vec = _locked_charge_direction * shotgun_charge_speed * delta
+	var collision = move_and_collide(move_vec)
+	
+	if collision:
+		var wall_normal = collision.get_normal()
+		var collider = collision.get_collider()
+		
+		if collider != null and not collider.is_in_group("player"):
+			_shotgun_charge_bounce_count += 1
+			
+			if _shotgun_charge_bounce_count >= fire_charge_max_bounces:
+				_start_shoot_shotgun()
+			else:
+				# 預測玩家 1 秒後的位置
+				var target_dir = _locked_charge_direction.bounce(wall_normal).normalized()
+				if player != null and is_instance_valid(player):
+					var player_vel = player.velocity
+					var predicted_pos = player.global_position + player_vel * 1.0
+					target_dir = (predicted_pos - global_position).normalized()
+					
+					if target_dir.dot(wall_normal) < 0.1:
+						target_dir = _locked_charge_direction.bounce(wall_normal).normalized()
+
+				_locked_charge_direction = target_dir
+				global_position += wall_normal * 2.0
+		else:
+			# 撞到玩家直接開火
+			_try_deal_contact_damage()
+			_start_shoot_shotgun()
+	
+	velocity = Vector2.ZERO
 
 func _start_shoot_shotgun() -> void:
 	state = State.SHOOT_SHOTGUN
@@ -499,20 +557,31 @@ func _update_ranged_attack(delta: float) -> void:
 
 func _try_fire_homing_bullets() -> void:
 	if homing_bullet_scene == null: return
-	var bullet_count: int = randi_range(homing_bullet_count_min, homing_bullet_count_max)
+	
+	var bullet_count: int = 5 # 固定 5 顆
 	var spawn_pos: Vector2 = global_position
 	var spawn_point: Node = get_node_or_null("BulletSpawnPoint")
 	if spawn_point is Node2D: spawn_pos = (spawn_point as Node2D).global_position
 
+	# 獲取指向玩家的基準方向
+	var base_dir = Vector2.DOWN
+	if player != null and is_instance_valid(player):
+		var to_player = player.global_position - spawn_pos
+		if to_player.length_squared() > 0.0001:
+			base_dir = to_player.normalized()
+
+	# 扇形設定 (每顆子彈間隔，總計 140 度廣角扇形)
+	var spread_angle = deg_to_rad(140.0)
+	var angle_step = spread_angle / (bullet_count - 1)
+	var start_angle = -spread_angle / 2.0
+
 	for i in range(bullet_count):
 		var bullet: Node = homing_bullet_scene.instantiate()
 		get_tree().current_scene.add_child(bullet)
-		var fire_direction: Vector2 = Vector2.DOWN
-		if player != null and is_instance_valid(player):
-			var to_player = player.global_position - spawn_pos
-			if to_player.length_squared() > 0.0001:
-				fire_direction = to_player.normalized()
-				
+		
+		var current_angle = start_angle + (i * angle_step)
+		var fire_direction = base_dir.rotated(current_angle)
+		
 		if bullet is Node2D:
 			bullet.global_position = spawn_pos
 			bullet.rotation = fire_direction.angle()

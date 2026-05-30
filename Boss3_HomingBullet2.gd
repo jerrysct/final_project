@@ -11,6 +11,8 @@ extends Area2D
 
 var direction: Vector2 = Vector2.RIGHT
 var is_reflected: bool = false
+var is_absorbed: bool = false
+var cannot_parry: bool = true # 👈 追蹤彈免疫普通彈刀
 
 var _target: Node2D = null
 
@@ -18,6 +20,9 @@ var _target: Node2D = null
 func _ready() -> void:
 	monitoring = true
 	monitorable = true
+	
+	# 強制開啟偵測牆壁(1)與敵人(4)
+	collision_mask = 1 | 4
 
 	area_entered.connect(_on_area_entered)
 	body_entered.connect(_on_body_entered)
@@ -42,6 +47,9 @@ func setup(spawn_position: Vector2, initial_direction: Vector2) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_absorbed:
+		return
+
 	if is_reflected:
 		global_position += direction.normalized() * speed * delta
 		rotation = direction.angle()
@@ -78,6 +86,7 @@ func _update_homing_direction(delta: float) -> void:
 
 func reflect(new_direction: Vector2, multiplier: float = 1.0) -> void:
 	is_reflected = true
+	is_absorbed = false
 	_target = null
 	homing_enabled = false
 
@@ -87,6 +96,14 @@ func reflect(new_direction: Vector2, multiplier: float = 1.0) -> void:
 	damage *= multiplier
 	modulate = Color.GOLD
 	rotation = direction.angle()
+	
+	# 強制重啟視覺與物理判定
+	visible = true
+	z_index = 100 # 👈 確保圖層在最上方
+	process_mode = Node.PROCESS_MODE_INHERIT
+	set_physics_process(true)
+	set_deferred("monitorable", true)
+	set_deferred("monitoring", true)
 
 
 func _on_area_entered(area: Area2D) -> void:
@@ -111,19 +128,32 @@ func _on_area_entered(area: Area2D) -> void:
 
 
 func _on_body_entered(body: Node) -> void:
-	# 沒反彈時，不用 body_entered 打 Boss 或其他物件
-	if not is_reflected:
+	# 1. 撞牆消失 (只偵測 Group "wall")
+	if body.is_in_group("wall"):
+		queue_free()
 		return
 
-	# 避免反彈後又打到玩家自己
-	if body.is_in_group("player"):
+	# 2. 反彈狀態下撞到敵人
+	if is_reflected:
+		# 避免打到自己
+		if body.is_in_group("player"):
+			return
+
+		# 打 Boss 或其他敵人
+		if body.has_method("take_damage"):
+			body.take_damage(damage)
+			print("🎯 追蹤彈2(反彈)擊中目標：", body.name)
+			queue_free()
+			return
+		
+		# 💡 只在撞牆或撞敵人的時候消失，避免射出瞬間自毀
 		return
 
-	if not body.has_method("take_damage"):
-		return
-
-	body.take_damage(damage)
-	queue_free()
+	# 3. 未反彈撞到玩家 (這裡用 body_entered 當作雙重保險)
+	if not is_reflected and body.is_in_group("player"):
+		if body.has_method("take_damage"):
+			body.take_damage(damage)
+		queue_free()
 
 
 func _find_player_target() -> void:

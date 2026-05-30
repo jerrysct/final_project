@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0bfglu0hotke"
-path="res://.godot/imported/追蹤彈.png-2ab7007d5be87a404251d7eff0ce626f.ctex"
+uid="uid://dh5yexctd14y5"
+path="res://.godot/imported/Boss3_Melee_shutgun_bullet.png-f9466320b4cf85d782e4026af2ea0cb4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://追蹤彈.png"
-dest_files=["res://.godot/imported/追蹤彈.png-2ab7007d5be87a404251d7eff0ce626f.ctex"]
+source_file="res://Boss3_Melee_shutgun_bullet.png"
+dest_files=["res://.godot/imported/Boss3_Melee_shutgun_bullet.png-f9466320b4cf85d782e4026af2ea0cb4.ctex"]
 
 [params]
 

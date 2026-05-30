@@ -15,12 +15,20 @@ extends Node2D
 @onready var melee_boss: Node = $Boss3Melee
 @onready var ranged_boss: Node = $Boss3Ranged
 
+# --- 結算畫面 UI 參考 ---
+@onready var end_screen: Panel = get_node_or_null("CanvasLayer/EndScreen") as Panel
+@onready var title_label: Label = get_node_or_null("CanvasLayer/EndScreen/VBoxContainer/TitleLabel") as Label
+@onready var gold_label: Label = get_node_or_null("CanvasLayer/EndScreen/VBoxContainer/GoldLabel") as Label
+@onready var return_button: Button = get_node_or_null("CanvasLayer/EndScreen/VBoxContainer/ReturnButton") as Button
+
 var player: Node2D = null
 var camera: Camera2D = null
 
 var _melee_dead: bool = false
 var _ranged_dead: bool = false
 var _room_cleared: bool = false
+
+const MAIN_SCENE_PATH: String = "res://main.tscn"
 
 
 func _ready() -> void:
@@ -32,6 +40,14 @@ func _ready() -> void:
 	_refresh_boss_player_targets()
 	_setup_camera()
 	_setup_boss_hp_ui()
+	
+	if end_screen:
+		end_screen.hide()
+		end_screen.process_mode = Node.PROCESS_MODE_ALWAYS
+		
+	if return_button:
+		if not return_button.pressed.is_connected(_on_return_button_pressed):
+			return_button.pressed.connect(_on_return_button_pressed)
 
 
 func _process(_delta: float) -> void:
@@ -147,6 +163,45 @@ func _check_boss_clear() -> void:
 
 func _on_boss_room_clear() -> void:
 	print("BossRoom3 通關 ✅")
+	show_victory()
+
+
+# 當 Boss 死亡時呼叫此函數
+func show_victory() -> void:
+	# 根據全域變數的倍率計算實際獲得的金幣
+	var earned_gold: int = int(200 * Playerdata_Globle.reward_multiplier) # Boss3 獎勵較多
+	
+	if title_label: title_label.text = "Victory"
+	if gold_label:
+		gold_label.text = "+%d Gold" % earned_gold
+		gold_label.show()
+	if end_screen: end_screen.show()
+	
+	# 將金幣加進全域變數中
+	Playerdata_Globle.gold += earned_gold
+	SaveManager.save_slot(Playerdata_Globle.current_slot)
+	print("戰鬥勝利！獲得金幣：", earned_gold, "，目前總金幣：", Playerdata_Globle.gold)
+	
+	# 暫停遊戲
+	get_tree().paused = true
+
+# 當 Player 死亡時呼叫此函數
+func show_defeat() -> void:
+	if title_label: title_label.text = "You Loss"
+	if gold_label: gold_label.hide() # 輸了不顯示金幣
+	if end_screen: end_screen.show()
+	
+	# 暫停遊戲
+	get_tree().paused = true
+
+
+## 按鈕回呼函數
+func _on_return_button_pressed() -> void:
+	# 1. 先解除暫停
+	get_tree().paused = false 
+	
+	# 2. 直接切換場景
+	get_tree().change_scene_to_file(MAIN_SCENE_PATH)
 
 
 func _debug_print_players(label: String) -> void:

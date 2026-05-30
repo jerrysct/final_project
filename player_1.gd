@@ -27,9 +27,9 @@ extends CharacterBody2D
 @export var absorb_cooldown: float = 1.5
 @export var dash_cooldown: float = 0.5
 
-# --- 控制「玩家頭上子彈圖示」的縮放大小與間距 ---
-@export var head_icon_scale: Vector2 = Vector2(0.2, 0.2)
-@export var bullet_spacing_head: float = 12.0
+# --- 控制「玩家頭上子彈圖示」的顯示規格 ---
+@export var head_icon_pixel_size: float = 24.0 # 👈 統一圖示為 24 像素寬
+@export var bullet_spacing_head: float = 30.0 # 👈 固定圖示之間的間距
 
 # --- 內部冷卻計時器 ---
 var parry_cd_timer: float = 0.0
@@ -61,9 +61,16 @@ var burn_tick_timer: float = 0.0
 var burn_damage: float = 0.0
 var burn_interval: float = 1.0
 
+# ==========================================
+# 【新增緩速邏輯】：緩速狀態變數
+# ==========================================
+var slow_debuff_timer: float = 0.0
+var slow_multiplier: float = 1.0
+
 
 func _ready() -> void:
 	_find_ui_nodes()
+	z_index = 6 # 👈 確保在遠程王(5)與特效(1)之上
 
 	current_hp = Playerdata_Globle.max_hp
 	current_stamina = Playerdata_Globle.max_stamina
@@ -186,6 +193,15 @@ func _physics_process(delta: float) -> void:
 			if sprite and not is_invincible:
 				sprite.modulate = Color.WHITE
 			print("💨 灼燒狀態自然結束！")
+	
+	# ==========================================
+	# 【新增緩速邏輯】：處理緩速計時
+	# ==========================================
+	if slow_debuff_timer > 0.0:
+		slow_debuff_timer -= delta
+		if slow_debuff_timer <= 0.0:
+			slow_multiplier = 1.0
+			print("🏃 緩速結束，恢復正常速度！")
 	# ==========================================
 
 	if parry_cd_timer > 0: parry_cd_timer -= delta
@@ -312,6 +328,15 @@ func apply_burn(duration: float, damage_per_tick: int, tick_interval: float) -> 
 	print("🔥 玩家遭到灼燒！持續 ", duration, " 秒，每 ", tick_interval, " 秒扣 ", damage_per_tick, " 滴血！")
 # ==========================================
 
+# ==========================================
+# 【新增緩速邏輯】：接收火焰傳來的緩速
+# ==========================================
+func apply_slow_debuff(multiplier: float, duration: float) -> void:
+	slow_multiplier = multiplier
+	slow_debuff_timer = duration
+	print("❄️ 玩家遭到緩速！速度降低 ", (1.0 - multiplier) * 100, "%，持續 ", duration, " 秒")
+# ==========================================
+
 
 func execute_instant_parry() -> void:
 	if bounce_zone == null: return
@@ -319,6 +344,7 @@ func execute_instant_parry() -> void:
 	for area in bounce_zone.get_overlapping_areas():
 		if not area.has_method("reflect"): continue
 		if area.get("is_reflected") or area.get("is_absorbed"): continue
+		if area.get("cannot_parry"): continue # 👈 跳過無法普通反彈的子彈
 
 		var reflect_dir: Vector2 = Vector2.ZERO
 		var area_direction = area.get("direction")
@@ -365,11 +391,15 @@ func _add_bullet_to_ui(bullet: Node) -> void:
 	if head_bullet_display == null: return
 		
 	var icon := Sprite2D.new()
-	icon.scale = head_icon_scale
 	var bullet_sprite = bullet.get_node_or_null("Sprite2D")
 	if bullet_sprite and bullet_sprite is Sprite2D:
 		icon.texture = bullet_sprite.texture
 		icon.modulate = bullet_sprite.modulate 
+		
+		# 💡 關鍵：根據貼圖實際大小計算縮放，確保顯示出來剛好是目標像素大小
+		var tex_size = icon.texture.get_size()
+		var target_scale = head_icon_pixel_size / maxf(tex_size.x, tex_size.y)
+		icon.scale = Vector2(target_scale, target_scale)
 		
 	head_bullet_display.add_child(icon)
 	_arrange_headshot_bullets()
@@ -377,14 +407,14 @@ func _add_bullet_to_ui(bullet: Node) -> void:
 
 func _arrange_headshot_bullets() -> void:
 	if head_bullet_display == null: return
-	var bullet_spacing := bullet_spacing_head
 	var num_bullets = head_bullet_display.get_child_count()
 	if num_bullets == 0: return
 		
-	var total_width = float(num_bullets - 1) * bullet_spacing
+	# 💡 固定三個位置：左(-spacing), 中(0), 右(+spacing)
 	for i in range(num_bullets):
 		var child = head_bullet_display.get_child(i) as Sprite2D
-		var target_x = -total_width / 2.0 + float(i) * bullet_spacing
+		# 這裡我們依序填入位置，i=0是第一個吸到的
+		var target_x = (i - 1) * bullet_spacing_head
 		child.position = Vector2(target_x, 0)
 
 
@@ -397,7 +427,7 @@ func handle_movement(direction: Vector2) -> void:
 
 	var speed: float = Playerdata_Globle.dash_speed if is_dashing else Playerdata_Globle.walk_speed
 	var speed_mult := 1.0 / float(Engine.time_scale) if is_aiming else 1.0
-	velocity = direction * speed * speed_mult * move_speed_multiplier
+	velocity = direction * speed * speed_mult * move_speed_multiplier * slow_multiplier
 
 
 func perform_dash() -> void:
@@ -503,6 +533,10 @@ func launch_captured_bullets() -> void:
 		bullet.set_deferred("monitorable", true)
 		bullet.set_deferred("monitoring", true)
 		bullet.process_mode = Node.PROCESS_MODE_INHERIT 
+		
+		# 在每顆子彈射出前噴發一次特效，確保視覺連貫性
+		play_release_burst_particles()
+		
 		bullet.reflect(target_dir, power_multiplier)
 		await get_tree().create_timer(0.15).timeout
 

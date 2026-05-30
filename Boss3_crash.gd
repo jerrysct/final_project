@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var damage: float = 25.0
+@export var damage: float = 20.0
 @export var crack_lifetime: float = 5.0 # 裂痕圖片殘留時間 (5秒)
 
 var _hit_targets: Array = []
@@ -25,7 +25,9 @@ func _disable_collision() -> void:
 	set_deferred("monitoring", false)
 
 func _on_area_entered(area: Area2D) -> void:
-	_try_deal_damage(area.get_parent())
+	# 檢查進來的是否為玩家的 Hurtbox
+	if area.name == "Hurtbox":
+		_try_deal_damage(area.get_parent())
 
 func _on_body_entered(body: Node2D) -> void:
 	_try_deal_damage(body)
@@ -34,7 +36,15 @@ func _try_deal_damage(target: Node) -> void:
 	if target == null or not is_instance_valid(target): return
 	if target in _hit_targets: return # 防止重複扣血
 
-	if target.is_in_group("player") and target.has_method("take_damage"):
-		target.take_damage(damage)
+	if target.is_in_group("player"):
+		# 1. 扣 20 滴血
+		if target.has_method("take_damage"):
+			target.take_damage(damage)
+			
+		# 2. 扣掉最大體力的 50%，最低扣至 0
+		if "current_stamina" in target:
+			var stamina_loss = Playerdata_Globle.max_stamina * 0.5
+			target.current_stamina = maxf(0.0, target.current_stamina - stamina_loss)
+			
 		_hit_targets.append(target)
-		print("Boss3_Crash 擊中玩家！扣除 ", damage, " 滴血")
+		print("Boss3_Crash 瞬間衝擊擊中玩家！造成傷害與體力扣除。")

@@ -12,6 +12,9 @@
 radius = 52.009613
 
 [node name="Boss3_Melee" type="CharacterBody2D" unique_id=2037844958]
+collision_layer = 4
+collision_mask = 3
+z_index = 10
 script = ExtResource("1_mdmya")
 crash_scene = ExtResource("2_swlsm")
 fire_scene = ExtResource("2_nkiiy")

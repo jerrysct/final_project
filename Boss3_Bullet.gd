@@ -18,7 +18,7 @@ enum BulletType {
 @export var slow_multiplier: float = 0.5
 
 @export var life_time: float = 8.0
-@export var rotate_speed: float = 8.0
+@export var rotate_speed: float = 0
 
 @export var burst_travel_time: float = 0.9
 @export var burst_ring_count: int = 16
@@ -45,6 +45,9 @@ var can_be_absorbed: bool = true
 
 func _ready() -> void:
 	add_to_group("bullets")
+	
+	# 強制開啟偵測牆壁(1)與敵人(4)
+	collision_mask = 1 | 4
 
 	if not body_entered.is_connected(_on_body_entered):
 		body_entered.connect(_on_body_entered)
@@ -65,15 +68,17 @@ func _physics_process(delta: float) -> void:
 	var move_dist = speed * delta
 	var new_pos = global_position + direction.normalized() * move_dist
 
+	# 彈珠反彈邏輯 (死亡彈珠散彈)
 	if max_bounces > 0 and _current_bounces < max_bounces:
 		var space_state = get_world_2d().direct_space_state
 		var query = PhysicsRayQueryParameters2D.create(global_position, new_pos)
+		query.collision_mask = 1 # 牆壁層
 		var result = space_state.intersect_ray(query)
 		
-		if result and result.collider.is_in_group("wall"):
+		if result:
 			_current_bounces += 1
 			direction = direction.bounce(result.normal).normalized()
-			global_position = result.position + direction * 2.0
+			global_position = result.position + result.normal * 4.0
 			return
 
 	global_position = new_pos
@@ -170,12 +175,14 @@ func reflect(new_direction: Vector2, multiplier: float = 1.0) -> void:
 	max_bounces = 0 
 
 	is_reflected = true
-	is_absorbed = false
+	is_absorbed = false # 👈 優先解除標記
 	direction = new_direction.normalized() if new_direction != Vector2.ZERO else -direction.normalized()
 	speed *= 1.2
 	damage = int(float(damage) * multiplier)
 
 	visible = true
+	z_index = 100 # 👈 確保圖層在最上方
+	process_mode = Node.PROCESS_MODE_INHERIT
 	set_physics_process(true)
 	set_deferred("monitorable", true)
 	set_deferred("monitoring", true)
@@ -216,6 +223,7 @@ func update_visual() -> void:
 func _on_body_entered(body: Node) -> void:
 	# 1. 撞地圖牆壁處理
 	if body.is_in_group("wall"):
+		# 如果是死亡彈珠散彈，且還有反彈次數，交給 _physics_process 處理
 		if max_bounces > 0 and _current_bounces < max_bounces:
 			return
 		queue_free()
@@ -229,26 +237,19 @@ func _on_body_entered(body: Node) -> void:
 
 	# 2. 【反彈狀態下】飛向 Boss 
 	if is_reflected:
-		# 支援舊版的特殊顏色弱點機制（如果有設計的話）
-		if body.has_method("receive_reflected_bullet"):
-			body.receive_reflected_bullet(color_type, is_phantom)
-			queue_free()
-			return
-		
-		# 💡【核心關鍵】：如果撞到的是發射它的玩家自己，直接 return 忽略！
-		# 這樣才可以讓子彈順利飛出玩家的受擊範圍，不至於剛出生就自撞消滅。
+		# 💡 如果撞到的是玩家自己，忽略 (防止自爆)
 		if body.is_in_group("player"):
 			return
 
-		# 如果撞到的是 Boss（或其他敵人），且對方有 take_damage，則造成傷害並消滅子彈
+		# 如果撞到的是 Boss（或其他敵人），造成傷害並消滅子彈
 		if body.has_method("take_damage"):
 			body.take_damage(damage)
 			print("🎯 反彈子彈成功擊中敵人！造成 ", damage, " 點傷害！")
 			queue_free()
 			return
 			
-		# 如果是反彈子彈，但撞到了既不是玩家也不是牆壁、敵人（例如無關的裝飾），安全起見也消滅
-		queue_free()
+		# 💡 重要：移除反彈後撞到「其他東西」就消失的邏輯，避免射出即死。
+		# 只在撞牆或撞敵人的時候消失。
 		return
 
 	# 3. 【未反彈狀態下】從 Boss 發射出來撞到玩家
