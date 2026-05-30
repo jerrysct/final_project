@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://dpewt8ur54q04"]
 
-[ext_resource type="Script" path="res://BossRoom3.gd" id="1_v2we0"]
+[ext_resource type="Script" uid="uid://cpd4kd2vu8e7r" path="res://BossRoom3.gd" id="1_v2we0"]
 [ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://ChatGPT Image 2026年5月18日 下午09_39_38.png" id="2_v2we0"]
 [ext_resource type="PackedScene" uid="uid://rfhwlcbsfea3" path="res://Boss3_Melee.tscn" id="3_4q06p"]
 [ext_resource type="PackedScene" uid="uid://ibhr0yox1fcc" path="res://Boss3_Ranged.tscn" id="4_bompc"]
 [ext_resource type="Script" uid="uid://b830t6q4520qv" path="res://Boss3_Fire.gd" id="5_bompc"]
-[ext_resource type="Texture2D" uid="uid://dotcnfd8pgf4a" path="res://火球.jpg" id="6_g3v01"]
-[ext_resource type="Script" path="res://ConsumableUI.gd" id="7_jsreo"]
+[ext_resource type="Texture2D" uid="uid://dghr30gesa11y" path="res://火球.png" id="6_g3v01"]
+[ext_resource type="Script" uid="uid://dhg3x7x530yia" path="res://ConsumableUI.gd" id="7_jsreo"]
 [ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://血量瓶.png" id="8_7l4to"]
 [ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="9_lx4ah"]
 [ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="10_ynflw"]
@@ -150,13 +150,7 @@ heal_prepare_time = 1.0
 position = Vector2(-67, 0)
 max_hp = 450
 move_speed = 150.0
-charge_speed = 350.0
-charge_cooldown_min = 1.4
-charge_cooldown_max = 2.2
-fire_spawn_chance = 0.6
 fire_scene = SubResource("PackedScene_r7pb6")
-homing_bullet_chance = 0.7
-dive_chance = 0.3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=165801557]
 

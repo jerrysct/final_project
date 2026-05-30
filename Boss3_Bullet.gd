@@ -26,10 +26,8 @@ enum BulletType {
 @export var phase_two_burst_ring_count: int = 24
 @export var phase_two_burst_ring_speed: float = 270.0
 
-# 👇 【修改】：移除了 @export，確保預設絕對是 0 (不會反彈)，且不會在面板被誤改
 var max_bounces: int = 0 
 var _current_bounces: int = 0
-# 👆 ================== 👆
 
 var direction: Vector2 = Vector2.DOWN
 var color_type: int = BulletColor.RED
@@ -41,9 +39,7 @@ var is_phantom: bool = false
 var can_slow_player: bool = false
 var is_phase_two: bool = false
 
-# --- 用來讓玩家判斷能不能吸收的變數 ---
 var can_be_absorbed: bool = true
-# ----------------------------------------
 
 @onready var sprite: Sprite2D = $Sprite2D
 
@@ -69,23 +65,17 @@ func _physics_process(delta: float) -> void:
 	var move_dist = speed * delta
 	var new_pos = global_position + direction.normalized() * move_dist
 
-	# 【反彈邏輯】：在移動前先用射線看前方有沒有牆壁
 	if max_bounces > 0 and _current_bounces < max_bounces:
 		var space_state = get_world_2d().direct_space_state
 		var query = PhysicsRayQueryParameters2D.create(global_position, new_pos)
 		var result = space_state.intersect_ray(query)
 		
-		# 如果撞到了，而且是牆壁
 		if result and result.collider.is_in_group("wall"):
 			_current_bounces += 1
-			# 入射角 = 反射角 (使用 bounce 計算)
 			direction = direction.bounce(result.normal).normalized()
-			
-			# 稍微把子彈推離牆壁一點點，避免卡牆
 			global_position = result.position + direction * 2.0
 			return
 
-	# 如果沒撞牆，就正常移動
 	global_position = new_pos
 
 	if sprite != null:
@@ -110,10 +100,7 @@ func setup(
 	is_reflected = false
 	is_absorbed = false
 	
-	# 【保險機制】：在 setup 呼叫時重置反彈次數，確保重複利用時乾淨
 	_current_bounces = 0
-
-	# 自動判斷此子彈是否能被吸收
 	can_be_absorbed = (not is_phantom) and (bullet_type != BulletType.BURST)
 
 	if new_speed > 0.0:
@@ -126,17 +113,18 @@ func setup(
 	else:
 		start_life_timer()
 
+
 func start_life_timer() -> void:
 	await get_tree().create_timer(life_time).timeout
-
 	if is_instance_valid(self) and not is_absorbed:
 		queue_free()
 
+
 func start_burst_timer() -> void:
 	await get_tree().create_timer(burst_travel_time).timeout
-
 	if is_instance_valid(self) and not is_absorbed:
 		explode_into_ring()
+
 
 func explode_into_ring() -> void:
 	if bullet_type != BulletType.BURST:
@@ -179,7 +167,7 @@ func reflect(new_direction: Vector2, multiplier: float = 1.0) -> void:
 		queue_free()
 		return
 
-	max_bounces = 0 # 玩家反彈後，子彈失去反彈牆壁的能力
+	max_bounces = 0 
 
 	is_reflected = true
 	is_absorbed = false
@@ -200,19 +188,16 @@ func change_color(new_color: int) -> void:
 	color_type = new_color
 	update_visual()
 
+
 func update_visual() -> void:
 	if sprite == null:
 		return
 
 	match color_type:
-		BulletColor.RED:
-			sprite.modulate = Color.RED
-		BulletColor.BLUE:
-			sprite.modulate = Color.BLUE
-		BulletColor.GREEN:
-			sprite.modulate = Color.GREEN
-		BulletColor.YELLOW:
-			sprite.modulate = Color.YELLOW
+		BulletColor.RED: sprite.modulate = Color.RED
+		BulletColor.BLUE: sprite.modulate = Color.BLUE
+		BulletColor.GREEN: sprite.modulate = Color.GREEN
+		BulletColor.YELLOW: sprite.modulate = Color.YELLOW
 
 	if is_phantom:
 		sprite.modulate.a = 0.35
@@ -224,12 +209,15 @@ func update_visual() -> void:
 	else:
 		scale = Vector2(1.0, 1.0)
 
+
+# =======================================================
+# 核心修復部分：處理反彈子彈與玩家、Boss 的碰撞關係
+# =======================================================
 func _on_body_entered(body: Node) -> void:
+	# 1. 撞地圖牆壁處理
 	if body.is_in_group("wall"):
-		# 如果還有反彈次數，撞到牆壁不要馬上銷毀
 		if max_bounces > 0 and _current_bounces < max_bounces:
 			return
-			
 		queue_free()
 		return
 
@@ -239,15 +227,32 @@ func _on_body_entered(body: Node) -> void:
 	if is_absorbed:
 		return
 
-	if is_reflected and body.has_method("receive_reflected_bullet"):
-		body.receive_reflected_bullet(color_type, is_phantom)
+	# 2. 【反彈狀態下】飛向 Boss 
+	if is_reflected:
+		# 支援舊版的特殊顏色弱點機制（如果有設計的話）
+		if body.has_method("receive_reflected_bullet"):
+			body.receive_reflected_bullet(color_type, is_phantom)
+			queue_free()
+			return
+		
+		# 💡【核心關鍵】：如果撞到的是發射它的玩家自己，直接 return 忽略！
+		# 這樣才可以讓子彈順利飛出玩家的受擊範圍，不至於剛出生就自撞消滅。
+		if body.is_in_group("player"):
+			return
+
+		# 如果撞到的是 Boss（或其他敵人），且對方有 take_damage，則造成傷害並消滅子彈
+		if body.has_method("take_damage"):
+			body.take_damage(damage)
+			print("🎯 反彈子彈成功擊中敵人！造成 ", damage, " 點傷害！")
+			queue_free()
+			return
+			
+		# 如果是反彈子彈，但撞到了既不是玩家也不是牆壁、敵人（例如無關的裝飾），安全起見也消滅
 		queue_free()
 		return
 
-	if is_reflected:
-		return
-
-	if body.is_in_group("player"):
+	# 3. 【未反彈狀態下】從 Boss 發射出來撞到玩家
+	if not is_reflected and body.is_in_group("player"):
 		if body.has_method("take_damage"):
 			body.take_damage(damage)
 
@@ -255,6 +260,7 @@ func _on_body_entered(body: Node) -> void:
 			body.apply_slow(slow_multiplier, slow_duration)
 
 		queue_free()
+
 
 func _on_area_entered(area: Area2D) -> void:
 	if bullet_type == BulletType.BURST:
@@ -266,6 +272,7 @@ func _on_area_entered(area: Area2D) -> void:
 	if area.has_method("refract_bullet"):
 		area.refract_bullet(self)
 
+
 func get_random_color() -> int:
 	var colors = [
 		BulletColor.RED,
@@ -273,5 +280,4 @@ func get_random_color() -> int:
 		BulletColor.GREEN,
 		BulletColor.YELLOW
 	]
-
 	return colors.pick_random()

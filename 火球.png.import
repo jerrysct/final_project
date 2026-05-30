@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dotcnfd8pgf4a"
-path="res://.godot/imported/火球.jpg-cd02551dd097f7eadd09e52bf063cbcb.ctex"
+uid="uid://dghr30gesa11y"
+path="res://.godot/imported/火球.png-7c4597ccec5090a0ee4338d044d95cc0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://火球.jpg"
-dest_files=["res://.godot/imported/火球.jpg-cd02551dd097f7eadd09e52bf063cbcb.ctex"]
+source_file="res://火球.png"
+dest_files=["res://.godot/imported/火球.png-7c4597ccec5090a0ee4338d044d95cc0.ctex"]
 
 [params]
 

@@ -112,7 +112,7 @@ color = Color(1, 0.92941177, 0, 1)
 color_ramp = SubResource("Gradient_buxg0")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1740806476]
-zoom = Vector2(3, 3)
+zoom = Vector2(2, 2)
 limit_enabled = false
 
 [node name="腳色碰撞箱" type="CollisionShape2D" parent="." unique_id=1805397724]

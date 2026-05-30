@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://p8ls7w78whgh"]
+
+[ext_resource type="Script" uid="uid://dsotr8v038ism" path="res://Boss3_Bullet.gd" id="1_oxky3"]
+[ext_resource type="Texture2D" uid="uid://o664b1i0b8qf" path="res://圖片4.png" id="2_35qcr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ypvc5"]
+radius = 8.7
+
+[node name="BossBullet" type="Area2D" unique_id=1400497496]
+script = ExtResource("1_oxky3")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1148182119]
+modulate = Color(1.1031533, 1.353692, 1.4909492, 0.35000002)
+position = Vector2(0, -5.293956e-23)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_35qcr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1300918764]
+scale = Vector2(0.1, 0.1)
+shape = SubResource("CircleShape2D_ypvc5")

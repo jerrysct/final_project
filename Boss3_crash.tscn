@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://blbq3svwt12uj"]
+
+[ext_resource type="Script" uid="uid://b830t6q4520qv" path="res://Boss3_Fire.gd" id="1_amjc4"]
+[ext_resource type="Texture2D" uid="uid://dj5v2me0c2pia" path="res://裂痕.png" id="2_amjc4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fire"]
+radius = 40.0
+
+[node name="Boss3_crash" type="Area2D" unique_id=1099399205]
+position = Vector2(0, 2)
+script = ExtResource("1_amjc4")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=782211264]
+position = Vector2(4.7683716e-07, -0.9999995)
+scale = Vector2(0.13088173, 0.13778432)
+texture = ExtResource("2_amjc4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1231776307]
+shape = SubResource("CircleShape2D_fire")
+debug_color = Color(0.9563138, 0.19541636, 0.20988896, 0.41960785)
