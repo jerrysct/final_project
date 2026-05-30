@@ -69,6 +69,10 @@ var slow_multiplier: float = 1.0
 
 
 func _ready() -> void:
+	var own_canvas := get_node_or_null("CanvasLayer")
+	if own_canvas:
+		own_canvas.visible = false
+		
 	_find_ui_nodes()
 	z_index = 6 # 👈 確保在遠程王(5)與特效(1)之上
 

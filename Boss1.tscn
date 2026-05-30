@@ -2,26 +2,16 @@
 
 [ext_resource type="Script" uid="uid://bp420gko6q7ys" path="res://Boss.gd" id="1_dtosr"]
 [ext_resource type="PackedScene" uid="uid://bjxcqjnkf8tf2" path="res://Boss1_Bullet.tscn" id="2_ohn0q"]
-[ext_resource type="PackedScene" uid="uid://fe4qq74r4nr5" path="res://Boss1_skill.tscn" id="3_r2dsk"]
 [ext_resource type="Texture2D" uid="uid://j7yjhknavyfw" path="res://Bossimage.png" id="4_yjrng"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_paxtu"]
-radius = 505.59372
+radius = 491.73724
 
 [node name="Boss" type="CharacterBody2D" unique_id=737443956]
 position = Vector2(0, 1.1920929e-07)
 scale = Vector2(0.6, 0.6)
 script = ExtResource("1_dtosr")
 bullet_scene = ExtResource("2_ohn0q")
-prism_field_scene = ExtResource("3_r2dsk")
-move_speed = 25.0
-room_left = -620.0
-room_right = 620.0
-room_top = -380.0
-room_bottom = 380.0
-prism_spawn_range_x = 900.0
-prism_spawn_range_y = 550.0
-prism_spawn_size = Vector2(350, 220)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=761326382]
 position = Vector2(3.0517578e-05, 0)
