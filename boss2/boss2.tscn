@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://dcggsh5j4mpvq"]
+
+[ext_resource type="Script" uid="uid://dyk1h7neuic17" path="res://Boss2.gd" id="1_n2uan"]
+[ext_resource type="Texture2D" uid="uid://cs3unide4elab" path="res://克拉肯.png" id="2_hvbax"]
+[ext_resource type="PackedScene" uid="uid://np7dd6p6bbhp" path="res://boss2/Boss2_ToxicBullet.tscn" id="2_ut2jv"]
+[ext_resource type="PackedScene" uid="uid://cncsw1pihe3d6" path="res://boss2/Boss2_BurstBullet.tscn" id="3_l2q1u"]
+[ext_resource type="PackedScene" uid="uid://egre8a8ihoaq" path="res://boss2/Boss2_Fish.tscn" id="4_oeci5"]
+[ext_resource type="PackedScene" uid="uid://c0bn5kiqdu81d" path="res://boss2/Boss2_ExplodeFish.tscn" id="5_xe3hv"]
+[ext_resource type="PackedScene" uid="uid://cmi7lwffxex1r" path="res://boss2/Boss2_LaserWarning.tscn" id="6_unqph"]
+[ext_resource type="Texture2D" uid="uid://tm3s30c78p8e" path="res://ToxicChargeSprite.png" id="8_7pt0y"]
+[ext_resource type="Texture2D" uid="uid://bfa5m4k30y4tu" path="res://BurstChargeSprite.png" id="9_ul6qa"]
+[ext_resource type="Texture2D" uid="uid://bd6ctunjyyb4p" path="res://LaserChargeSprite.png" id="10_jnqi1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ogw3f"]
+
+[node name="Boss2" type="CharacterBody2D" unique_id=286412676]
+script = ExtResource("1_n2uan")
+toxic_bullet_scene = ExtResource("2_ut2jv")
+burst_bullet_scene = ExtResource("3_l2q1u")
+fish_scene = ExtResource("4_oeci5")
+explode_fish_scene = ExtResource("5_xe3hv")
+laser_warning_scene = ExtResource("6_unqph")
+normal_texture = ExtResource("2_hvbax")
+toxic_attack_texture = ExtResource("8_7pt0y")
+burst_attack_texture = ExtResource("9_ul6qa")
+laser_attack_texture = ExtResource("10_jnqi1")
+
+[node name="BodySprite" type="Sprite2D" parent="." unique_id=1947153178]
+position = Vector2(0, 20)
+scale = Vector2(0.6357143, 0.71111107)
+texture = ExtResource("2_hvbax")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=602824025]
+shape = SubResource("CircleShape2D_ogw3f")

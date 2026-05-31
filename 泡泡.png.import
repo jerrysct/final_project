@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cws2fkk4vp1t3"
-path="res://.godot/imported/觸手.png-ae498779e99e21a9d8b2be4b9010efa1.ctex"
+uid="uid://1ejfk83oxo4v"
+path="res://.godot/imported/泡泡.png-32f8669cce77a5f49e4e50418c192ce0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://觸手.png"
-dest_files=["res://.godot/imported/觸手.png-ae498779e99e21a9d8b2be4b9010efa1.ctex"]
+source_file="res://泡泡.png"
+dest_files=["res://.godot/imported/泡泡.png-32f8669cce77a5f49e4e50418c192ce0.ctex"]
 
 [params]
 

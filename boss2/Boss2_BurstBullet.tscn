@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cncsw1pihe3d6"]
+
+[ext_resource type="Script" uid="uid://dpa5pc36u3xrr" path="res://Boss2_BurstBullet.gd" id="1_jv7we"]
+[ext_resource type="PackedScene" uid="uid://np7dd6p6bbhp" path="res://boss2/Boss2_ToxicBullet.tscn" id="2_imcmd"]
+[ext_resource type="Texture2D" uid="uid://o664b1i0b8qf" path="res://圖片4.png" id="2_ssp6y"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ssp6y"]
+radius = 14.56022
+
+[node name="Boss2BurstBullet" type="Area2D" unique_id=1012002522]
+script = ExtResource("1_jv7we")
+split_bullet_scene = ExtResource("2_imcmd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1637571255]
+position = Vector2(-3.8146973e-06, 0)
+scale = Vector2(0.15063478, 0.16601563)
+texture = ExtResource("2_ssp6y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1549547629]
+shape = SubResource("CircleShape2D_ssp6y")
