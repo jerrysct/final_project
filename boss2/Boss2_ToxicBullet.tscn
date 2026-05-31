@@ -4,17 +4,17 @@
 [ext_resource type="Script" uid="uid://dr2o3mb58ee22" path="res://Boss2_ToxicBullet.gd" id="2_3v63t"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8ycc3"]
-radius = 16.03122
+radius = 25.019993
 
 [node name="Boss2_ToxicBullet" type="Area2D" unique_id=1896768353]
 position = Vector2(3, 0)
 script = ExtResource("2_3v63t")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1099529733]
-position = Vector2(-4.0000076, 3.9999962)
-scale = Vector2(0.033447295, 0.030273438)
+position = Vector2(-2.5312557, 7.874996)
+scale = Vector2(0.049865734, 0.052978516)
 texture = ExtResource("1_m254w")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1627649833]
-position = Vector2(-3, 2)
+position = Vector2(-3, 4)
 shape = SubResource("CircleShape2D_8ycc3")

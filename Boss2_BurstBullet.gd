@@ -5,7 +5,7 @@ extends Area2D
 @export var lifetime: float = 5.0
 
 @export var split_delay: float = 0.8
-@export var split_count: int = 8
+@export var split_count: int = 6
 @export var split_speed_multiplier: float = 1.15
 @export var split_bullet_scene: PackedScene
 

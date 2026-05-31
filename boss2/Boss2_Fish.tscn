@@ -4,10 +4,10 @@
 [ext_resource type="Script" uid="uid://ctk3ntdeq12xl" path="res://Boss2_Fish.gd" id="2_blcrd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_blcrd"]
-radius = 38.327538
+radius = 47.26521
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_juuxl"]
-radius = 38.209946
+radius = 48.04165
 
 [node name="Boss2_Fish" type="CharacterBody2D" unique_id=727552863]
 collision_layer = 2
@@ -15,15 +15,17 @@ collision_mask = 16
 script = ExtResource("2_blcrd")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1098513268]
-position = Vector2(2.6875021, 4.937502)
-scale = Vector2(0.0748291, 0.04895019)
+position = Vector2(4, 10)
+scale = Vector2(0.102172844, 0.08020019)
 texture = ExtResource("1_oqd05")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=140427484]
+position = Vector2(6, 9)
 shape = SubResource("CircleShape2D_blcrd")
 
 [node name="HitArea" type="Area2D" parent="." unique_id=1441559282]
 collision_layer = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea" unique_id=1271140334]
+position = Vector2(6, 9)
 shape = SubResource("CircleShape2D_juuxl")

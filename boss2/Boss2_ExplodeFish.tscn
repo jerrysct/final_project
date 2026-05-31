@@ -2,19 +2,22 @@
 
 [ext_resource type="Texture2D" uid="uid://c258s7kdoa4k8" path="res://爆炸魚.png" id="1_dxof8"]
 [ext_resource type="Script" uid="uid://ctt3t7td0w748" path="res://Boss2_ExplodeFish.gd" id="2_77f70"]
+[ext_resource type="PackedScene" uid="uid://befvv8mwest6s" path="res://boss2/Boss2_PoisonBubble.tscn" id="2_dhwww"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_77f70"]
-radius = 20.0
+radius = 29.427877
 
 [node name="Boss2_ExplodeFish" type="CharacterBody2D" unique_id=1996679101]
 collision_layer = 2
 collision_mask = 16
 script = ExtResource("2_77f70")
+poison_bubble_scene = ExtResource("2_dhwww")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=915728206]
-position = Vector2(-1.9999998, 4)
-scale = Vector2(0.04089355, 0.044799805)
+position = Vector2(0, 11)
+scale = Vector2(0.06439209, 0.054626465)
 texture = ExtResource("1_dxof8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=713523567]
+position = Vector2(4, 10)
 shape = SubResource("CircleShape2D_77f70")
