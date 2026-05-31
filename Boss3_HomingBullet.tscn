@@ -1,16 +1,17 @@
 [gd_scene format=3 uid="uid://b2e51s2slqvaw"]
 
 [ext_resource type="Script" uid="uid://n5ernrn5hr2w" path="res://Boss3_HomingBullet.gd" id="1_homing"]
-[ext_resource type="Texture2D" uid="uid://0bfglu0hotke" path="res://追蹤彈.png" id="2_2wi18"]
+[ext_resource type="Texture2D" uid="uid://clmg57x8p7stq" path="res://Shout_gun_bullet.png" id="2_2wi18"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_homing"]
-radius = 7.071068
+radius = 11.0
 
 [node name="Boss3_HomingBullet" type="Area2D" unique_id=38893510]
 script = ExtResource("1_homing")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1663023797]
-scale = Vector2(0.013427733, 0.013671875)
+position = Vector2(1.1920929e-07, 0.4726563)
+scale = Vector2(0.044294484, 0.04539795)
 texture = ExtResource("2_2wi18")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=301932069]

@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="8_epqb1"]
 [ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="9_owky3"]
 [ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://無敵瓶.png" id="10_nsjf7"]
+[ext_resource type="Script" uid="uid://bwanmn7e378fu" path="res://PrismManager.gd" id="11_epqb1"]
+[ext_resource type="PackedScene" uid="uid://fe4qq74r4nr5" path="res://Boss1_skill.tscn" id="12_owky3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r6kx4"]
 size = Vector2(1400, 24)
@@ -93,7 +95,10 @@ shape = SubResource("RectangleShape2D_yq10e")
 position = Vector2(0, 140)
 
 [node name="Boss" parent="." unique_id=737443956 instance=ExtResource("1_6f7f2")]
-move_speed = 28.0
+far_sweep_bullet_count = 20
+far_sweep_spread_degrees = 45.0
+far_sweep_bullet_speed = 250.0
+far_sweep_interval = 0.045
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1775512141]
 
@@ -335,3 +340,7 @@ grow_vertical = 2
 theme_override_constants/separation = 10
 
 [node name="PrismSpawnArea" type="Node2D" parent="." unique_id=1674009427]
+
+[node name="PrismManager" type="Node2D" parent="." unique_id=147572658]
+script = ExtResource("11_epqb1")
+prism_scene = ExtResource("12_owky3")
