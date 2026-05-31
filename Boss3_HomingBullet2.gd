@@ -12,7 +12,7 @@ extends Area2D
 var direction: Vector2 = Vector2.RIGHT
 var is_reflected: bool = false
 var is_absorbed: bool = false
-var cannot_parry: bool = true # 👈 追蹤彈免疫普通彈刀
+var cannot_parry: bool = false # 👈 追蹤彈免疫普通彈刀
 
 var _target: Node2D = null
 

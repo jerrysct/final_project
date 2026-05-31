@@ -13,12 +13,18 @@ enum AttackType {
 	FAN,
 	CHARGE_SHOT,
 	HEAL_MELEE,
-	BUFF_MELEE   # ✅新技能
+	BUFF_MELEE,
+	RING,
+	SPIRAL,
+	PINCER,
 }
 
 const SPRITE_COLOR_NORMAL: Color = Color(1, 1, 1)
 const SPRITE_COLOR_CHARGE: Color = Color(1.0, 0.45, 0.25)
 const SPRITE_COLOR_HEAL: Color = Color(0.35, 1.0, 0.45)
+const SPRITE_COLOR_RING: Color = Color(0.45, 0.85, 1.0)
+const SPRITE_COLOR_SPIRAL: Color = Color(1.0, 0.75, 0.25)
+const SPRITE_COLOR_PINCER: Color = Color(0.8, 0.45, 1.0)
 
 @onready var _sprite: Sprite2D = $Sprite2D
 
@@ -40,12 +46,28 @@ const SPRITE_COLOR_HEAL: Color = Color(0.35, 1.0, 0.45)
 
 @export var charge_prepare_time: float = 0.65
 
+# --- 新彈幕：環形彈幕 ---
+@export var ring_bullet_count: int = 16
+@export var ring_repeat: int = 1
+@export var ring_repeat_interval: float = 0.35
+
+# --- 新彈幕：螺旋連射 ---
+@export var spiral_bullet_count: int = 24
+@export var spiral_interval: float = 0.05
+@export var spiral_angle_step_degrees: float = 22.0
+
+# --- 新彈幕：夾擊彈幕 ---
+@export var pincer_bullet_count: int = 12
+@export var pincer_angle_degrees: float = 35.0
+@export var pincer_interval: float = 0.12
+
 @export var melee_boss_path: NodePath
 @export var heal_amount: int = 25
 @export var heal_chance: float = 0.25
 @export var heal_prepare_time: float = 0.8
 @export var heal_cooldown: float = 5.0
 @export var link_scene: PackedScene
+
 var _link_instance: Node = null
 
 var hp: int
@@ -72,6 +94,10 @@ var _base_burst_count_max: int
 var _base_fan_bullet_count: int
 var _base_charge_prepare_time: float
 
+var _base_ring_bullet_count: int
+var _base_spiral_bullet_count: int
+var _base_pincer_bullet_count: int
+
 
 func _ready() -> void:
 	hp = max_hp
@@ -82,6 +108,10 @@ func _ready() -> void:
 	_base_burst_count_max = burst_count_max
 	_base_fan_bullet_count = fan_bullet_count
 	_base_charge_prepare_time = charge_prepare_time
+
+	_base_ring_bullet_count = ring_bullet_count
+	_base_spiral_bullet_count = spiral_bullet_count
+	_base_pincer_bullet_count = pincer_bullet_count
 
 	find_player()
 	_roll_attack_cooldown()
@@ -100,12 +130,16 @@ func enter_enraged_mode() -> void:
 	burst_count_max += 2
 	fan_bullet_count += 2
 
+	ring_bullet_count += 4
+	spiral_bullet_count += 6
+	pincer_bullet_count += 3
+
 	charge_prepare_time *= 0.7
 
-	modulate = Color(1, 0.3, 0.3)  # 紅色
+	modulate = Color(1, 0.3, 0.3)
 
 	print("Boss3_Ranged 狂暴了🔥")
-	
+
 
 func set_home_position(pos: Vector2) -> void:
 	_home_position = pos
@@ -189,6 +223,12 @@ func _run_attack(attack_type: AttackType) -> void:
 			await _attack_heal_melee()
 		AttackType.BUFF_MELEE:
 			await _attack_buff_melee()
+		AttackType.RING:
+			await _attack_ring()
+		AttackType.SPIRAL:
+			await _attack_spiral()
+		AttackType.PINCER:
+			await _attack_pincer()
 
 	if state == State.DEAD:
 		return
@@ -227,7 +267,7 @@ func _attack_fan() -> void:
 	var angle_step: float = spread_rad / float(fan_bullet_count - 1)
 
 	for i in range(fan_bullet_count):
-		var angle_offset: float = start_angle + angle_step * i
+		var angle_offset: float = start_angle + angle_step * float(i)
 		var dir: Vector2 = base_dir.rotated(angle_offset)
 		_spawn_bullet(dir)
 
@@ -244,6 +284,59 @@ func _attack_charge_shot() -> void:
 
 	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
 	_spawn_bullet(locked_dir)
+
+
+func _attack_ring() -> void:
+	_set_sprite_modulate(SPRITE_COLOR_RING)
+
+	for repeat_index in range(ring_repeat):
+		if state == State.DEAD:
+			return
+
+		for i in range(ring_bullet_count):
+			var angle: float = TAU * float(i) / float(ring_bullet_count)
+			var dir: Vector2 = Vector2.RIGHT.rotated(angle)
+			_spawn_bullet(dir)
+
+		if repeat_index < ring_repeat - 1:
+			await get_tree().create_timer(ring_repeat_interval).timeout
+
+
+func _attack_spiral() -> void:
+	_set_sprite_modulate(SPRITE_COLOR_SPIRAL)
+
+	var base_dir: Vector2 = _get_direction_to_player()
+	var base_angle: float = base_dir.angle()
+
+	for i in range(spiral_bullet_count):
+		if state == State.DEAD:
+			return
+
+		var angle_offset: float = deg_to_rad(spiral_angle_step_degrees) * float(i)
+		var dir: Vector2 = Vector2.RIGHT.rotated(base_angle + angle_offset)
+
+		_spawn_bullet(dir)
+
+		await get_tree().create_timer(spiral_interval).timeout
+
+
+func _attack_pincer() -> void:
+	_set_sprite_modulate(SPRITE_COLOR_PINCER)
+
+	var base_dir: Vector2 = _get_direction_to_player()
+	var angle_rad: float = deg_to_rad(pincer_angle_degrees)
+
+	for i in range(pincer_bullet_count):
+		if state == State.DEAD:
+			return
+
+		var left_dir: Vector2 = base_dir.rotated(-angle_rad)
+		var right_dir: Vector2 = base_dir.rotated(angle_rad)
+
+		_spawn_bullet(left_dir)
+		_spawn_bullet(right_dir)
+
+		await get_tree().create_timer(pincer_interval).timeout
 
 
 func _attack_buff_melee() -> void:
@@ -283,8 +376,8 @@ func _attack_buff_melee() -> void:
 
 	_link_instance = null
 	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
-	
-	
+
+
 func _attack_heal_melee() -> void:
 	_set_sprite_modulate(SPRITE_COLOR_HEAL)
 
@@ -374,6 +467,9 @@ func _choose_attack() -> AttackType:
 		AttackType.BURST,
 		AttackType.FAN,
 		AttackType.CHARGE_SHOT,
+		AttackType.RING,
+		AttackType.SPIRAL,
+		AttackType.PINCER,
 	]
 
 	var chosen: AttackType = choices[randi_range(0, choices.size() - 1)]
@@ -477,5 +573,13 @@ func _attack_type_to_string(attack_type: AttackType) -> String:
 			return "CHARGE_SHOT"
 		AttackType.HEAL_MELEE:
 			return "HEAL_MELEE"
+		AttackType.BUFF_MELEE:
+			return "BUFF_MELEE"
+		AttackType.RING:
+			return "RING"
+		AttackType.SPIRAL:
+			return "SPIRAL"
+		AttackType.PINCER:
+			return "PINCER"
 		_:
 			return "UNKNOWN"
