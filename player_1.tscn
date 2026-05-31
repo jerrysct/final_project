@@ -45,7 +45,6 @@ default_color = Color(0.7921569, 1, 1, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BounceZone" unique_id=1002421943]
 shape = SubResource("CircleShape2D_bxx23")
 
-<<<<<<< HEAD
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=336286500]
 follow_viewport_enabled = true
 
@@ -70,7 +69,6 @@ offset_left = 457.0
 offset_top = 510.0
 offset_right = 735.0
 offset_bottom = 537.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_qh3su")
 value = 100.0
 
 [node name="Label" type="Label" parent="CanvasLayer/HealthBar" unique_id=605542444]
@@ -86,7 +84,6 @@ offset_left = 458.0
 offset_top = 554.0
 offset_right = 737.0
 offset_bottom = 581.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_bxx23")
 
 [node name="Label" type="Label" parent="CanvasLayer/MPBar" unique_id=1671069501]
 layout_mode = 0
@@ -95,8 +92,6 @@ offset_bottom = 27.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-=======
->>>>>>> d6a4257acb55cacafde6587534f2c7fdfadeb619
 [node name="SkillIndicator" type="Node2D" parent="." unique_id=762262312]
 script = ExtResource("2_skill")
 

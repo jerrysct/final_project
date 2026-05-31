@@ -83,6 +83,7 @@ func _spawn_selected_player() -> void:
 
 	var scene_path: String = Playerdata_Globle.get_selected_character_scene_path()
 	print("玩家場景路徑：", scene_path)
+	print("角色場景是否存在：", ResourceLoader.exists(scene_path))
 
 	var player_scene: PackedScene = load(scene_path) as PackedScene
 
@@ -94,12 +95,21 @@ func _spawn_selected_player() -> void:
 	player.name = "Player"
 	add_child(player)
 
+	print("Player root type = ", player.get_class())
+
+	if player_spawn != null:
+		print("PlayerSpawnPoint = ", player_spawn.global_position)
+
 	if player_spawn != null and player is Node2D:
 		(player as Node2D).global_position = player_spawn.global_position
+		print("Player final position = ", (player as Node2D).global_position)
+	else:
+		print("player_spawn 為 null，或 player 不是 Node2D")
 
 	if not player.is_in_group("player"):
 		player.add_to_group("player")
 
+	print("Player in group player = ", player.is_in_group("player"))
 	print("BossRoom2 已生成 Player")
 
 
