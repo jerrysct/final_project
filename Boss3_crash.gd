@@ -46,5 +46,9 @@ func _try_deal_damage(target: Node) -> void:
 			var stamina_loss = Playerdata_Globle.max_stamina * 0.5
 			target.current_stamina = maxf(0.0, target.current_stamina - stamina_loss)
 			
+		# 3. 👈 【新增】：給予 5 秒減速 (0.5 倍速)
+		if target.has_method("apply_slow_debuff"):
+			target.apply_slow_debuff(0.5, 5.0)
+			
 		_hit_targets.append(target)
 		print("Boss3_Crash 瞬間衝擊擊中玩家！造成傷害與體力扣除。")

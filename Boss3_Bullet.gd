@@ -36,6 +36,7 @@ var bullet_type: int = BulletType.NORMAL
 var is_reflected: bool = false
 var is_absorbed: bool = false
 var is_phantom: bool = false
+var cannot_parry: bool = false # 👈 【新增】：控制是否能被玩家普通反彈
 var can_slow_player: bool = false
 var is_phase_two: bool = false
 

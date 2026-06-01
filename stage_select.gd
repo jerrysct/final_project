@@ -1,6 +1,6 @@
 extends Control
 
-const BOSS1_ROOM_PATH := "res://BossRoom.tscn"
+const BOSS1_ROOM_PATH := "res:sdw//BossRoom.tscn"
 
 # 用變數記錄目前「被選中」的關卡場景路徑（預設為空）
 var selected_stage_path: String = ""
