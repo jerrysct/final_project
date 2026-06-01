@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://ibhr0yox1fcc" path="res://Boss3_Ranged.tscn" id="4_bompc"]
 [ext_resource type="Script" uid="uid://b830t6q4520qv" path="res://Boss3_Fire.gd" id="5_bompc"]
 [ext_resource type="Texture2D" uid="uid://dghr30gesa11y" path="res://火球.png" id="6_g3v01"]
-[ext_resource type="Script" path="res://ConsumableUI.gd" id="7_jsreo"]
+[ext_resource type="Script" uid="uid://dhg3x7x530yia" path="res://ConsumableUI.gd" id="7_jsreo"]
 [ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://血量瓶.png" id="8_7l4to"]
 [ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="9_lx4ah"]
 [ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="10_ynflw"]
