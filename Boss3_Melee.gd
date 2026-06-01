@@ -39,7 +39,7 @@ const SPRITE_COLOR_PREPARE_RANGED: Color = Color(0.4, 0.8, 1.0)
 
 # ================= 招式參數設定 =================
 
-# 1. 毀滅衝撞
+# 1. 毀滅衝撞a
 @export var crash_prepare_time: float = 2.0             
 @export var crash_homing_speed: float = 350.0           
 @export var crash_stop_homing_distance: float = 180.0  
@@ -283,7 +283,7 @@ func _execute_crash_impact() -> void:
 		var to_player = player.global_position - global_position
 		if to_player.length_squared() > 0.0001:
 			_locked_charge_direction = to_player.normalized()
-		_fire_shotgun_wave(0) # 發射第一波散彈 (5 顆)
+		_fire_shotgun_wave(0, true) # 👈 修改：傳入 true 讓散彈不可普通反彈
 		
 	_start_retreat()
 
@@ -508,7 +508,7 @@ func _update_shoot_shotgun(delta: float) -> void:
 	if _shotgun_wave_count >= 3 and _shotgun_shoot_timer <= -0.3:
 		_start_retreat()
 
-func _fire_shotgun_wave(wave_index: int) -> void:
+func _fire_shotgun_wave(wave_index: int, make_unparryable: bool = false) -> void:
 	if shotgun_bullet_scene == null: return
 	
 	var is_second_wave: bool = (wave_index == 1)
@@ -540,6 +540,10 @@ func _fire_shotgun_wave(wave_index: int) -> void:
 		else:
 			if bullet.has_method("setup"):
 				bullet.setup(spawn_pos, fire_direction)
+		
+		# 👈 【新增】：如果需要不可反彈，則設定屬性 (不影響吸收反彈)
+		if make_unparryable:
+			bullet.set("cannot_parry", true)
 
 # ================= 招式 4：遠程攻擊 (追蹤彈) =================
 func _start_ranged_attack() -> void:
@@ -651,6 +655,11 @@ func _try_deal_contact_damage() -> void:
 	if not player.has_method("take_damage"): return
 
 	player.take_damage(float(contact_damage))
+	
+	# 👈 【新增】：如果是在毀滅衝撞狀態下撞到玩家，給予 5 秒減速
+	if state in [State.CRASH_HOMING, State.CRASH_SLIDE] and player.has_method("apply_slow_debuff"):
+		player.apply_slow_debuff(0.5, 5.0)
+		
 	_charge_hit_player = true
 	_contact_damage_cooldown_left = contact_damage_cooldown
 
