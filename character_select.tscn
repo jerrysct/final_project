@@ -1,9 +1,8 @@
 [gd_scene format=3 uid="uid://d2ewprkp85hex"]
 
 [ext_resource type="Script" uid="uid://bsjp263qawcsn" path="res://control.gd" id="1_tddig"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tddig"]
-load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
+[ext_resource type="Texture2D" uid="uid://bp1vomvvq3een" path="res://charactor1/ezgif-frame-001.png" id="2_6yhuy"]
+[ext_resource type="Texture2D" uid="uid://brokqrl44fl6v" path="res://charactor2/charactor2.png" id="3_6yhuy"]
 
 [node name="CharacterSelect" type="Node2D" unique_id=579652414]
 
@@ -17,32 +16,39 @@ grow_vertical = 2
 script = ExtResource("1_tddig")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Control" unique_id=660656266]
-custom_minimum_size = Vector2(600, 300)
+custom_minimum_size = Vector2(800, 400)
 layout_mode = 0
-offset_left = 300.0
-offset_top = 200.0
+offset_left = 100.0
+offset_top = 120.0
 offset_right = 900.0
-offset_bottom = 500.0
+offset_bottom = 520.0
+scale = Vector2(1.11, 1.11)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/ScrollContainer" unique_id=313323072]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 50
 
 [node name="Character1" type="TextureButton" parent="Control/ScrollContainer/HBoxContainer" unique_id=1013993154]
-custom_minimum_size = Vector2(150, 150)
+custom_minimum_size = Vector2(200, 300)
 layout_mode = 2
-texture_normal = SubResource("CompressedTexture2D_tddig")
+texture_normal = ExtResource("2_6yhuy")
+ignore_texture_size = true
+stretch_mode = 6
 
 [node name="Character2" type="TextureButton" parent="Control/ScrollContainer/HBoxContainer" unique_id=1078829923]
-custom_minimum_size = Vector2(150, 150)
+custom_minimum_size = Vector2(200, 300)
 layout_mode = 2
-texture_normal = SubResource("CompressedTexture2D_tddig")
+texture_normal = ExtResource("3_6yhuy")
+ignore_texture_size = true
+stretch_mode = 6
 
 [node name="Character3" type="TextureButton" parent="Control/ScrollContainer/HBoxContainer" unique_id=239980451]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
-texture_normal = SubResource("CompressedTexture2D_tddig")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="Back" type="Button" parent="Control" unique_id=1196938973]
 custom_minimum_size = Vector2(120, 50)

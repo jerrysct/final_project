@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://cb1anm22lo0hn"]
 
 [ext_resource type="Script" uid="uid://bylpibdxo46" path="res://Boss3_HomingBullet2.gd" id="1_dkp6q"]
-[ext_resource type="Texture2D" uid="uid://pxte4thdpkmg" path="res://bullet_2.png" id="1_nhjlf"]
+[ext_resource type="Texture2D" uid="uid://t11h02axjljr" path="res://Ranged_bullet.png" id="2_dkp6q"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dkp6q"]
-radius = 7.0
+radius = 12.0
 
 [node name="Boss3HomingBullet2" type="Area2D" unique_id=815449120]
 position = Vector2(-6, 0)
@@ -17,9 +17,10 @@ homing_enabled = null
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=575252548]
 z_index = 10
-position = Vector2(6, 0)
-scale = Vector2(0.011889858, 0.011176109)
-texture = ExtResource("1_nhjlf")
+position = Vector2(4, -5.9604645e-08)
+rotation = 3.1415927
+scale = Vector2(0.059415076, 0.06988373)
+texture = ExtResource("2_dkp6q")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=86706868]
 top_level = true
