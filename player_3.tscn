@@ -1,16 +1,21 @@
 [gd_scene format=3 uid="uid://cl730f13oh4w6"]
 
-[ext_resource type="Script" uid="uid://dil0so24fmf0d" path="res://player_1.gd" id="1_dwbw6"]
+[ext_resource type="Script" uid="uid://uo5jyw0vspoi" path="res://player_3.gd" id="1_ws8r4"]
 [ext_resource type="Script" uid="uid://c14o3o0faeeld" path="res://skill_indicator.gd" id="2_w8d8i"]
-[ext_resource type="Texture2D" path="res://ezgif-frame-001.png" id="3_l6pkw"]
-[ext_resource type="Texture2D" path="res://ezgif-frame-035.png" id="4_jbco1"]
-[ext_resource type="Texture2D" path="res://ezgif-frame-040.png" id="5_6rrsb"]
-[ext_resource type="Texture2D" path="res://ezgif-frame-044.png" id="6_ws8r4"]
-[ext_resource type="Texture2D" path="res://ezgif-frame-046.png" id="7_yxmtl"]
-[ext_resource type="Texture2D" path="res://ezgif-frame-049.png" id="8_dh5kl"]
-[ext_resource type="Texture2D" path="res://ezgif-frame-055.png" id="9_i8tma"]
-[ext_resource type="Texture2D" path="res://ezgif-frame-062.png" id="10_s15rn"]
-[ext_resource type="Texture2D" uid="uid://bi3qf61p65e5e" path="res://charctor3/468a81135efcf2abf2cd4948fd87f3a8.png" id="11_dwbw6"]
+[ext_resource type="Texture2D" uid="uid://bm1hlmtrucivr" path="res://charctor3/1.png" id="3_ws8r4"]
+[ext_resource type="Texture2D" uid="uid://8mvhya0iiao3" path="res://charctor3/2.png" id="4_yxmtl"]
+[ext_resource type="Texture2D" uid="uid://d8w4h8fp2sbx" path="res://charctor3/3.png" id="5_dh5kl"]
+[ext_resource type="Texture2D" uid="uid://ceqabs0yryl3v" path="res://charctor3/4.png" id="6_i8tma"]
+[ext_resource type="Texture2D" uid="uid://bm5dthrlpvhlo" path="res://charctor3/5.png" id="7_s15rn"]
+[ext_resource type="Texture2D" uid="uid://c0ridii155fm3" path="res://charctor3/6.png" id="8_nilxm"]
+[ext_resource type="Texture2D" uid="uid://dne5r6d4r0d81" path="res://charctor3/7.png" id="9_s2fuv"]
+[ext_resource type="Texture2D" uid="uid://cnklydbq25y5u" path="res://charctor3/8.png" id="10_elap4"]
+[ext_resource type="Texture2D" uid="uid://2ij20v7tqf05" path="res://charctor3/9.png" id="11_jj0mw"]
+[ext_resource type="Texture2D" uid="uid://4rgbdfesaw86" path="res://charctor3/10.png" id="12_m7ox6"]
+[ext_resource type="Texture2D" uid="uid://bn1t6u56kw1eb" path="res://charctor3/12.png" id="13_5uh8q"]
+[ext_resource type="Texture2D" uid="uid://bf88bd6362xxg" path="res://charctor3/13.png" id="14_fivdq"]
+[ext_resource type="Texture2D" uid="uid://bk04f0h1xep14" path="res://charctor3/14.png" id="15_3obbh"]
+[ext_resource type="Texture2D" uid="uid://dn5lji00a762o" path="res://charctor3/15.png" id="16_g3epa"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_buxg0"]
 radius = 19.026299
@@ -29,28 +34,46 @@ radius = 19.104973
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_l6pkw")
+"texture": ExtResource("3_ws8r4")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_jbco1")
+"texture": ExtResource("4_yxmtl")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_6rrsb")
+"texture": ExtResource("5_dh5kl")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_ws8r4")
+"texture": ExtResource("6_i8tma")
 }, {
 "duration": 1.0,
-"texture": ExtResource("7_yxmtl")
+"texture": ExtResource("7_s15rn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("8_dh5kl")
+"texture": ExtResource("8_nilxm")
 }, {
 "duration": 1.0,
-"texture": ExtResource("9_i8tma")
+"texture": ExtResource("9_s2fuv")
 }, {
 "duration": 1.0,
-"texture": ExtResource("10_s15rn")
+"texture": ExtResource("10_elap4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_jj0mw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_m7ox6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_5uh8q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_fivdq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_3obbh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_g3epa")
 }],
 "loop": true,
 "name": &"attack",
@@ -134,10 +157,10 @@ tracks/1/path = NodePath("AnimatedSprite2D:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.13333334, 0.26666668, 0.40658933, 0.46666667, 0.5333333, 0.6, 0.6666667, 0.8333333, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.16666664, 0.3, 0.36666664, 0.46666667, 0.56666666, 0.6333333, 0.76666665, 0.93333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 3, 4, 5, 6, 7, 8]
+"values": [0, 1, 2, 3, 4, 5, 7, 6, 9]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -172,9 +195,9 @@ _data = {
 
 [node name="CharactorBody2D" type="CharacterBody2D" unique_id=776600315 groups=["player"]]
 position = Vector2(-2, 0)
-script = ExtResource("1_dwbw6")
+script = ExtResource("1_ws8r4")
 parry_inner_radius = 50.0
-head_icon_scale = Vector2(0.05, 0.05)
+head_icon_scale = Vector2(0.005, 0.005)
 metadata/_edit_horizontal_guides_ = [34.0]
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1199489429]
@@ -219,12 +242,12 @@ scale = Vector2(2.65, 2.65)
 shape = SubResource("CircleShape2D_qh3su")
 
 [node name="HeadBulletDisplay" type="Node2D" parent="." unique_id=2030616359]
-position = Vector2(0, -30)
+position = Vector2(0, -50)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1992431407]
 visible = false
-position = Vector2(-1, 0)
-scale = Vector2(0.16, 0.16)
+position = Vector2(-1, -2)
+scale = Vector2(0.045, 0.045)
 sprite_frames = SubResource("SpriteFrames_hd4a6")
 animation = &"attack"
 
@@ -236,7 +259,7 @@ libraries/ = SubResource("AnimationLibrary_8nydg")
 [node name="Sprite2D" type="Sprite2D" parent="SpriteContainer" unique_id=492225163]
 visible = false
 position = Vector2(1.2000008, -0.79999924)
-scale = Vector2(0.105, 0.105)
-texture = ExtResource("11_dwbw6")
+scale = Vector2(0.095, 0.095)
+texture = ExtResource("16_g3epa")
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

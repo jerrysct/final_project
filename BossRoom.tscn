@@ -67,24 +67,28 @@ texture = ExtResource("1_r6kx4")
 
 [node name="WallTop" type="StaticBody2D" parent="." unique_id=308624505 groups=["wall"]]
 position = Vector2(0, -450)
+collision_layer = 17
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop" unique_id=2012980522]
 shape = SubResource("RectangleShape2D_r6kx4")
 
 [node name="WallBottom" type="StaticBody2D" parent="." unique_id=1092831311 groups=["wall"]]
 position = Vector2(0, 450)
+collision_layer = 17
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallBottom" unique_id=1137973731]
 shape = SubResource("RectangleShape2D_xb4eh")
 
 [node name="WallLeft" type="StaticBody2D" parent="." unique_id=1562384323 groups=["wall"]]
 position = Vector2(-700, 0)
+collision_layer = 17
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=1714029320]
 shape = SubResource("RectangleShape2D_5yl58")
 
 [node name="WallRight" type="StaticBody2D" parent="." unique_id=242822482 groups=["wall"]]
 position = Vector2(700, 0)
+collision_layer = 17
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=120228062]
 shape = SubResource("RectangleShape2D_yq10e")

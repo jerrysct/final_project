@@ -13,12 +13,22 @@ enum AttackType {
 	FAN,
 	CHARGE_SHOT,
 	HEAL_MELEE,
-	BUFF_MELEE   # ✅新技能
+	BUFF_MELEE,
+	SPIRAL,
+	PINCER,
+	BULLET_WALL,
+	LINE_CRUSH,
+	WALL_SWEEP,
 }
 
 const SPRITE_COLOR_NORMAL: Color = Color(1, 1, 1)
 const SPRITE_COLOR_CHARGE: Color = Color(1.0, 0.45, 0.25)
 const SPRITE_COLOR_HEAL: Color = Color(0.35, 1.0, 0.45)
+const SPRITE_COLOR_SPIRAL: Color = Color(1.0, 0.75, 0.25)
+const SPRITE_COLOR_PINCER: Color = Color(0.8, 0.45, 1.0)
+const SPRITE_COLOR_WALL: Color = Color(0.55, 0.9, 1.0)
+const SPRITE_COLOR_LINE_CRUSH: Color = Color(1.0, 0.35, 0.35)
+const SPRITE_COLOR_WALL_SWEEP: Color = Color(1.0, 0.15, 0.15)
 
 @onready var _sprite: Sprite2D = $Sprite2D
 
@@ -28,17 +38,65 @@ const SPRITE_COLOR_HEAL: Color = Color(0.35, 1.0, 0.45)
 @export var attack_cooldown_max: float = 2.4
 @export var recover_time: float = 0.7
 
+# --- 瞬移設定 ---
+@export var teleport_interval_min: float = 5.0
+@export var teleport_interval_max: float = 8.0
+@export var teleport_range_x: float = 520.0
+@export var teleport_range_y: float = 300.0
+@export var teleport_margin: float = 80.0
+@export var teleport_effect_time: float = 0.15
+
 @export var bullet_scene: PackedScene
 @export var debug_enabled: bool = false
 
-@export var burst_count_min: int = 3
-@export var burst_count_max: int = 5
-@export var burst_interval: float = 0.12
+@export var burst_count_min: int = 2
+@export var burst_count_max: int = 4
+@export var burst_interval: float = 0.18
 
-@export var fan_bullet_count: int = 7
-@export var fan_spread_degrees: float = 60.0
+@export var fan_bullet_count: int = 5
+@export var fan_spread_degrees: float = 45.0
 
 @export var charge_prepare_time: float = 0.65
+
+
+# --- 新彈幕：螺旋連射 ---
+@export var spiral_bullet_count: int = 22
+@export var spiral_interval: float = 0.075
+@export var spiral_angle_step_degrees: float = 24.0
+
+# --- 新彈幕：夾擊彈幕 ---
+@export var pincer_bullet_count: int = 9
+@export var pincer_angle_degrees: float = 32.0
+@export var pincer_interval: float = 0.14
+
+# --- 新彈幕：慢速子彈牆 ---
+@export var wall_bullet_count: int = 9
+@export var wall_gap_index: int = -1
+@export var wall_spacing: float = 42.0
+@export var wall_repeat: int = 1
+@export var wall_repeat_interval: float = 0.55
+@export var wall_bullet_speed: float = 120.0
+
+# --- 新彈幕：雙線夾擊 ---
+@export var line_crush_rows: int = 5
+@export var line_crush_spacing: float = 42.0
+@export var line_crush_side_distance: float = 280.0
+@export var line_crush_speed: float = 180.0
+@export var line_crush_lifetime: float = 1.6
+@export var line_crush_repeat: int = 2
+@export var line_crush_repeat_interval: float = 0.45
+
+# --- 二階段殺招：四面牆掃射 ---
+@export var wall_sweep_bullet_count: int = 7
+@export var wall_sweep_spacing: float = 95.0
+@export var wall_sweep_left: float = -520.0
+@export var wall_sweep_right: float = 520.0
+@export var wall_sweep_top: float = -300.0
+@export var wall_sweep_bottom: float = 300.0
+@export var wall_sweep_speed: float = 190.0
+@export var wall_sweep_lifetime: float = 6.0
+@export var wall_sweep_cooldown: float = 8.0
+@export var phase2_wall_sweep_delay: float = 0.35
 
 @export var melee_boss_path: NodePath
 @export var heal_amount: int = 25
@@ -46,6 +104,7 @@ const SPRITE_COLOR_HEAL: Color = Color(0.35, 1.0, 0.45)
 @export var heal_prepare_time: float = 0.8
 @export var heal_cooldown: float = 5.0
 @export var link_scene: PackedScene
+
 var _link_instance: Node = null
 
 var hp: int
@@ -58,10 +117,15 @@ var _has_home_position: bool = false
 var _state_time: float = 0.0
 var _is_attacking: bool = false
 
+var _teleport_timer: float = 0.0
+var _is_teleporting: bool = false
+
 var _last_attack: AttackType = AttackType.BURST
 var _same_attack_count: int = 0
 
 var _heal_cooldown_left: float = 0.0
+var _wall_sweep_cooldown_left: float = 0.0
+var _phase2_opening_wall_sweep_used: bool = false
 
 var _is_enraged: bool = false
 
@@ -71,6 +135,15 @@ var _base_burst_count_min: int
 var _base_burst_count_max: int
 var _base_fan_bullet_count: int
 var _base_charge_prepare_time: float
+
+var _base_spiral_bullet_count: int
+var _base_pincer_bullet_count: int
+var _base_wall_bullet_count: int
+var _base_wall_repeat: int
+var _base_wall_bullet_speed: float
+var _base_line_crush_rows: int
+var _base_line_crush_repeat: int
+var _base_line_crush_speed: float
 
 
 func _ready() -> void:
@@ -83,8 +156,18 @@ func _ready() -> void:
 	_base_fan_bullet_count = fan_bullet_count
 	_base_charge_prepare_time = charge_prepare_time
 
+	_base_spiral_bullet_count = spiral_bullet_count
+	_base_pincer_bullet_count = pincer_bullet_count
+	_base_wall_bullet_count = wall_bullet_count
+	_base_wall_repeat = wall_repeat
+	_base_wall_bullet_speed = wall_bullet_speed
+	_base_line_crush_rows = line_crush_rows
+	_base_line_crush_repeat = line_crush_repeat
+	_base_line_crush_speed = line_crush_speed
+
 	find_player()
 	_roll_attack_cooldown()
+	_roll_teleport_timer()
 
 
 func enter_enraged_mode() -> void:
@@ -96,16 +179,28 @@ func enter_enraged_mode() -> void:
 	attack_cooldown_min *= 0.6
 	attack_cooldown_max *= 0.6
 
-	burst_count_min += 2
-	burst_count_max += 2
-	fan_bullet_count += 2
+	burst_count_min += 1
+	burst_count_max += 1
+	fan_bullet_count += 1
+
+	spiral_bullet_count += 5
+	pincer_bullet_count += 3
+	wall_bullet_count += 1
+	wall_bullet_speed += 15.0
+	line_crush_rows += 1
+	line_crush_repeat += 1
+	line_crush_speed += 20.0
 
 	charge_prepare_time *= 0.7
 
-	modulate = Color(1, 0.3, 0.3)  # 紅色
+	modulate = Color(1, 0.3, 0.3)
 
 	print("Boss3_Ranged 狂暴了🔥")
-	
+
+	if not _phase2_opening_wall_sweep_used:
+		_phase2_opening_wall_sweep_used = true
+		call_deferred("_start_phase2_opening_wall_sweep")
+
 
 func set_home_position(pos: Vector2) -> void:
 	_home_position = pos
@@ -128,6 +223,11 @@ func _physics_process(delta: float) -> void:
 
 	if _heal_cooldown_left > 0.0:
 		_heal_cooldown_left -= delta
+
+	if _wall_sweep_cooldown_left > 0.0:
+		_wall_sweep_cooldown_left -= delta
+
+	_update_teleport(delta)
 
 	if player == null or not is_instance_valid(player):
 		find_player()
@@ -189,6 +289,16 @@ func _run_attack(attack_type: AttackType) -> void:
 			await _attack_heal_melee()
 		AttackType.BUFF_MELEE:
 			await _attack_buff_melee()
+		AttackType.SPIRAL:
+			await _attack_spiral()
+		AttackType.PINCER:
+			await _attack_pincer()
+		AttackType.BULLET_WALL:
+			await _attack_bullet_wall()
+		AttackType.LINE_CRUSH:
+			await _attack_line_crush()
+		AttackType.WALL_SWEEP:
+			_attack_wall_sweep()
 
 	if state == State.DEAD:
 		return
@@ -200,6 +310,32 @@ func _run_attack(attack_type: AttackType) -> void:
 
 	if debug_enabled:
 		print("Boss3_Ranged -> RECOVER")
+
+
+
+func _start_phase2_opening_wall_sweep() -> void:
+	if state == State.DEAD:
+		return
+
+	await get_tree().create_timer(phase2_wall_sweep_delay).timeout
+
+	if state == State.DEAD:
+		return
+
+	# 二階段一開始強制施放一次 WALL_SWEEP，不等隨機選招。
+	_wall_sweep_cooldown_left = 0.0
+	state = State.ATTACK
+	_is_attacking = true
+
+	_attack_wall_sweep()
+
+	if state == State.DEAD:
+		return
+
+	_is_attacking = false
+	state = State.RECOVER
+	_state_time = 0.0
+	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
 
 
 func _attack_burst() -> void:
@@ -227,7 +363,7 @@ func _attack_fan() -> void:
 	var angle_step: float = spread_rad / float(fan_bullet_count - 1)
 
 	for i in range(fan_bullet_count):
-		var angle_offset: float = start_angle + angle_step * i
+		var angle_offset: float = start_angle + angle_step * float(i)
 		var dir: Vector2 = base_dir.rotated(angle_offset)
 		_spawn_bullet(dir)
 
@@ -246,6 +382,152 @@ func _attack_charge_shot() -> void:
 	_spawn_bullet(locked_dir)
 
 
+func _attack_spiral() -> void:
+	_set_sprite_modulate(SPRITE_COLOR_SPIRAL)
+
+	var base_dir: Vector2 = _get_direction_to_player()
+	var base_angle: float = base_dir.angle()
+
+	for i in range(spiral_bullet_count):
+		if state == State.DEAD:
+			return
+
+		var angle_offset: float = deg_to_rad(spiral_angle_step_degrees) * float(i)
+		var dir: Vector2 = Vector2.RIGHT.rotated(base_angle + angle_offset)
+
+		_spawn_bullet(dir)
+
+		await get_tree().create_timer(spiral_interval).timeout
+
+
+func _attack_pincer() -> void:
+	_set_sprite_modulate(SPRITE_COLOR_PINCER)
+
+	var base_dir: Vector2 = _get_direction_to_player()
+	var angle_rad: float = deg_to_rad(pincer_angle_degrees)
+
+	for i in range(pincer_bullet_count):
+		if state == State.DEAD:
+			return
+
+		var left_dir: Vector2 = base_dir.rotated(-angle_rad)
+		var right_dir: Vector2 = base_dir.rotated(angle_rad)
+
+		_spawn_bullet(left_dir)
+		_spawn_bullet(right_dir)
+
+		await get_tree().create_timer(pincer_interval).timeout
+
+
+
+func _attack_bullet_wall() -> void:
+	_set_sprite_modulate(SPRITE_COLOR_WALL)
+
+	for repeat_index in range(wall_repeat):
+		if state == State.DEAD:
+			return
+
+		var forward_dir: Vector2 = _get_direction_to_player()
+
+		if forward_dir.length_squared() <= 0.0001:
+			forward_dir = Vector2.RIGHT
+
+		var side_dir: Vector2 = forward_dir.rotated(PI / 2.0)
+		var spawn_center: Vector2 = _get_spawn_position()
+
+		var gap_index: int = wall_gap_index
+
+		if gap_index < 0 or gap_index >= wall_bullet_count:
+			gap_index = randi_range(2, wall_bullet_count - 3)
+
+		var half_count: float = float(wall_bullet_count - 1) / 2.0
+
+		for i in range(wall_bullet_count):
+			if i == gap_index:
+				continue
+
+			var offset: float = (float(i) - half_count) * wall_spacing
+			var spawn_pos: Vector2 = spawn_center + side_dir * offset
+
+			_spawn_bullet_with_speed(spawn_pos, forward_dir, wall_bullet_speed)
+
+		if repeat_index < wall_repeat - 1:
+			await get_tree().create_timer(wall_repeat_interval).timeout
+
+	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
+
+
+
+func _attack_line_crush() -> void:
+	_set_sprite_modulate(SPRITE_COLOR_LINE_CRUSH)
+
+	if player == null or not is_instance_valid(player):
+		find_player()
+
+	if player == null or not is_instance_valid(player):
+		_set_sprite_modulate(SPRITE_COLOR_NORMAL)
+		return
+
+	for repeat_index in range(line_crush_repeat):
+		if state == State.DEAD:
+			return
+
+		var center_pos: Vector2 = player.global_position
+
+		var left_start_x: float = center_pos.x - line_crush_side_distance
+		var right_start_x: float = center_pos.x + line_crush_side_distance
+
+		var half_rows: float = float(line_crush_rows - 1) / 2.0
+
+		for i in range(line_crush_rows):
+			var y_offset: float = (float(i) - half_rows) * line_crush_spacing
+
+			var left_pos: Vector2 = Vector2(left_start_x, center_pos.y + y_offset)
+			var right_pos: Vector2 = Vector2(right_start_x, center_pos.y + y_offset)
+
+			_spawn_line_crush_bullet(left_pos, Vector2.RIGHT)
+			_spawn_line_crush_bullet(right_pos, Vector2.LEFT)
+
+		if repeat_index < line_crush_repeat - 1:
+			await get_tree().create_timer(line_crush_repeat_interval).timeout
+
+	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
+
+
+
+func _attack_wall_sweep() -> void:
+	if not _is_enraged:
+		return
+
+	if _wall_sweep_cooldown_left > 0.0:
+		return
+
+	_set_sprite_modulate(SPRITE_COLOR_WALL_SWEEP)
+
+	_wall_sweep_cooldown_left = wall_sweep_cooldown
+
+	var center_pos: Vector2 = Vector2.ZERO
+	var half_count: float = float(wall_sweep_bullet_count - 1) / 2.0
+
+	for i in range(wall_sweep_bullet_count):
+		if state == State.DEAD:
+			return
+
+		var offset: float = (float(i) - half_count) * wall_sweep_spacing
+
+		var top_pos: Vector2 = Vector2(center_pos.x + offset, wall_sweep_top)
+		var bottom_pos: Vector2 = Vector2(center_pos.x + offset, wall_sweep_bottom)
+		var left_pos: Vector2 = Vector2(wall_sweep_left, center_pos.y + offset)
+		var right_pos: Vector2 = Vector2(wall_sweep_right, center_pos.y + offset)
+
+		_spawn_wall_sweep_bullet(top_pos, Vector2.DOWN)
+		_spawn_wall_sweep_bullet(bottom_pos, Vector2.UP)
+		_spawn_wall_sweep_bullet(left_pos, Vector2.RIGHT)
+		_spawn_wall_sweep_bullet(right_pos, Vector2.LEFT)
+
+	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
+
+
 func _attack_buff_melee() -> void:
 	print("BUFF_MELEE 開始執行")
 
@@ -253,7 +535,7 @@ func _attack_buff_melee() -> void:
 
 	await get_tree().create_timer(0.5).timeout
 
-	var melee_boss := get_node_or_null(melee_boss_path)
+	var melee_boss: Node = get_node_or_null(melee_boss_path)
 
 	if melee_boss == null:
 		print("BUFF_MELEE 失敗：找不到 melee_boss")
@@ -283,8 +565,8 @@ func _attack_buff_melee() -> void:
 
 	_link_instance = null
 	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
-	
-	
+
+
 func _attack_heal_melee() -> void:
 	_set_sprite_modulate(SPRITE_COLOR_HEAL)
 
@@ -345,6 +627,83 @@ func _spawn_bullet(direction: Vector2) -> void:
 		bullet.set("direction", direction.normalized())
 
 
+
+func _spawn_bullet_with_speed(spawn_position: Vector2, direction: Vector2, custom_speed: float) -> void:
+	if bullet_scene == null:
+		if debug_enabled:
+			print("Boss3_Ranged ERROR: bullet_scene 尚未指定")
+		return
+
+	var bullet: Node = bullet_scene.instantiate()
+
+	if bullet == null:
+		return
+
+	get_tree().current_scene.add_child(bullet)
+
+	if bullet.has_method("setup"):
+		bullet.setup(spawn_position, direction.normalized())
+	else:
+		if bullet is Node2D:
+			(bullet as Node2D).global_position = spawn_position
+
+		bullet.set("direction", direction.normalized())
+
+	bullet.set("speed", custom_speed)
+
+
+
+func _spawn_line_crush_bullet(spawn_position: Vector2, direction: Vector2) -> void:
+	if bullet_scene == null:
+		if debug_enabled:
+			print("Boss3_Ranged ERROR: bullet_scene 尚未指定")
+		return
+
+	var bullet: Node = bullet_scene.instantiate()
+
+	if bullet == null:
+		return
+
+	get_tree().current_scene.add_child(bullet)
+
+	if bullet.has_method("setup"):
+		bullet.setup(spawn_position, direction.normalized())
+	else:
+		if bullet is Node2D:
+			(bullet as Node2D).global_position = spawn_position
+
+		bullet.set("direction", direction.normalized())
+
+	bullet.set("speed", line_crush_speed)
+	bullet.set("lifetime", line_crush_lifetime)
+
+
+
+func _spawn_wall_sweep_bullet(spawn_position: Vector2, direction: Vector2) -> void:
+	if bullet_scene == null:
+		if debug_enabled:
+			print("Boss3_Ranged ERROR: bullet_scene 尚未指定")
+		return
+
+	var bullet: Node = bullet_scene.instantiate()
+
+	if bullet == null:
+		return
+
+	get_tree().current_scene.add_child(bullet)
+
+	if bullet.has_method("setup"):
+		bullet.setup(spawn_position, direction.normalized())
+	else:
+		if bullet is Node2D:
+			(bullet as Node2D).global_position = spawn_position
+
+		bullet.set("direction", direction.normalized())
+
+	bullet.set("speed", wall_sweep_speed)
+	bullet.set("lifetime", wall_sweep_lifetime)
+
+
 func _get_spawn_position() -> Vector2:
 	var spawn_point: Node = get_node_or_null("BulletSpawnPoint")
 
@@ -370,13 +729,33 @@ func _choose_attack() -> AttackType:
 		_same_attack_count = 0
 		return AttackType.HEAL_MELEE
 
-	var choices: Array[AttackType] = [
-		AttackType.BURST,
-		AttackType.FAN,
-		AttackType.CHARGE_SHOT,
-	]
+	var choices: Array[AttackType] = []
+
+	if _is_enraged:
+		choices = [
+			AttackType.FAN,
+			AttackType.CHARGE_SHOT,
+			AttackType.PINCER,
+			AttackType.BULLET_WALL,
+			AttackType.LINE_CRUSH,
+			AttackType.WALL_SWEEP,
+		]
+	else:
+		choices = [
+			AttackType.BURST,
+			AttackType.FAN,
+			AttackType.CHARGE_SHOT,
+			AttackType.SPIRAL,
+			AttackType.PINCER,
+			AttackType.BULLET_WALL,
+			AttackType.LINE_CRUSH,
+			AttackType.LINE_CRUSH,
+		]
 
 	var chosen: AttackType = choices[randi_range(0, choices.size() - 1)]
+
+	if chosen == AttackType.WALL_SWEEP and _wall_sweep_cooldown_left > 0.0:
+		chosen = AttackType.LINE_CRUSH
 
 	if chosen == _last_attack:
 		_same_attack_count += 1
@@ -386,11 +765,14 @@ func _choose_attack() -> AttackType:
 	if _same_attack_count >= 2:
 		while chosen == _last_attack:
 			chosen = choices[randi_range(0, choices.size() - 1)]
+
+			if chosen == AttackType.WALL_SWEEP and _wall_sweep_cooldown_left > 0.0:
+				chosen = AttackType.LINE_CRUSH
+
 		_same_attack_count = 0
 
 	_last_attack = chosen
 	return chosen
-
 
 func _can_heal_melee() -> bool:
 	if _heal_cooldown_left > 0.0:
@@ -411,6 +793,70 @@ func _can_heal_melee() -> bool:
 		return true
 
 	return int(current_hp) < int(current_max_hp)
+
+
+
+func _update_teleport(delta: float) -> void:
+	if state == State.DEAD:
+		return
+
+	if _is_attacking:
+		return
+
+	if _is_teleporting:
+		return
+
+	_teleport_timer -= delta
+
+	if _teleport_timer <= 0.0:
+		_start_teleport()
+
+
+func _start_teleport() -> void:
+	if _is_teleporting:
+		return
+
+	_is_teleporting = true
+	call_deferred("_do_teleport")
+
+
+func _do_teleport() -> void:
+	_set_sprite_modulate(Color(0.5, 0.8, 1.0, 0.5))
+
+	await get_tree().create_timer(teleport_effect_time).timeout
+
+	if state == State.DEAD:
+		return
+
+	var new_pos: Vector2 = _get_random_teleport_position()
+
+	_home_position = new_pos
+	_has_home_position = true
+	global_position = new_pos
+
+	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
+
+	_is_teleporting = false
+	_roll_teleport_timer()
+
+	if debug_enabled:
+		print("Boss3_Ranged teleport to: ", new_pos)
+
+
+func _get_random_teleport_position() -> Vector2:
+	var min_x: float = -teleport_range_x + teleport_margin
+	var max_x: float = teleport_range_x - teleport_margin
+	var min_y: float = -teleport_range_y + teleport_margin
+	var max_y: float = teleport_range_y - teleport_margin
+
+	var random_x: float = randf_range(min_x, max_x)
+	var random_y: float = randf_range(min_y, max_y)
+
+	return Vector2(random_x, random_y)
+
+
+func _roll_teleport_timer() -> void:
+	_teleport_timer = randf_range(teleport_interval_min, teleport_interval_max)
 
 
 func _roll_attack_cooldown() -> void:
@@ -477,5 +923,17 @@ func _attack_type_to_string(attack_type: AttackType) -> String:
 			return "CHARGE_SHOT"
 		AttackType.HEAL_MELEE:
 			return "HEAL_MELEE"
+		AttackType.BUFF_MELEE:
+			return "BUFF_MELEE"
+		AttackType.SPIRAL:
+			return "SPIRAL"
+		AttackType.PINCER:
+			return "PINCER"
+		AttackType.BULLET_WALL:
+			return "BULLET_WALL"
+		AttackType.LINE_CRUSH:
+			return "LINE_CRUSH"
+		AttackType.WALL_SWEEP:
+			return "WALL_SWEEP"
 		_:
 			return "UNKNOWN"

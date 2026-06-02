@@ -1,6 +1,6 @@
 extends Control
 
-const BOSS1_ROOM_PATH := "res://BossRoom.tscn"
+const BOSS1_ROOM_PATH := "res:sdw//BossRoom.tscn"
 
 # 用變數記錄目前「被選中」的關卡場景路徑（預設為空）
 var selected_stage_path: String = ""
@@ -12,7 +12,7 @@ func _ready():
 		func(): _on_stage_selected("res://BossRoom.tscn")
 	)
 	$ScrollContainer/HBoxContainer/Boss2.pressed.connect(
-		func(): _on_stage_selected("res://BossRoom2.tscn")
+		func(): _on_stage_selected("res://boss2/BossRoom2.tscn")
 	)
 	$ScrollContainer/HBoxContainer/Boss3.pressed.connect(
 		func(): _on_stage_selected("res://BossRoom3.tscn")
