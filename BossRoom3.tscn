@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="9_lx4ah"]
 [ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="10_ynflw"]
 [ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://無敵瓶.png" id="11_ad1r5"]
+[ext_resource type="AudioStream" uid="uid://dmj6o7u3r2x" path="res://Boss3背景音樂.mp3" id="12_bgm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r6kx4"]
 size = Vector2(1400, 24)
@@ -385,3 +386,8 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Back
 "
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="." unique_id=12345678]
+stream = ExtResource("12_bgm")
+autoplay = true
+bus = &"Master"
