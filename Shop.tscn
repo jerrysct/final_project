@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://d2ncgxx6v8emt"]
 
-[ext_resource type="Script" uid="uid://bg38anriues2b" path="res://Shop.gd" id="1_c53l5"]
+[ext_resource type="Script" path="res://Shop.gd" id="1_c53l5"]
+[ext_resource type="Texture2D" uid="uid://cgxc5s7l1tw7m" path="res://商店背景.png" id="2_7ae35"]
+[ext_resource type="Texture2D" uid="uid://c1ry3osi54ne2" path="res://商品欄位.png" id="2_c0ofq"]
+[ext_resource type="Texture2D" uid="uid://djp1221cbkc3y" path="res://商店跳轉背景.png" id="2_f511j"]
 
 [node name="Shop" type="Control" unique_id=81132353]
 layout_mode = 3
@@ -33,9 +36,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -375.0
-offset_top = -175.0
+offset_top = -207.0
 offset_right = 375.0
-offset_bottom = 175.0
+offset_bottom = 143.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -61,6 +64,12 @@ grow_vertical = 0
 text = "10 coin"
 horizontal_alignment = 1
 
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/HP + 100" unique_id=1454546935]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_c0ofq")
+
 [node name="體力 + 100" type="Button" parent="VBoxContainer" unique_id=1907497335]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
@@ -77,6 +86,12 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "10 coin"
 horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/體力 + 100" unique_id=1666874269]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_c0ofq")
 
 [node name="MP + 100" type="Button" parent="VBoxContainer" unique_id=1036998183]
 custom_minimum_size = Vector2(150, 150)
@@ -95,6 +110,12 @@ grow_vertical = 0
 text = "10 coin"
 horizontal_alignment = 1
 
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/MP + 100" unique_id=1693848943]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_c0ofq")
+
 [node name="血量回復 + 0_1" type="Button" parent="VBoxContainer" unique_id=1835257376]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
@@ -112,6 +133,12 @@ grow_vertical = 0
 text = "10 coin"
 horizontal_alignment = 1
 
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/血量回復 + 0_1" unique_id=843580804]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_c0ofq")
+
 [node name="體力回復 + 10" type="Button" parent="VBoxContainer" unique_id=678540667]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
@@ -128,6 +155,12 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "10 coin"
 horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/體力回復 + 10" unique_id=1319987723]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_c0ofq")
 
 [node name="MP 回復 + 10" type="Button" parent="VBoxContainer" unique_id=972065303]
 custom_minimum_size = Vector2(150, 150)
@@ -147,6 +180,12 @@ grow_vertical = 0
 text = "10 coin"
 horizontal_alignment = 1
 
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/MP 回復 + 10" unique_id=721368126]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_c0ofq")
+
 [node name="位移消耗 - 10" type="Button" parent="VBoxContainer" unique_id=2133851714]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
@@ -163,6 +202,12 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "10 coin"
 horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/位移消耗 - 10" unique_id=1329525829]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_c0ofq")
 
 [node name="蓄力消耗 - 10" type="Button" parent="VBoxContainer" unique_id=1845353104]
 custom_minimum_size = Vector2(150, 150)
@@ -181,13 +226,25 @@ grow_vertical = 0
 text = "10 coin"
 horizontal_alignment = 1
 
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/蓄力消耗 - 10" unique_id=69564128]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_c0ofq")
+
 [node name="Back" type="Button" parent="." unique_id=1879213465]
-custom_minimum_size = Vector2(120, 50)
-layout_mode = 1
-offset_right = 120.0
-offset_bottom = 50.0
+custom_minimum_size = Vector2(130, 50)
+layout_mode = 0
+offset_right = 158.0
+offset_bottom = 70.0
 theme_override_font_sizes/font_size = 22
 text = "返回"
+
+[node name="Sprite2D" type="Sprite2D" parent="Back" unique_id=604189966]
+z_index = -5
+position = Vector2(78, 33.5)
+scale = Vector2(0.071823224, 0.09254142)
+texture = ExtResource("2_f511j")
 
 [node name="NextPage" type="Button" parent="." unique_id=1104601006]
 custom_minimum_size = Vector2(120, 50)
@@ -197,9 +254,21 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -74.0
-offset_top = -31.0
+offset_left = -183.0
+offset_top = -64.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 20
 text = "下一頁 →"
+
+[node name="Sprite2D" type="Sprite2D" parent="NextPage" unique_id=2082580971]
+z_index = -5
+position = Vector2(91.49999, 31.999977)
+scale = Vector2(0.08425416, 0.088397816)
+texture = ExtResource("2_f511j")
+
+[node name="背景" type="Sprite2D" parent="." unique_id=1715388577]
+z_index = -10
+position = Vector2(576.49994, 324.375)
+scale = Vector2(0.68959326, 0.68995744)
+texture = ExtResource("2_7ae35")
