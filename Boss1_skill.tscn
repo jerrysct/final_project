@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://fe4qq74r4nr5"]
 
 [ext_resource type="Script" uid="uid://c5bqpehpy0wsh" path="res://Boss1_skill.gd" id="1_mj8yi"]
-[ext_resource type="Texture2D" uid="uid://cxeo02qttkroh" path="res://ChatGPT Image 2026年5月27日 下午02_27_03.png" id="2_wlj7y"]
+[ext_resource type="Texture2D" uid="uid://cxeo02qttkroh" path="res://稜鏡場.png" id="2_wlj7y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v2eey"]
 size = Vector2(109.727196, 111.84852)

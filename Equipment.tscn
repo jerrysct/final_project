@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://c0vkk2g5ygi4f"]
 
-[ext_resource type="Script" uid="uid://cwaeiqxl5runo" path="res://Equipment.gd" id="1_ij1m0"]
+[ext_resource type="Script" path="res://Equipment.gd" id="1_ij1m0"]
+[ext_resource type="Texture2D" uid="uid://b3sawqnatm826" path="res://2026年6月2日 下午07_54_06.png" id="2_7k06b"]
+[ext_resource type="Texture2D" uid="uid://d37xcn1hnlyoc" path="res://裝備欄位.png" id="2_kyt6o"]
 
 [node name="Equipment_tscn" type="Control" unique_id=1596227129]
 layout_mode = 3
@@ -29,21 +31,51 @@ grow_vertical = 2
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 
+[node name="Sprite2D" type="Sprite2D" parent="HBoxContainer/Slot1" unique_id=1795427051]
+z_index = -5
+position = Vector2(59.5, 61.000004)
+scale = Vector2(0.096491225, 0.0972887)
+texture = ExtResource("2_kyt6o")
+
 [node name="Slot2" type="Button" parent="HBoxContainer" unique_id=2013450813]
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="HBoxContainer/Slot2" unique_id=42977378]
+z_index = -5
+position = Vector2(59.99999, 61.000015)
+scale = Vector2(0.09569378, 0.09728867)
+texture = ExtResource("2_kyt6o")
 
 [node name="Slot3" type="Button" parent="HBoxContainer" unique_id=252475892]
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 
+[node name="Sprite2D" type="Sprite2D" parent="HBoxContainer/Slot3" unique_id=441784658]
+z_index = -5
+position = Vector2(60.00001, 61.000015)
+scale = Vector2(0.09569375, 0.09728867)
+texture = ExtResource("2_kyt6o")
+
 [node name="Slot4" type="Button" parent="HBoxContainer" unique_id=1016679064]
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 
+[node name="Sprite2D" type="Sprite2D" parent="HBoxContainer/Slot4" unique_id=975775583]
+z_index = -5
+position = Vector2(60.00001, 61.000015)
+scale = Vector2(0.09569375, 0.09728867)
+texture = ExtResource("2_kyt6o")
+
 [node name="Slot5" type="Button" parent="HBoxContainer" unique_id=87048339]
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="HBoxContainer/Slot5" unique_id=320399193]
+z_index = -5
+position = Vector2(59.99999, 61.000015)
+scale = Vector2(0.09569378, 0.09728867)
+texture = ExtResource("2_kyt6o")
 
 [node name="Back" type="Button" parent="." unique_id=2066159498]
 custom_minimum_size = Vector2(120, 50)
@@ -52,3 +84,9 @@ offset_right = 8.0
 offset_bottom = 8.0
 theme_override_font_sizes/font_size = 28
 text = "Back"
+
+[node name="背景" type="Sprite2D" parent="." unique_id=1706365335]
+z_index = -10
+position = Vector2(576, 324.25)
+scale = Vector2(0.68899524, 0.6902232)
+texture = ExtResource("2_7k06b")

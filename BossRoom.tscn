@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cjkrbp5sra854"]
 
 [ext_resource type="PackedScene" uid="uid://dxj5il4u0ibe8" path="res://Boss1.tscn" id="1_6f7f2"]
-[ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://ChatGPT Image 2026年5月18日 下午09_39_38.png" id="1_r6kx4"]
+[ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://Boss1地圖.png" id="1_r6kx4"]
 [ext_resource type="Script" uid="uid://dmunu0ftgq2dx" path="res://BossRoom.gd" id="1_room"]
 [ext_resource type="Script" uid="uid://cpgxgawsgn4ue" path="res://bossHealBar.gd" id="4_5yl58"]
 [ext_resource type="Script" uid="uid://pin3fcqem2v4" path="res://SequenceUI.gd" id="5_yq10e"]

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dpewt8ur54q04"]
 
 [ext_resource type="Script" uid="uid://cpd4kd2vu8e7r" path="res://BossRoom3.gd" id="1_v2we0"]
-[ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://ChatGPT Image 2026年5月18日 下午09_39_38.png" id="2_v2we0"]
+[ext_resource type="Texture2D" uid="uid://dbjwaswcf11oe" path="res://Boss3地圖.png" id="2_jsreo"]
 [ext_resource type="PackedScene" uid="uid://rfhwlcbsfea3" path="res://Boss3_Melee.tscn" id="3_4q06p"]
 [ext_resource type="PackedScene" uid="uid://ibhr0yox1fcc" path="res://Boss3_Ranged.tscn" id="4_bompc"]
 [ext_resource type="Script" uid="uid://b830t6q4520qv" path="res://Boss3_Fire.gd" id="5_bompc"]
@@ -102,9 +102,9 @@ script = ExtResource("1_v2we0")
 
 [node name="Floor" type="Sprite2D" parent="." unique_id=754397698]
 z_index = -100
-position = Vector2(0.00011634827, 1.21593475e-05)
-scale = Vector2(0.89583325, 0.85546875)
-texture = ExtResource("2_v2we0")
+position = Vector2(0.54175186, -0.24900436)
+scale = Vector2(0.82351476, 0.92932844)
+texture = ExtResource("2_jsreo")
 
 [node name="WallTop" type="StaticBody2D" parent="." unique_id=308624505 groups=["wall"]]
 position = Vector2(0, -450)

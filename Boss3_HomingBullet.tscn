@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b2e51s2slqvaw"]
 
 [ext_resource type="Script" uid="uid://n5ernrn5hr2w" path="res://Boss3_HomingBullet.gd" id="1_homing"]
-[ext_resource type="Texture2D" uid="uid://clmg57x8p7stq" path="res://Shout_gun_bullet.png" id="2_2wi18"]
+[ext_resource type="Texture2D" uid="uid://clmg57x8p7stq" path="res://追蹤子彈.png" id="2_2wi18"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_homing"]
 radius = 11.0
