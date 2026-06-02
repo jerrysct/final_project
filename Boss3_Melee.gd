@@ -39,7 +39,7 @@ const SPRITE_COLOR_PREPARE_RANGED: Color = Color(0.4, 0.8, 1.0)
 
 # ================= 招式參數設定 =================
 
-# 1. 毀滅衝撞a
+# 1. 毀滅衝撞
 @export var crash_prepare_time: float = 2.0             
 @export var crash_homing_speed: float = 350.0           
 @export var crash_stop_homing_distance: float = 180.0  

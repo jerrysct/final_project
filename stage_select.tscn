@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bus1ebhecpcuq" path="res://stage_select.gd" id="1_d2q2k"]
 [ext_resource type="Texture2D" uid="uid://j7yjhknavyfw" path="res://Bossimage.png" id="2_q55ev"]
 [ext_resource type="Texture2D" uid="uid://clkf6kx0otbbe" path="res://boss3_melee.png" id="3_i5ytr"]
+[ext_resource type="Texture2D" uid="uid://cws2fkk4vp1t3" path="res://觸手.png" id="3_qf63o"]
 
 [node name="stage_select" type="Node2D" unique_id=1708047513]
 
@@ -37,7 +38,7 @@ expand_icon = true
 [node name="Boss2" type="Button" parent="Control/ScrollContainer/HBoxContainer" unique_id=1219861439]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
-icon = ExtResource("3_i5ytr")
+icon = ExtResource("3_qf63o")
 icon_alignment = 1
 expand_icon = true
 

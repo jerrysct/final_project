@@ -19,8 +19,8 @@ var selected_character: String = ""
 # 角色 ID → 玩家場景路徑（之後有新角色只要加在這裡）
 const CHARACTER_SCENE_PATHS := {
 	"Character1": "res://player_1.tscn",
-	"Character2": "res://player_1.tscn",
-	"Character3": "res://player_1.tscn",
+	"Character2": "res://player_2.tscn",
+	"Character3": "res://player_3.tscn",
 }
 
 func get_selected_character_scene_path() -> String:
