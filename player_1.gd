@@ -71,13 +71,11 @@ var burn_interval: float = 1.0
 var slow_debuff_timer: float = 0.0
 var slow_multiplier: float = 1.0
 
-<<<<<<< HEAD
 var reverse_input_enabled: bool = false
 var _reverse_input_token: int = 0
-=======
+
 # --- 用於偽走路動畫的時間變數 ---
 var walk_time: float = 0.0
->>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 
 func _ready() -> void:
 	# 玩家本身如果還有舊 CanvasLayer，就先隱藏，避免和 BossRoom / BossRoom3 的 UI 重疊。
@@ -249,16 +247,15 @@ func _physics_process(delta: float) -> void:
 	
 	# 移動判斷
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	
+	if reverse_input_enabled:
+		direction = -direction
+		
 	handle_movement(direction)
 
 	# ==========================================
-<<<<<<< HEAD
 	# 灼燒持續傷害
-=======
-	# 互斥動作判斷
->>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 	# ==========================================
-	# 灼燒持續傷害
 	if burn_time_left > 0.0:
 		burn_time_left -= delta
 		burn_tick_timer -= delta
@@ -273,90 +270,21 @@ func _physics_process(delta: float) -> void:
 				sprite.modulate = Color.WHITE
 			print("💨 灼燒狀態自然結束！")
 
-<<<<<<< HEAD
 	# ==========================================
 	# 緩速計時
 	# ==========================================
-=======
-	# 緩速計時
->>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 	if slow_debuff_timer > 0.0:
 		slow_debuff_timer -= delta
 
 		if slow_debuff_timer <= 0.0:
 			slow_multiplier = 1.0
 			print("🏃 緩速結束，恢復正常速度！")
-<<<<<<< HEAD
-
-	# ==========================================
-	# 冷卻時間
-	# ==========================================
-	if parry_cd_timer > 0.0:
-		parry_cd_timer -= delta
-
-	if absorb_cd_timer > 0.0:
-		absorb_cd_timer -= delta
-
-	if dash_cd_timer > 0.0:
-		dash_cd_timer -= delta
-
-	# ==========================================
-	# UI 更新
-	# ==========================================
-	if health_bar:
-		health_bar.value = current_hp
-
-	if hp_label:
-		hp_label.text = "%d / %d" % [current_hp, Playerdata_Globle.max_hp]
-
-	if stamina_bar:
-		stamina_bar.value = current_stamina
-
-	if stamina_label:
-		stamina_label.text = "%d / %d" % [current_stamina, Playerdata_Globle.max_stamina]
-
-	if mp_bar:
-		mp_bar.value = current_mp
-
-	if mp_label:
-		mp_label.text = "%d / %d" % [current_mp, Playerdata_Globle.max_mp]
-
-	if btn_hp_label:
-		btn_hp_label.text = str(Playerdata_Globle.hp_potion)
-
-	if btn_stamina_label:
-		btn_stamina_label.text = str(Playerdata_Globle.stamina_potion)
-
-	if btn_mp_label:
-		btn_mp_label.text = str(Playerdata_Globle.mp_potion)
-
-	if btn_invincible_label:
-		btn_invincible_label.text = str(Playerdata_Globle.invincible)
-
-	# ==========================================
-	# 移動輸入
-	# 反向輸入區域會在這裡生效
-	# ==========================================
-	var direction := Input.get_vector(
-		"move_left",
-		"move_right",
-		"move_up",
-        "move_down"
-	)
-
-	if reverse_input_enabled:
-		direction = -direction
-
-	handle_movement(direction)
-
-	# ==========================================
-	# 瞬間反彈
-	# ==========================================
-=======
 
 	_update_player_ui()
 
->>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
+	# ==========================================
+	# 互斥動作判斷
+	# ==========================================
 	if Input.is_action_pressed("parry") and parry_cd_timer <= 0.0 and not is_absorb_preparing and not is_aiming:
 		if not is_parry_preparing:
 			is_parry_preparing = true
@@ -366,12 +294,6 @@ func _physics_process(delta: float) -> void:
 			is_parry_preparing = false
 			parry_cd_timer = parry_cooldown
 
-<<<<<<< HEAD
-	# ==========================================
-	# 吸收
-	# ==========================================
-=======
->>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 	if Input.is_action_pressed("absorb") and absorb_cd_timer <= 0.0 and not is_parry_preparing and not is_aiming:
 		is_absorb_preparing = true
 		execute_absorb_action()
@@ -380,17 +302,6 @@ func _physics_process(delta: float) -> void:
 			is_absorb_preparing = false
 			absorb_cd_timer = absorb_cooldown
 
-<<<<<<< HEAD
-	# ==========================================
-	# 瞄準與釋放
-	# ==========================================
-	if not is_parry_preparing and not is_absorb_preparing:
-		handle_aim_and_release()
-
-	# ==========================================
-	# 技能指示器更新
-	# ==========================================
-=======
 	if not is_parry_preparing and not is_absorb_preparing:
 		handle_aim_and_release()
 		
@@ -403,29 +314,25 @@ func _physics_process(delta: float) -> void:
 	# 【修改點 1】當玩家「沒有」在衝刺時，才執行這些偽走路晃動動畫，避免覆蓋掉 AnimationPlayer
 	if not is_dashing:
 		if velocity != Vector2.ZERO:
-			walk_time += delta * 12.0 # 數字 15.0 剛剛好，1000.0 會變殘影
-			sprite_container.position.y = sin(walk_time) * 3.0 # 上下彈跳 25 像素
-			sprite_container.rotation = sin(walk_time * 0.5) * 0.02 # 左右傾斜 0.15 弧度
+			walk_time += delta * 12.0 # 數字 12.0 剛剛好
+			sprite_container.position.y = sin(walk_time) * 3.0 # 上下彈跳
+			sprite_container.rotation = sin(walk_time * 0.5) * 0.02 # 左右傾斜
 		else:
 			walk_time = 0.0
 			sprite_container.position.y = lerp(sprite_container.position.y, 0.0, 0.2)
 			sprite_container.rotation = lerp(sprite_container.rotation, 0.0, 0.2)
 		
->>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 	if skill_indicator:
 		skill_indicator.is_parry_preparing = is_parry_preparing
 		skill_indicator.is_absorb_preparing = is_absorb_preparing
 		skill_indicator.is_aiming = is_aiming
-<<<<<<< HEAD
+		skill_indicator.inner_radius = parry_inner_radius 
+		skill_indicator.outer_radius = parry_outer_radius 
+		skill_indicator.aim_angle = (get_global_mouse_position() - global_position).angle()
 
 		if bounce_collision:
 			skill_indicator.bounce_collision = bounce_collision
 
-=======
-		skill_indicator.inner_radius = parry_inner_radius 
-		skill_indicator.outer_radius = parry_outer_radius 
-		skill_indicator.aim_angle = (get_global_mouse_position() - global_position).angle()
->>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 		skill_indicator.queue_redraw()
 
 	move_and_slide()
@@ -653,7 +560,7 @@ func handle_movement(direction: Vector2) -> void:
 	velocity = direction * speed * speed_mult * move_speed_multiplier * slow_multiplier
 
 func perform_dash() -> void:
-	# 【修改點 2】強制加速播放動畫，讓它在 0.15 秒內播完
+	# 【修改點 2】強制加速播放動畫
 	if anim_player:
 		anim_player.play("dash_1")
 		
@@ -833,7 +740,6 @@ func use_invincible_potion() -> void:
 			is_invincible = false
 
 
-<<<<<<< HEAD
 func _on_btn_hp_pressed() -> void: use_hp_potion()
 func _on_btn_stamina_pressed() -> void: use_stamina_potion()
 func _on_btn_mp_pressed() -> void: use_mp_potion()
@@ -860,19 +766,3 @@ func apply_reverse_input(duration: float) -> void:
 
 	reverse_input_enabled = false
 	print("Reverse input enabled = false")
-=======
-func _on_btn_hp_pressed() -> void:
-	use_hp_potion()
-
-
-func _on_btn_stamina_pressed() -> void:
-	use_stamina_potion()
-
-
-func _on_btn_mp_pressed() -> void:
-	use_mp_potion()
-
-
-func _on_btn_invincible_pressed() -> void:
-	use_invincible_potion()
->>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b

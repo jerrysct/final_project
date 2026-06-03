@@ -2,10 +2,6 @@
 
 [ext_resource type="Script" uid="uid://2fwhlgc8k23i" path="res://bullet.gd" id="1_bullet"]
 [ext_resource type="Texture2D" uid="uid://o664b1i0b8qf" path="res://圖片4.png" id="2_t4vbm"]
-<<<<<<< HEAD
-=======
-[ext_resource type="PackedScene" uid="uid://bfesk12q31j0l" path="res://player_1.tscn" id="3_t4vbm"]
->>>>>>> 7276c948eb9010834ba8736ff662efb57668b1e9
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2b2rl"]
 radius = 9.0
@@ -22,6 +18,3 @@ shape = SubResource("CircleShape2D_2b2rl")
 position = Vector2(0, 0.5)
 scale = Vector2(0.1046511, 0.10119048)
 texture = ExtResource("2_t4vbm")
-
-[node name="Node2D" parent="." unique_id=516929009 instance=ExtResource("3_t4vbm")]
-position = Vector2(183, 57)

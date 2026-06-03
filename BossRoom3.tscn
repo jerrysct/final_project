@@ -1,28 +1,17 @@
 [gd_scene format=3 uid="uid://dpewt8ur54q04"]
 
 [ext_resource type="Script" uid="uid://cpd4kd2vu8e7r" path="res://BossRoom3.gd" id="1_v2we0"]
-<<<<<<< HEAD
 [ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://圖片/Boss1地圖.png" id="2_jsreo"]
-=======
-[ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://Boss1地圖.png" id="2_7l4to"]
->>>>>>> a3df79ddfc3aab8eb99c6ad8d5cbcb22168d961a
 [ext_resource type="PackedScene" uid="uid://rfhwlcbsfea3" path="res://Boss3_Melee.tscn" id="3_4q06p"]
 [ext_resource type="PackedScene" uid="uid://ibhr0yox1fcc" path="res://Boss3_Ranged.tscn" id="4_bompc"]
 [ext_resource type="Script" uid="uid://b830t6q4520qv" path="res://Boss3_Fire.gd" id="5_bompc"]
 [ext_resource type="Texture2D" uid="uid://dghr30gesa11y" path="res://圖片/火球.png" id="6_g3v01"]
 [ext_resource type="Script" uid="uid://dhg3x7x530yia" path="res://ConsumableUI.gd" id="7_jsreo"]
-<<<<<<< HEAD
 [ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://圖片/血量瓶.png" id="8_7l4to"]
 [ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://圖片/魔力瓶.png" id="9_lx4ah"]
 [ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://圖片/體力瓶.png" id="10_ynflw"]
 [ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://圖片/無敵瓶.png" id="11_ad1r5"]
-=======
-[ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://血量瓶.png" id="8_7l4to"]
-[ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="9_lx4ah"]
-[ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="10_ynflw"]
-[ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://無敵瓶.png" id="11_ad1r5"]
 [ext_resource type="AudioStream" uid="uid://cfy5mtvveq4qc" path="res://Boss3背景音樂.mp3" id="12_bgm"]
->>>>>>> a3df79ddfc3aab8eb99c6ad8d5cbcb22168d961a
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r6kx4"]
 size = Vector2(1400, 24)
@@ -114,15 +103,9 @@ script = ExtResource("1_v2we0")
 
 [node name="Floor" type="Sprite2D" parent="." unique_id=754397698]
 z_index = -100
-<<<<<<< HEAD
 position = Vector2(0, 2.670288e-05)
 scale = Vector2(0.89583325, 0.8554687)
 texture = ExtResource("2_jsreo")
-=======
-position = Vector2(0.54175186, -0.24900436)
-scale = Vector2(0.82351476, 0.92932844)
-texture = ExtResource("2_7l4to")
->>>>>>> a3df79ddfc3aab8eb99c6ad8d5cbcb22168d961a
 
 [node name="WallTop" type="StaticBody2D" parent="." unique_id=308624505 groups=["wall"]]
 position = Vector2(0, -450)

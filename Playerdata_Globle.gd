@@ -16,7 +16,7 @@ var current_slot: int = 0  # 記錄目前使用哪個存檔槽
 # 角色選擇（由 character_select 寫入）
 var selected_character: String = ""
 
-# 角色 ID → 玩家場景路徑（之後有新角色只要加在這裡）
+# 角色 ID → 玩家場景路徑
 const CHARACTER_SCENE_PATHS := {
 	"Character1": "res://player_1.tscn",
 	"Character2": "res://player_2.tscn",
@@ -45,7 +45,7 @@ var absorb_mp_cost: float = 10.0
 # 金幣
 var gold: int = 1000
 var max_bullet_storage: int = 3      # 吸收子彈的上限次數
-var bullet_time_scale: float = 0.3    # 蓄力釋放時的子彈時間倍率（0.3 代表慢動作 30%）
+var bullet_time_scale: float = 0.3    # 蓄力釋放時的子彈時間倍率
 # 裝備系統
 var purchased_items: Array = []
 var inventory: Array = []
@@ -96,7 +96,6 @@ func apply_item_effect(item_index: int):
 
 # 移除裝備效果
 func remove_item_effect(item_index: int):
-	# 【新增】防呆判斷：如果是空欄位 (-1) 或超出範圍，直接中斷
 	if item_index < 0 or item_index >= ITEMS.size():
 		return
 		
