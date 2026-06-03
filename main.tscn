@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bqxxx55tqqj5a"]
 
 [ext_resource type="Script" uid="uid://r1supnu5b6b2" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://bgjf60gcg1y1t" path="res://圖片/遊戲開始畫面.png" id="2_0xm2m"]
 
 [node name="Control" type="Control" unique_id=124240756]
 layout_mode = 3
@@ -54,3 +55,9 @@ offset_bottom = 50.0
 grow_horizontal = 0
 theme_override_font_sizes/font_size = 20
 text = "目錄"
+
+[node name="背景" type="Sprite2D" parent="." unique_id=1102168036]
+z_index = -10
+position = Vector2(960.125, 539.9375)
+scale = Vector2(1.1481758, 1.1478479)
+texture = ExtResource("2_0xm2m")

@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://n6sw1qbhy44e"]
 
 [ext_resource type="Script" uid="uid://chufsiqv6n1rs" path="res://Shop2.gd" id="1_l5vs1"]
+[ext_resource type="Texture2D" uid="uid://c1ry3osi54ne2" path="res://圖片/商品欄位.png" id="2_px7w2"]
+[ext_resource type="Texture2D" uid="uid://k4ydpk5uqpxv" path="res://圖片/介面背景.png" id="2_uf5wt"]
+[ext_resource type="Texture2D" uid="uid://djp1221cbkc3y" path="res://圖片/商店跳轉背景.png" id="3_fx1ja"]
+[ext_resource type="Texture2D" uid="uid://cgxc5s7l1tw7m" path="res://圖片/商店背景.png" id="3_px7w2"]
 
 [node name="Control" type="Control" unique_id=906416881]
 layout_mode = 3
@@ -20,6 +24,13 @@ anchor_right = 1.0
 offset_left = -40.0
 offset_bottom = 23.0
 grow_horizontal = 0
+theme_override_font_sizes/font_size = 22
+
+[node name="Sprite2D" type="Sprite2D" parent="GoldLabel" unique_id=1051459290]
+z_index = -5
+position = Vector2(60.000008, 24.999998)
+scale = Vector2(0.08287293, 0.046040513)
+texture = ExtResource("2_uf5wt")
 
 [node name="VBoxContainer" type="GridContainer" parent="." unique_id=679962540]
 layout_mode = 1
@@ -28,10 +39,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -383.0
-offset_top = -75.0
-offset_right = 383.0
-offset_bottom = 75.0
+offset_left = -415.0
+offset_top = -138.0
+offset_right = 415.0
+offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/h_separation = 20
@@ -45,6 +56,13 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/UpgradeBtn0" unique_id=233800064]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_px7w2")
 
 [node name="UpgradeBtn1" type="Button" parent="VBoxContainer" unique_id=974683921]
 custom_minimum_size = Vector2(150, 150)
@@ -54,6 +72,13 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/UpgradeBtn1" unique_id=2103259947]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_px7w2")
 
 [node name="UpgradeBtn2" type="Button" parent="VBoxContainer" unique_id=1756368894]
 custom_minimum_size = Vector2(150, 150)
@@ -63,6 +88,13 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/UpgradeBtn2" unique_id=965818413]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_px7w2")
 
 [node name="UpgradeBtn3" type="Button" parent="VBoxContainer" unique_id=275439977]
 custom_minimum_size = Vector2(150, 150)
@@ -72,6 +104,13 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/UpgradeBtn3" unique_id=1440178113]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_px7w2")
 
 [node name="UpgradeBtn4" type="Button" parent="VBoxContainer" unique_id=561447545]
 custom_minimum_size = Vector2(150, 150)
@@ -81,14 +120,27 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/UpgradeBtn4" unique_id=151696978]
+z_index = -5
+position = Vector2(74.99999, 75)
+scale = Vector2(0.13368984, 0.106990024)
+texture = ExtResource("2_px7w2")
 
 [node name="Back" type="Button" parent="." unique_id=957189381]
 custom_minimum_size = Vector2(120, 50)
-layout_mode = 1
-offset_right = 8.0
-offset_bottom = 8.0
+layout_mode = 0
+offset_right = 156.0
+offset_bottom = 67.0
 theme_override_font_sizes/font_size = 22
 text = "返回"
+
+[node name="Sprite2D" type="Sprite2D" parent="Back" unique_id=1147590555]
+z_index = -5
+position = Vector2(78, 33.5)
+scale = Vector2(0.071823224, 0.09254142)
+texture = ExtResource("3_fx1ja")
 
 [node name="PrevPage" type="Button" parent="." unique_id=1231434411]
 custom_minimum_size = Vector2(120, 50)
@@ -96,8 +148,20 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -50.0
-offset_right = 120.0
+offset_top = -66.0
+offset_right = 176.0
 grow_vertical = 0
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 22
 text = "← 上一頁"
+
+[node name="Sprite2D" type="Sprite2D" parent="PrevPage" unique_id=27973987]
+z_index = -5
+position = Vector2(87.99999, 33.5)
+scale = Vector2(0.081031315, 0.09254142)
+texture = ExtResource("3_fx1ja")
+
+[node name="背景" type="Sprite2D" parent="." unique_id=1198718390]
+z_index = -10
+position = Vector2(960, 540)
+scale = Vector2(1.1483253, 1.1477151)
+texture = ExtResource("3_px7w2")

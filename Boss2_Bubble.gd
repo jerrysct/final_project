@@ -23,6 +23,7 @@ extends Area2D
 @export var bounds_top: float = -450.0
 @export var bounds_bottom: float = 450.0
 @export var bounds_margin: float = 40.0
+@export var obstacle_pop_radius: float = 55.0
 
 @export var debug_enabled: bool = false
 
@@ -74,7 +75,11 @@ func _ready() -> void:
     if not body_entered.is_connected(_on_body_entered):
         body_entered.connect(_on_body_entered)
 
+<<<<<<< HEAD
     call_deferred("_check_initial_obstacle_overlap")
+=======
+    _update_visual()
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 
     _update_visual()
 
@@ -82,6 +87,7 @@ func _physics_process(delta: float) -> void:
     if _is_dead:
         return
 
+<<<<<<< HEAD
     if _is_flying:
         global_position += direction * speed * delta
         _travel_timer -= delta
@@ -96,6 +102,34 @@ func _physics_process(delta: float) -> void:
 
     _linger_timer -= delta
 
+=======
+    if _is_overlapping_obstacle_by_distance():
+        _pop()
+        return
+
+    if _is_flying:
+        global_position += direction * speed * delta
+        _travel_timer -= delta
+
+        if use_bounds:
+            _clamp_to_bounds()
+
+        if _is_overlapping_obstacle_by_distance():
+            _pop()
+            return
+
+        if _travel_timer <= 0.0:
+            _stop_and_arm()
+
+        return
+
+    _linger_timer -= delta
+
+    if _is_overlapping_obstacle_by_distance():
+        _pop()
+        return
+
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
     if _linger_timer <= 0.0:
         _pop()
 
@@ -215,6 +249,7 @@ func _update_visual() -> void:
         return
 
     sprite.modulate = Color(0.65, 0.9, 1.0, 0.75)
+<<<<<<< HEAD
 
 
 func _check_initial_obstacle_overlap() -> void:
@@ -225,6 +260,8 @@ func _check_initial_obstacle_overlap() -> void:
         if body != null and body.is_in_group("boss2_obstacle"):
             _pop()
             return
+=======
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 
 
 func _pop() -> void:
@@ -233,3 +270,26 @@ func _pop() -> void:
 
     _is_dead = true
     queue_free()
+<<<<<<< HEAD
+=======
+
+
+func _is_overlapping_obstacle_by_distance() -> bool:
+    for obstacle in get_tree().get_nodes_in_group("boss2_obstacle"):
+        if obstacle == null:
+            continue
+
+        if not is_instance_valid(obstacle):
+            continue
+
+        if not obstacle is Node2D:
+            continue
+
+        var obstacle_pos: Vector2 = (obstacle as Node2D).global_position
+        var distance: float = global_position.distance_to(obstacle_pos)
+
+        if distance <= obstacle_pop_radius:
+            return true
+
+    return false
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b

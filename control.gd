@@ -3,9 +3,9 @@ extends Control
 func _ready():
 	$Back.pressed.connect(_on_Back_pressed)
 	# 使用匿名函式並綁定參數，將角色名稱傳入 _select_character
-	$ScrollContainer/HBoxContainer/Character1.pressed.connect(func(): _select_character("Character1"))
-	$ScrollContainer/HBoxContainer/Character2.pressed.connect(func(): _select_character("Character2"))
-	$ScrollContainer/HBoxContainer/Character3.pressed.connect(func(): _select_character("Character3"))
+	$HBoxContainer/Character1.pressed.connect(func(): _select_character("Character1"))
+	$HBoxContainer/Character2.pressed.connect(func(): _select_character("Character2"))
+	$HBoxContainer/Character3.pressed.connect(func(): _select_character("Character3"))
 
 func _select_character(character_name: String):
 	Playerdata_Globle.selected_character = character_name

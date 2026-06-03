@@ -1,6 +1,6 @@
 extends Control
 
-const BOSS1_ROOM_PATH := "res://BossRoom.tscn"
+const BOSS1_ROOM_PATH := "res:sdw//BossRoom.tscn"
 
 # 用變數記錄目前「被選中」的關卡場景路徑（預設為空）
 var selected_stage_path: String = ""
@@ -8,14 +8,22 @@ var selected_stage_path: String = ""
 func _ready():
 	$Back.pressed.connect(_on_Back_pressed)
 	# 點選 Boss 按鈕只記錄關卡，按「開始戰鬥」才切換場景
-	$ScrollContainer/HBoxContainer/Boss1.pressed.connect(
+	$HBoxContainer/Boss1.pressed.connect(
 		func(): _on_stage_selected("res://BossRoom.tscn")
 	)
+<<<<<<< HEAD
 	$ScrollContainer/HBoxContainer/Boss2.pressed.connect(
 		func(): _on_stage_selected("res://boss2/BossRoom2.tscn")
 	)
 	$ScrollContainer/HBoxContainer/Boss3.pressed.connect(
 		func(): _on_stage_selected("res://boss2/BossRoom2.tscn")
+=======
+	$HBoxContainer/Boss2.pressed.connect(
+		func(): _on_stage_selected("res://boss2/BossRoom2.tscn")
+	)
+	$HBoxContainer/Boss3.pressed.connect(
+		func(): _on_stage_selected("res://BossRoom3.tscn")
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 	)
 	
 	# 2. 連結右下角「開始戰鬥」按鈕

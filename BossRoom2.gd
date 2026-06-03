@@ -32,9 +32,14 @@ var camera: Camera2D = null
 @onready var title_label: Label = get_node_or_null("CanvasLayer/EndScreen/VBoxContainer/TitleLabel") as Label
 @onready var gold_label: Label = get_node_or_null("CanvasLayer/EndScreen/VBoxContainer/GoldLabel") as Label
 @onready var return_button: Button = get_node_or_null("CanvasLayer/EndScreen/VBoxContainer/ReturnButton") as Button
+<<<<<<< HEAD
 @onready var obstacle_spawner: Node = get_node_or_null("ObstacleSpawner")
 @onready var reverse_zone_spawner: Node = get_node_or_null("ReverseZoneSpawner")
 
+=======
+@onready var reverse_zone_spawner: Node = get_node_or_null("ReverseZoneSpawner")
+@onready var obstacle_spawner: Node = get_node_or_null("ObstacleSpawner")
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 
 var _tentacles: Array[Node] = []
 var _phase2_respawn_timer: float = 0.0
@@ -53,6 +58,12 @@ func _ready() -> void:
         print("找不到 Boss，請確認場景裡的 Boss 節點名稱是不是 Boss2")
         return
 
+<<<<<<< HEAD
+=======
+    # ------------------------------------------------
+    # Boss 設定
+    # ------------------------------------------------
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
     if boss.has_method("set_room_controller"):
         boss.set_room_controller(self)
 
@@ -62,6 +73,12 @@ func _ready() -> void:
     else:
         print("Boss2 沒有 died signal，勝利畫面可能不會自動顯示")
 
+<<<<<<< HEAD
+=======
+    # ------------------------------------------------
+    # Spawner 設定（這段是你之前缺的重點❗）
+    # ------------------------------------------------
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
     if obstacle_spawner != null and obstacle_spawner.has_method("setup"):
         obstacle_spawner.setup(self, boss)
     else:
@@ -72,9 +89,21 @@ func _ready() -> void:
     else:
         print("ReverseZoneSpawner 不存在，或沒有 setup() 方法")
 
+<<<<<<< HEAD
     print("Boss位置 = ", boss.global_position)
     print("BossRoom2 spawn area = ", get_spawn_area_rect(0.0))
 
+=======
+    # ------------------------------------------------
+    # Debug
+    # ------------------------------------------------
+    print("Boss位置 = ", boss.global_position)
+    print("BossRoom2 spawn area = ", get_spawn_area_rect(0.0))
+
+    # ------------------------------------------------
+    # 初始生成
+    # ------------------------------------------------
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
     spawn_initial_tentacles()
 
 
@@ -340,8 +369,12 @@ func _get_safe_tentacle_spawn_position() -> Vector2:
     var rect: Rect2 = get_tentacle_spawn_rect()
 
     if boss == null or not is_instance_valid(boss):
+<<<<<<< HEAD
         var fallback_no_boss: Vector2 = _get_random_point_in_rect(rect)
         return _clamp_point_to_rect(fallback_no_boss, rect)
+=======
+        return _get_random_point_in_rect(rect)
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 
     var boss_pos: Vector2 = boss.global_position
 
@@ -352,14 +385,28 @@ func _get_safe_tentacle_spawn_position() -> Vector2:
         if _is_valid_tentacle_position(spawn_pos, boss_pos):
             return spawn_pos
 
+<<<<<<< HEAD
     for attempt in range(80):
+=======
+    # 保底 1：
+    # 找不到同時符合 Boss 距離與觸手距離的點時，
+    # 仍然只在 rect 內找不靠近其他觸手的位置。
+    for attempt in range(30):
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
         var fallback_pos: Vector2 = _get_random_point_in_rect(rect)
         fallback_pos = _clamp_point_to_rect(fallback_pos, rect)
 
         if _is_not_too_close_to_other_tentacles(fallback_pos):
+<<<<<<< HEAD
             if fallback_pos.distance_to(boss_pos) >= min_boss_distance:
                 return fallback_pos
 
+=======
+            return fallback_pos
+
+    # 保底 2：
+    # 最後回傳 rect 中心點，保證不出界。
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
     var center_pos: Vector2 = rect.position + rect.size * 0.5
     return _clamp_point_to_rect(center_pos, rect)
 
@@ -377,6 +424,14 @@ func _is_valid_tentacle_position(spawn_pos: Vector2, boss_pos: Vector2) -> bool:
 
     if distance_to_boss > max_boss_distance:
         return false
+<<<<<<< HEAD
+=======
+
+    if not _is_not_too_close_to_other_tentacles(spawn_pos):
+        return false
+
+    return true
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 
     if not _is_not_too_close_to_other_tentacles(spawn_pos):
         return false
@@ -474,17 +529,103 @@ func _spawn_phase3_tentacle_wave() -> void:
 
     print("Phase 3 重新生成觸手波次，數量 = ", spawn_count)
 
+<<<<<<< HEAD
     
+=======
+
+func is_position_valid_for_obstacle(pos: Vector2, radius: float, min_player_distance: float) -> bool:
+    var player: Node2D = get_player_node()
+
+    # 玩家
+    if player != null and is_instance_valid(player):
+        if pos.distance_to(player.global_position) < min_player_distance:
+            return false
+
+    # Boss
+    if boss != null and is_instance_valid(boss):
+        if pos.distance_to(boss.global_position) < (radius + 150):
+            return false
+
+    # 觸手
+    for tentacle_pos in get_active_tentacle_positions():
+        if pos.distance_to(tentacle_pos) < (radius + 120):
+            return false
+
+    # 木板
+    for node in get_tree().get_nodes_in_group("boss2_obstacle"):
+        if node != null and node is Node2D:
+            if pos.distance_to(node.global_position) < (radius + 90):
+                return false
+
+    # 魚
+    for node in get_tree().get_nodes_in_group("normal_fish"):
+        if node != null and node is Node2D:
+            if pos.distance_to(node.global_position) < (radius + 60):
+                return false
+
+    for node in get_tree().get_nodes_in_group("explode_fish"):
+        if node != null and node is Node2D:
+            if pos.distance_to(node.global_position) < (radius + 70):
+                return false
+
+    # ❗注意：泡泡不檢查 → 允許生成
+    return true
+
+func is_position_valid_for_reverse_zone(pos: Vector2, radius: float, min_player_distance: float) -> bool:
+    var player: Node2D = get_player_node()
+
+    # 玩家
+    if player != null and is_instance_valid(player):
+        if pos.distance_to(player.global_position) < min_player_distance:
+            return false
+
+    # Boss
+    if boss != null and is_instance_valid(boss):
+        if pos.distance_to(boss.global_position) < (radius + 150):
+            return false
+
+    # 觸手
+    for tentacle_pos in get_active_tentacle_positions():
+        if pos.distance_to(tentacle_pos) < (radius + 120):
+            return false
+
+    return true
+
+func get_safe_position_custom(
+    margin: float,
+    radius: float,
+    min_player_distance: float,
+    attempts: int,
+    check_func: Callable
+) -> Vector2:
+    var rect: Rect2 = get_spawn_area_rect(margin)
+
+    for i in range(attempts):
+        var pos: Vector2 = _get_random_point_in_rect(rect)
+        pos = _clamp_point_to_rect(pos, rect)
+
+        if check_func.call(pos, radius, min_player_distance):
+            return pos
+
+    return Vector2.INF
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 
 func get_player_node() -> Node2D:
     var players: Array[Node] = get_tree().get_nodes_in_group("player")
 
+<<<<<<< HEAD
     if players.size() <= 0:
+=======
+    if players.size() == 0:
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
         return null
 
     return players[0] as Node2D
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 func get_active_tentacle_positions() -> Array[Vector2]:
     _cleanup_invalid_tentacles()
 
@@ -501,6 +642,7 @@ func get_active_tentacle_positions() -> Array[Vector2]:
             positions.append((tentacle as Node2D).global_position)
 
     return positions
+<<<<<<< HEAD
 
 
 func get_occupied_field_entries() -> Array[Dictionary]:
@@ -606,3 +748,5 @@ func get_safe_field_spawn_position(
     # 重要：
     # 找不到安全點就不要硬生。
     return Vector2.INF
+=======
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b

@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://c7rst4a6axfir"]
 
-[ext_resource type="Script" uid="uid://bkwn444l2qtbm" path="res://SaveSelect.gd" id="1_euigg"]
+[ext_resource type="Script" path="res://SaveSelect.gd" id="1_euigg"]
+[ext_resource type="Texture2D" uid="uid://djp1221cbkc3y" path="res://圖片/商店跳轉背景.png" id="2_cewn3"]
+[ext_resource type="Texture2D" uid="uid://db2py3aqdgw6e" path="res://圖片/儲存背景.png" id="2_m36ih"]
+[ext_resource type="Texture2D" uid="uid://k4ydpk5uqpxv" path="res://圖片/介面背景.png" id="3_ellar"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_euigg"]
 bg_color = Color(0.16442978, 0.16242719, 0.15277904, 0.9882353)
@@ -39,11 +42,23 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "存檔1"
 
+[node name="Sprite2D" type="Sprite2D" parent="SlotsContainer/Slot0/SlotButton" unique_id=191472054]
+z_index = -5
+position = Vector2(125, 50)
+scale = Vector2(0.11510128, 0.13812152)
+texture = ExtResource("2_cewn3")
+
 [node name="DeleteButton" type="Button" parent="SlotsContainer/Slot0" unique_id=966653271]
 custom_minimum_size = Vector2(120, 70)
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "🗑"
+
+[node name="Sprite2D" type="Sprite2D" parent="SlotsContainer/Slot0/DeleteButton" unique_id=1484848145]
+z_index = -5
+position = Vector2(59.99998, 50)
+scale = Vector2(0.05524859, 0.13812152)
+texture = ExtResource("2_cewn3")
 
 [node name="Slot1" type="HBoxContainer" parent="SlotsContainer" unique_id=138181320]
 custom_minimum_size = Vector2(300, 100)
@@ -55,11 +70,23 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "存檔2"
 
+[node name="Sprite2D" type="Sprite2D" parent="SlotsContainer/Slot1/SlotButton" unique_id=1044748065]
+z_index = -5
+position = Vector2(125, 50)
+scale = Vector2(0.11510128, 0.13812152)
+texture = ExtResource("2_cewn3")
+
 [node name="DeleteButton" type="Button" parent="SlotsContainer/Slot1" unique_id=1008315806]
 custom_minimum_size = Vector2(120, 70)
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "🗑"
+
+[node name="Sprite2D" type="Sprite2D" parent="SlotsContainer/Slot1/DeleteButton" unique_id=817036930]
+z_index = -5
+position = Vector2(59.99998, 50)
+scale = Vector2(0.05524859, 0.13812152)
+texture = ExtResource("2_cewn3")
 
 [node name="Slot2" type="HBoxContainer" parent="SlotsContainer" unique_id=1031178118]
 custom_minimum_size = Vector2(300, 100)
@@ -71,11 +98,23 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "存檔3"
 
+[node name="Sprite2D" type="Sprite2D" parent="SlotsContainer/Slot2/SlotButton" unique_id=1820296003]
+z_index = -5
+position = Vector2(125, 50)
+scale = Vector2(0.11510128, 0.13812152)
+texture = ExtResource("2_cewn3")
+
 [node name="DeleteButton" type="Button" parent="SlotsContainer/Slot2" unique_id=1402574752]
 custom_minimum_size = Vector2(120, 70)
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "🗑"
+
+[node name="Sprite2D" type="Sprite2D" parent="SlotsContainer/Slot2/DeleteButton" unique_id=559114717]
+z_index = -5
+position = Vector2(59.99998, 50)
+scale = Vector2(0.05524859, 0.13812152)
+texture = ExtResource("2_cewn3")
 
 [node name="QuitGame" type="Button" parent="." unique_id=580041193]
 custom_minimum_size = Vector2(200, 70)
@@ -88,6 +127,12 @@ offset_right = 200.0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 22
 text = "結束遊戲"
+
+[node name="Sprite2D" type="Sprite2D" parent="QuitGame" unique_id=958356177]
+z_index = -5
+position = Vector2(100, 35.000015)
+scale = Vector2(0.092081025, 0.096685104)
+texture = ExtResource("2_cewn3")
 
 [node name="ConfirmPanel" type="Panel" parent="." unique_id=1604024847]
 layout_mode = 1
@@ -105,6 +150,7 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_euigg")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ConfirmPanel" unique_id=2112788566]
+z_index = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -120,10 +166,12 @@ grow_vertical = 2
 theme_override_constants/separation = 40
 
 [node name="Label" type="Label" parent="ConfirmPanel/VBoxContainer" unique_id=1506221882]
+z_index = 1
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ConfirmPanel/VBoxContainer" unique_id=477959726]
+z_index = 2
 layout_mode = 2
 
 [node name="ConfirmNo" type="Button" parent="ConfirmPanel/VBoxContainer/HBoxContainer" unique_id=1980488576]
@@ -132,8 +180,31 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "取消"
 
+[node name="Sprite2D" type="Sprite2D" parent="ConfirmPanel/VBoxContainer/HBoxContainer/ConfirmNo" unique_id=728803395]
+z_index = -1
+position = Vector2(100.000015, 34.999992)
+scale = Vector2(0.09208101, 0.09806634)
+texture = ExtResource("2_cewn3")
+
 [node name="ConfirmYes" type="Button" parent="ConfirmPanel/VBoxContainer/HBoxContainer" unique_id=118309455]
 custom_minimum_size = Vector2(200, 70)
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "確定刪除"
+
+[node name="Sprite2D" type="Sprite2D" parent="ConfirmPanel/VBoxContainer/HBoxContainer/ConfirmYes" unique_id=535556647]
+z_index = -1
+position = Vector2(100.000015, 34.999992)
+scale = Vector2(0.09208101, 0.09806634)
+texture = ExtResource("2_cewn3")
+
+[node name="Sprite2D" type="Sprite2D" parent="ConfirmPanel/VBoxContainer" unique_id=1382001502]
+position = Vector2(201.99995, 80.5)
+scale = Vector2(0.37430936, 0.3885819)
+texture = ExtResource("3_ellar")
+
+[node name="背景" type="Sprite2D" parent="." unique_id=494724492]
+z_index = -10
+position = Vector2(960.00006, 540)
+scale = Vector2(1.1490127, 1.1477152)
+texture = ExtResource("2_m36ih")

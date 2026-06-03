@@ -26,7 +26,7 @@ const UPGRADES = [
 		"type": "invincible"
 	},
 	{
-		"name": "提升金幣獎勵倍率 +0.2",
+		"name": "提升金幣獎勵倍率",
 		"cost_list": [200, 400, 600],
 		"max_buy": 3,
 		"type": "reward_multiplier"

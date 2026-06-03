@@ -20,6 +20,7 @@ extends Node2D
 @onready var title_label: Label = get_node_or_null("CanvasLayer/EndScreen/VBoxContainer/TitleLabel") as Label
 @onready var gold_label: Label = get_node_or_null("CanvasLayer/EndScreen/VBoxContainer/GoldLabel") as Label
 @onready var return_button: Button = get_node_or_null("CanvasLayer/EndScreen/VBoxContainer/ReturnButton") as Button
+@onready var bgm_player: AudioStreamPlayer = $BGMPlayer
 
 var player: Node2D = null
 var camera: Camera2D = null
@@ -176,6 +177,7 @@ func show_victory() -> void:
 		gold_label.text = "+%d Gold" % earned_gold
 		gold_label.show()
 	if end_screen: end_screen.show()
+	if bgm_player: bgm_player.stop()
 	
 	# 將金幣加進全域變數中
 	Playerdata_Globle.gold += earned_gold
@@ -190,6 +192,7 @@ func show_defeat() -> void:
 	if title_label: title_label.text = "You Loss"
 	if gold_label: gold_label.hide() # 輸了不顯示金幣
 	if end_screen: end_screen.show()
+	if bgm_player: bgm_player.stop()
 	
 	# 暫停遊戲
 	get_tree().paused = true

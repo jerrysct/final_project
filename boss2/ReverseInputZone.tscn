@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 [gd_scene format=3 uid="uid://c3wd06ox041i2"]
+=======
+[gd_scene format=3 uid="uid://ckgym358sdd6o"]
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 
 [ext_resource type="Script" uid="uid://yhli4xtmeud6" path="res://ReverseInputZone.gd" id="1_svica"]
 [ext_resource type="Texture2D" uid="uid://o664b1i0b8qf" path="res://圖片4.png" id="2_ew5ly"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vsiex"]
+<<<<<<< HEAD
 radius = 57.0
 
 [node name="ReverseInputZone" type="Area2D" unique_id=61281707]
@@ -13,4 +18,16 @@ script = ExtResource("1_svica")
 texture = ExtResource("2_ew5ly")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1771941665]
+=======
+radius = 61.0
+
+[node name="ReverseInputZone" type="Area2D" unique_id=800654433]
+script = ExtResource("1_svica")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=828386827]
+scale = Vector2(0.5813953, 0.6071428)
+texture = ExtResource("2_ew5ly")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2098996066]
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 shape = SubResource("CircleShape2D_vsiex")

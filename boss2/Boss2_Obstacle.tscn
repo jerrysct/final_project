@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://penuygjptsum"]
 
+<<<<<<< HEAD
 [ext_resource type="Script" uid="uid://bu1r8w7n7ubhf" path="res://Boss2_Obstacle.gd" id="1_y51cp"]
 [ext_resource type="Texture2D" uid="uid://dxfh37njaobge" path="res://沈船木板.png" id="2_8uux8"]
 
@@ -17,3 +18,22 @@ shape = SubResource("CircleShape2D_8uux8")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=656050376]
 scale = Vector2(0.1628418, 0.13525392)
 texture = ExtResource("2_8uux8")
+=======
+[ext_resource type="Script" uid="uid://bu1r8w7n7ubhf" path="res://Boss2_Obstacle.gd" id="1_8uux8"]
+[ext_resource type="Texture2D" uid="uid://dxfh37njaobge" path="res://沈船木板.png" id="2_2kk01"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_p2hd8"]
+radius = 89.005615
+
+[node name="Boss2Obstacle" type="StaticBody2D" unique_id=432852163]
+script = ExtResource("1_8uux8")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1320914685]
+position = Vector2(426.875, 182.62498)
+scale = Vector2(0.15258792, 0.104248025)
+texture = ExtResource("2_2kk01")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=525484514]
+position = Vector2(425, 176)
+shape = SubResource("CircleShape2D_p2hd8")
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b

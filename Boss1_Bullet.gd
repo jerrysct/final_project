@@ -176,7 +176,8 @@ func explode_into_ring() -> void:
 
 func reflect(new_direction: Vector2, multiplier: float = 1.0) -> void:
 	if is_phantom:
-		queue_free()
+		# 幻影子彈不能被反彈，也不會因為玩家反彈而消失。
+		# 它會繼續照原本方向移動，命中玩家時仍會造成傷害。
 		return
 
 	max_bounces = 0 # 玩家反彈後，子彈失去反彈牆壁的能力

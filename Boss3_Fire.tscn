@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://n8io3ewieojt"]
 
 [ext_resource type="Script" uid="uid://b830t6q4520qv" path="res://Boss3_Fire.gd" id="1_fire"]
-[ext_resource type="Texture2D" uid="uid://dghr30gesa11y" path="res://火球.png" id="2_gg3y1"]
+[ext_resource type="Texture2D" uid="uid://dghr30gesa11y" path="res://圖片/火球.png" id="2_gg3y1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fire"]
 radius = 66.0

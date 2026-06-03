@@ -7,6 +7,14 @@ extends StaticBody2D
 func _ready() -> void:
 	add_to_group("boss2_obstacle")
 
+<<<<<<< HEAD
+=======
+	# 你的玩家目前 collision_mask = 16，所以木板放在 Layer 5。
+	# 如果你的玩家碰撞設定不同，這裡要跟著調。
+	collision_layer = 16
+	collision_mask = 0
+
+>>>>>>> 08126e128690e8ac3539b79441892bf9d6de427b
 	if debug_enabled:
 		print("Obstacle ready at ", global_position)
 
