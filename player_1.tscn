@@ -33,7 +33,7 @@ radius = 80.86335
 [sub_resource type="Gradient" id="Gradient_buxg0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qh3su"]
-radius = 19.104973
+radius = 15.889435
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hd4a6"]
 animations = [{

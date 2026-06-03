@@ -418,6 +418,7 @@ func execute_instant_parry() -> void:
 	for area in bounce_zone.get_overlapping_areas():
 		if not area.has_method("reflect"): continue
 		if area.get("is_reflected") or area.get("is_absorbed"): continue
+		if area.get("cannot_parry") == true: continue # 👈 【新增】跳過不可普通反彈的子彈
 
 		var distance_to_bullet = global_position.distance_to(area.global_position)
 		if distance_to_bullet < parry_inner_radius or distance_to_bullet > parry_outer_radius:

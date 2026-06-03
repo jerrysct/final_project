@@ -2,29 +2,128 @@
 
 [ext_resource type="Script" uid="uid://dvjc2hcefwr7e" path="res://Boss3_Melee.gd" id="1_mdmya"]
 [ext_resource type="PackedScene" uid="uid://n8io3ewieojt" path="res://Boss3_Fire.tscn" id="2_nkiiy"]
-[ext_resource type="Texture2D" uid="uid://clkf6kx0otbbe" path="res://boss3_melee.png" id="2_o76aw"]
 [ext_resource type="PackedScene" uid="uid://blbq3svwt12uj" path="res://Boss3_crash.tscn" id="2_swlsm"]
 [ext_resource type="PackedScene" uid="uid://b2e51s2slqvaw" path="res://Boss3_HomingBullet.tscn" id="3_ukpb7"]
 [ext_resource type="PackedScene" uid="uid://p8ls7w78whgh" path="res://Boss3_Bullet.tscn" id="4_wd6bl"]
 [ext_resource type="AudioStream" uid="uid://mp32dk0sywpn" path="res://6727.wav" id="6_swlsm"]
+[ext_resource type="Texture2D" uid="uid://dp0lu8o5am25q" path="res://boss3_Melee/ezgif-白龍攻擊.png" id="6_xvptk"]
+[ext_resource type="Texture2D" uid="uid://l1bu8somk14i" path="res://boss3_Melee/ezgif-白龍待機.png" id="7_uhs7f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tppoa"]
+atlas = ExtResource("6_xvptk")
+region = Rect2(0, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rkvny"]
+atlas = ExtResource("6_xvptk")
+region = Rect2(180, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xnit6"]
+atlas = ExtResource("6_xvptk")
+region = Rect2(360, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1488f"]
+atlas = ExtResource("6_xvptk")
+region = Rect2(540, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kf58l"]
+atlas = ExtResource("6_xvptk")
+region = Rect2(720, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dcam0"]
+atlas = ExtResource("6_xvptk")
+region = Rect2(0, 180, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_570wn"]
+atlas = ExtResource("6_xvptk")
+region = Rect2(180, 180, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ti6eu"]
+atlas = ExtResource("6_xvptk")
+region = Rect2(360, 180, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sjm6m"]
+atlas = ExtResource("7_uhs7f")
+region = Rect2(0, 0, 185, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qsu8c"]
+atlas = ExtResource("7_uhs7f")
+region = Rect2(185, 0, 185, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ql7g"]
+atlas = ExtResource("7_uhs7f")
+region = Rect2(370, 0, 185, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qc8c0"]
+atlas = ExtResource("7_uhs7f")
+region = Rect2(555, 0, 185, 180)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kai6n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tppoa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rkvny")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xnit6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1488f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kf58l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dcam0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_570wn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ti6eu")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sjm6m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qsu8c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ql7g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qc8c0")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_olbf4"]
 radius = 52.009613
 
 [node name="Boss3_Melee" type="CharacterBody2D" unique_id=2037844958]
+z_index = 10
 collision_layer = 4
 collision_mask = 3
-z_index = 10
 script = ExtResource("1_mdmya")
 crash_scene = ExtResource("2_swlsm")
 fire_scene = ExtResource("2_nkiiy")
 shotgun_bullet_scene = ExtResource("4_wd6bl")
 homing_bullet_scene = ExtResource("3_ukpb7")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1568842799]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1568842799]
 position = Vector2(0.9999976, -2.0000017)
-scale = Vector2(0.10742187, 0.1015625)
-texture = ExtResource("2_o76aw")
+scale = Vector2(0.6627455, 0.6350288)
+sprite_frames = SubResource("SpriteFrames_kai6n")
+animation = &"attack"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1044099119]
 position = Vector2(0, -1)

@@ -30,7 +30,9 @@ const SPRITE_COLOR_WALL: Color = Color(0.55, 0.9, 1.0)
 const SPRITE_COLOR_LINE_CRUSH: Color = Color(1.0, 0.35, 0.35)
 const SPRITE_COLOR_WALL_SWEEP: Color = Color(1.0, 0.15, 0.15)
 
-@onready var _sprite: Sprite2D = $Sprite2D
+const MOUTH_OPEN_FRAME: int = 3 # 嘴巴張開的動畫幀數，可根據實際動畫調整
+
+@onready var _anim: AnimatedSprite2D = $AnimatedSprite2D
 
 @export var max_hp: int = 200
 
@@ -168,6 +170,20 @@ func _ready() -> void:
 	find_player()
 	_roll_attack_cooldown()
 	_roll_teleport_timer()
+	
+	if _anim:
+		_anim.play("idle")
+		_anim.animation_finished.connect(_on_animation_finished)
+		# 確保攻擊動畫不循環，以便能夠觸發 animation_finished 或手動控制
+		if _anim.sprite_frames.has_animation("attack"):
+			_anim.sprite_frames.set_animation_loop("attack", false)
+
+
+func _on_animation_finished() -> void:
+	if _anim.animation == "attack":
+		_anim.play("idle")
+	elif _anim.animation == "death":
+		queue_free()
 
 
 func enter_enraged_mode() -> void:
@@ -282,7 +298,7 @@ func _run_attack(attack_type: AttackType) -> void:
 		AttackType.BURST:
 			await _attack_burst()
 		AttackType.FAN:
-			_attack_fan()
+			await _attack_fan()
 		AttackType.CHARGE_SHOT:
 			await _attack_charge_shot()
 		AttackType.HEAL_MELEE:
@@ -339,10 +355,14 @@ func _start_phase2_opening_wall_sweep() -> void:
 
 
 func _attack_burst() -> void:
+	await _wait_for_mouth_open()
+	_pause_animation() # 連發時保持嘴巴張開
+
 	var count: int = randi_range(burst_count_min, burst_count_max)
 
 	for i in range(count):
 		if state == State.DEAD:
+			_resume_animation()
 			return
 
 		var dir: Vector2 = _get_direction_to_player()
@@ -350,8 +370,11 @@ func _attack_burst() -> void:
 
 		await get_tree().create_timer(burst_interval).timeout
 
+	_resume_animation() # 結束後恢復動畫以便關嘴
+
 
 func _attack_fan() -> void:
+	await _wait_for_mouth_open()
 	var base_dir: Vector2 = _get_direction_to_player()
 
 	if fan_bullet_count <= 1:
@@ -378,18 +401,22 @@ func _attack_charge_shot() -> void:
 	if state == State.DEAD:
 		return
 
+	await _wait_for_mouth_open()
 	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
 	_spawn_bullet(locked_dir)
 
 
 func _attack_spiral() -> void:
 	_set_sprite_modulate(SPRITE_COLOR_SPIRAL)
+	await _wait_for_mouth_open()
+	_pause_animation()
 
 	var base_dir: Vector2 = _get_direction_to_player()
 	var base_angle: float = base_dir.angle()
 
 	for i in range(spiral_bullet_count):
 		if state == State.DEAD:
+			_resume_animation()
 			return
 
 		var angle_offset: float = deg_to_rad(spiral_angle_step_degrees) * float(i)
@@ -399,15 +426,20 @@ func _attack_spiral() -> void:
 
 		await get_tree().create_timer(spiral_interval).timeout
 
+	_resume_animation()
+
 
 func _attack_pincer() -> void:
 	_set_sprite_modulate(SPRITE_COLOR_PINCER)
+	await _wait_for_mouth_open()
+	_pause_animation()
 
 	var base_dir: Vector2 = _get_direction_to_player()
 	var angle_rad: float = deg_to_rad(pincer_angle_degrees)
 
 	for i in range(pincer_bullet_count):
 		if state == State.DEAD:
+			_resume_animation()
 			return
 
 		var left_dir: Vector2 = base_dir.rotated(-angle_rad)
@@ -418,13 +450,18 @@ func _attack_pincer() -> void:
 
 		await get_tree().create_timer(pincer_interval).timeout
 
+	_resume_animation()
+
 
 
 func _attack_bullet_wall() -> void:
 	_set_sprite_modulate(SPRITE_COLOR_WALL)
+	await _wait_for_mouth_open()
+	_pause_animation()
 
 	for repeat_index in range(wall_repeat):
 		if state == State.DEAD:
+			_resume_animation()
 			return
 
 		var forward_dir: Vector2 = _get_direction_to_player()
@@ -454,6 +491,7 @@ func _attack_bullet_wall() -> void:
 		if repeat_index < wall_repeat - 1:
 			await get_tree().create_timer(wall_repeat_interval).timeout
 
+	_resume_animation()
 	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
 
 
@@ -468,8 +506,12 @@ func _attack_line_crush() -> void:
 		_set_sprite_modulate(SPRITE_COLOR_NORMAL)
 		return
 
+	await _wait_for_mouth_open()
+	_pause_animation()
+
 	for repeat_index in range(line_crush_repeat):
 		if state == State.DEAD:
+			_resume_animation()
 			return
 
 		var center_pos: Vector2 = player.global_position
@@ -487,10 +529,10 @@ func _attack_line_crush() -> void:
 
 			_spawn_line_crush_bullet(left_pos, Vector2.RIGHT)
 			_spawn_line_crush_bullet(right_pos, Vector2.LEFT)
-
 		if repeat_index < line_crush_repeat - 1:
 			await get_tree().create_timer(line_crush_repeat_interval).timeout
 
+	_resume_animation()
 	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
 
 
@@ -503,6 +545,7 @@ func _attack_wall_sweep() -> void:
 		return
 
 	_set_sprite_modulate(SPRITE_COLOR_WALL_SWEEP)
+	if _anim: _anim.play("attack")
 
 	_wall_sweep_cooldown_left = wall_sweep_cooldown
 
@@ -532,6 +575,7 @@ func _attack_buff_melee() -> void:
 	print("BUFF_MELEE 開始執行")
 
 	_set_sprite_modulate(Color(0.3, 0.5, 1.0))
+	if _anim: _anim.play("attack")
 
 	await get_tree().create_timer(0.5).timeout
 
@@ -569,6 +613,7 @@ func _attack_buff_melee() -> void:
 
 func _attack_heal_melee() -> void:
 	_set_sprite_modulate(SPRITE_COLOR_HEAL)
+	if _anim: _anim.play("attack")
 
 	await get_tree().create_timer(heal_prepare_time).timeout
 
@@ -596,6 +641,22 @@ func _attack_heal_melee() -> void:
 		print("Boss3_Ranged healed melee boss: ", heal_amount)
 
 	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
+
+
+func _wait_for_mouth_open() -> void:
+	if not _anim: return
+	if _anim.animation != "attack":
+		_anim.play("attack")
+	
+	# 等待直到動畫播放到張嘴的那一幀
+	while _anim.animation == "attack" and _anim.frame < MOUTH_OPEN_FRAME:
+		await _anim.frame_changed
+
+func _pause_animation() -> void:
+	if _anim: _anim.pause()
+
+func _resume_animation() -> void:
+	if _anim: _anim.play()
 
 
 func _spawn_bullet(direction: Vector2) -> void:
@@ -864,19 +925,19 @@ func _roll_attack_cooldown() -> void:
 
 
 func _face_player() -> void:
-	if _sprite == null:
+	if _anim == null:
 		return
 
 	if player == null or not is_instance_valid(player):
 		return
 
 	var player_is_left: bool = player.global_position.x < global_position.x
-	_sprite.flip_h = player_is_left
+	_anim.flip_h = player_is_left
 
 
 func _set_sprite_modulate(color: Color) -> void:
-	if _sprite != null:
-		_sprite.modulate = color
+	if _anim != null:
+		_anim.modulate = color
 
 
 func find_player() -> void:
@@ -909,8 +970,14 @@ func take_damage(amount: int) -> void:
 func die() -> void:
 	if debug_enabled:
 		print("Boss3_Ranged dead")
-
-	queue_free()
+	
+	if _anim:
+		_anim.play("death")
+		var col = get_node_or_null("CollisionShape2D")
+		if col:
+			col.set_deferred("disabled", true)
+	else:
+		queue_free()
 
 
 func _attack_type_to_string(attack_type: AttackType) -> String:
