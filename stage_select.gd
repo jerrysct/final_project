@@ -8,13 +8,13 @@ var selected_stage_path: String = ""
 func _ready():
 	$Back.pressed.connect(_on_Back_pressed)
 	# 點選 Boss 按鈕只記錄關卡，按「開始戰鬥」才切換場景
-	$ScrollContainer/HBoxContainer/Boss1.pressed.connect(
+	$HBoxContainer/Boss1.pressed.connect(
 		func(): _on_stage_selected("res://BossRoom.tscn")
 	)
-	$ScrollContainer/HBoxContainer/Boss2.pressed.connect(
+	$HBoxContainer/Boss2.pressed.connect(
 		func(): _on_stage_selected("res://boss2/BossRoom2.tscn")
 	)
-	$ScrollContainer/HBoxContainer/Boss3.pressed.connect(
+	$HBoxContainer/Boss3.pressed.connect(
 		func(): _on_stage_selected("res://BossRoom3.tscn")
 	)
 	

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b4kny1xc6scv8"
-path="res://.godot/imported/Boss1地圖.png-33274705ae0b961740dbfbdf19b5b023.ctex"
+uid="uid://bgjf60gcg1y1t"
+path="res://.godot/imported/遊戲開始畫面.png-1193094acf63597517055c7892b51dc9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Boss1地圖.png"
-dest_files=["res://.godot/imported/Boss1地圖.png-33274705ae0b961740dbfbdf19b5b023.ctex"]
+source_file="res://圖片/遊戲開始畫面.png"
+dest_files=["res://.godot/imported/遊戲開始畫面.png-1193094acf63597517055c7892b51dc9.ctex"]
 
 [params]
 

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://clkf6kx0otbbe"
-path="res://.godot/imported/boss3_melee.png-c72dbc70daf171df0773bad567af7d88.ctex"
+path="res://.godot/imported/boss3_melee.png-62632bf82fa481e94d6a47ed9c857ab6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://boss3_melee.png"
-dest_files=["res://.godot/imported/boss3_melee.png-c72dbc70daf171df0773bad567af7d88.ctex"]
+source_file="res://圖片/boss3_melee.png"
+dest_files=["res://.godot/imported/boss3_melee.png-62632bf82fa481e94d6a47ed9c857ab6.ctex"]
 
 [params]
 

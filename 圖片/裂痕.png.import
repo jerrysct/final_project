@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bgjf60gcg1y1t"
-path="res://.godot/imported/遊戲開始畫面.png-009ca1e445185a5c8ebe2ad41f7fa882.ctex"
+uid="uid://dj5v2me0c2pia"
+path="res://.godot/imported/裂痕.png-32f7e02a25bd845ff0e0dbc532a77986.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://遊戲開始畫面.png"
-dest_files=["res://.godot/imported/遊戲開始畫面.png-009ca1e445185a5c8ebe2ad41f7fa882.ctex"]
+source_file="res://圖片/裂痕.png"
+dest_files=["res://.godot/imported/裂痕.png-32f7e02a25bd845ff0e0dbc532a77986.ctex"]
 
 [params]
 

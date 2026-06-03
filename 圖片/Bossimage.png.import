@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clmg57x8p7stq"
-path="res://.godot/imported/追蹤子彈.png-f81ef2cb074bfe50bb0feec65be8c90e.ctex"
+uid="uid://j7yjhknavyfw"
+path="res://.godot/imported/Bossimage.png-6a025864a7342e16a2ea63aa2d918a25.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://追蹤子彈.png"
-dest_files=["res://.godot/imported/追蹤子彈.png-f81ef2cb074bfe50bb0feec65be8c90e.ctex"]
+source_file="res://圖片/Bossimage.png"
+dest_files=["res://.godot/imported/Bossimage.png-6a025864a7342e16a2ea63aa2d918a25.ctex"]
 
 [params]
 

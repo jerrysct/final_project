@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bagpyv5fswdmh"
-path="res://.godot/imported/boss遠程.png-12cb844434b55d0c090379f94f5f28d5.ctex"
+uid="uid://dbjwaswcf11oe"
+path="res://.godot/imported/Boss3地圖.png-6ba524c49844e877e57ca4e1ed049968.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://boss遠程.png"
-dest_files=["res://.godot/imported/boss遠程.png-12cb844434b55d0c090379f94f5f28d5.ctex"]
+source_file="res://圖片/Boss3地圖.png"
+dest_files=["res://.godot/imported/Boss3地圖.png-6ba524c49844e877e57ca4e1ed049968.ctex"]
 
 [params]
 

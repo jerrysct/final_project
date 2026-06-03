@@ -1,70 +1,111 @@
 [gd_scene format=3 uid="uid://rpw763uji7is"]
 
 [ext_resource type="Script" uid="uid://bus1ebhecpcuq" path="res://stage_select.gd" id="1_d2q2k"]
-[ext_resource type="Texture2D" uid="uid://j7yjhknavyfw" path="res://Bossimage.png" id="2_q55ev"]
-[ext_resource type="Texture2D" uid="uid://clkf6kx0otbbe" path="res://boss3_melee.png" id="3_i5ytr"]
-[ext_resource type="Texture2D" uid="uid://cws2fkk4vp1t3" path="res://觸手.png" id="3_qf63o"]
+[ext_resource type="Texture2D" uid="uid://j7yjhknavyfw" path="res://圖片/Bossimage.png" id="2_q55ev"]
+[ext_resource type="Texture2D" uid="uid://clkf6kx0otbbe" path="res://圖片/boss3_melee.png" id="3_i5ytr"]
+[ext_resource type="Texture2D" uid="uid://dxmfg3yl60u15" path="res://Boss背景圖片.png" id="3_nigjc"]
+[ext_resource type="Texture2D" uid="uid://cjhh5foak0ykp" path="res://Boss選擇背景.png" id="4_i5ytr"]
+[ext_resource type="Texture2D" uid="uid://djp1221cbkc3y" path="res://圖片/商店跳轉背景.png" id="4_qf63o"]
 
 [node name="stage_select" type="Node2D" unique_id=1708047513]
 
 [node name="Control" type="Control" parent="." unique_id=1706979374]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_d2q2k")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Control" unique_id=735309058]
-custom_minimum_size = Vector2(800, 450)
+[node name="StartBattleButton" type="Button" parent="Control" unique_id=2077085537]
+custom_minimum_size = Vector2(200, 70)
 layout_mode = 0
-offset_left = 200.0
-offset_top = 100.0
-offset_right = 1000.0
-offset_bottom = 550.0
+offset_left = 1720.0
+offset_top = 1010.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+text = "開始戰鬥！"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/ScrollContainer" unique_id=830600763]
+[node name="Sprite2D" type="Sprite2D" parent="Control/StartBattleButton" unique_id=2034331080]
+z_index = -5
+position = Vector2(99.99997, 35.000004)
+scale = Vector2(0.09208102, 0.096685074)
+texture = ExtResource("4_qf63o")
+
+[node name="Back" type="Button" parent="Control" unique_id=2019802863]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 1
+offset_right = 156.0
+offset_bottom = 67.0
+theme_override_font_sizes/font_size = 22
+text = "返回"
+
+[node name="Sprite2D" type="Sprite2D" parent="Control/Back" unique_id=1822007780]
+z_index = -5
+position = Vector2(78, 33.5)
+scale = Vector2(0.071823224, 0.09254142)
+texture = ExtResource("4_qf63o")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control" unique_id=830600763]
 custom_minimum_size = Vector2(150, 150)
-layout_mode = 2
+layout_mode = 0
+offset_left = 652.0
+offset_top = 321.0
+offset_right = 1264.0
+offset_bottom = 771.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
 
-[node name="Boss1" type="Button" parent="Control/ScrollContainer/HBoxContainer" unique_id=407599545]
+[node name="Boss1" type="Button" parent="Control/HBoxContainer" unique_id=407599545]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 icon = ExtResource("2_q55ev")
 expand_icon = true
 
-[node name="Boss2" type="Button" parent="Control/ScrollContainer/HBoxContainer" unique_id=1219861439]
+[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/Boss1" unique_id=1755897207]
+z_index = -1
+position = Vector2(75, 225.00002)
+scale = Vector2(0.13368984, 0.32097003)
+texture = ExtResource("3_nigjc")
+
+[node name="Boss2" type="Button" parent="Control/HBoxContainer" unique_id=1219861439]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
-icon = ExtResource("3_qf63o")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Boss3" type="Button" parent="Control/ScrollContainer/HBoxContainer" unique_id=2076301601]
+[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/Boss2" unique_id=1363573527]
+z_index = -1
+position = Vector2(75, 225.00002)
+scale = Vector2(0.13368984, 0.32097003)
+texture = ExtResource("3_nigjc")
+
+[node name="Boss3" type="Button" parent="Control/HBoxContainer" unique_id=2076301601]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 icon = ExtResource("3_i5ytr")
 expand_icon = true
 
-[node name="FinalBoss" type="Button" parent="Control/ScrollContainer/HBoxContainer" unique_id=1781697451]
+[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/Boss3" unique_id=1831027859]
+z_index = -1
+position = Vector2(75, 225.00002)
+scale = Vector2(0.13368984, 0.32097003)
+texture = ExtResource("3_nigjc")
+
+[node name="FinalBoss" type="Button" parent="Control/HBoxContainer" unique_id=1781697451]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 
-[node name="StartBattleButton" type="Button" parent="Control" unique_id=2077085537]
-custom_minimum_size = Vector2(200, 70)
-layout_mode = 0
-offset_left = 900.0
-offset_top = 550.0
-offset_right = 1100.0
-offset_bottom = 620.0
-text = "開始戰鬥"
+[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/FinalBoss" unique_id=1965850207]
+z_index = -1
+position = Vector2(75, 225.00002)
+scale = Vector2(0.13368984, 0.32097003)
+texture = ExtResource("3_nigjc")
 
-[node name="Back" type="Button" parent="Control" unique_id=2019802863]
-custom_minimum_size = Vector2(120, 50)
-layout_mode = 1
-offset_right = 40.0
-offset_bottom = 31.0
-theme_override_font_sizes/font_size = 22
-text = "返回"
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=467996141]
+z_index = -10
+position = Vector2(959.99994, 540.00006)
+scale = Vector2(1.1483254, 1.1477152)
+texture = ExtResource("4_i5ytr")

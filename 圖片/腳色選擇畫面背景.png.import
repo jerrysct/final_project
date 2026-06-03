@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dbjwaswcf11oe"
-path="res://.godot/imported/Boss3地圖.png-d8551c86f0ab92a3dd47ab35e4709a4d.ctex"
+uid="uid://c53cspvuvo1gy"
+path="res://.godot/imported/腳色選擇畫面背景.png-21c4e8219961b13abb296996b047d6de.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Boss3地圖.png"
-dest_files=["res://.godot/imported/Boss3地圖.png-d8551c86f0ab92a3dd47ab35e4709a4d.ctex"]
+source_file="res://圖片/腳色選擇畫面背景.png"
+dest_files=["res://.godot/imported/腳色選擇畫面背景.png-21c4e8219961b13abb296996b047d6de.ctex"]
 
 [params]
 

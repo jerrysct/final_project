@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://bvmhowfgfeq8l"]
+
+[ext_resource type="Script" uid="uid://2fwhlgc8k23i" path="res://bullet.gd" id="1_bullet"]
+[ext_resource type="Texture2D" uid="uid://o664b1i0b8qf" path="res://圖片/圖片4.png" id="2_t4vbm"]

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bp420gko6q7ys" path="res://Boss.gd" id="1_dtosr"]
 [ext_resource type="PackedScene" uid="uid://bjxcqjnkf8tf2" path="res://Boss1_Bullet.tscn" id="2_ohn0q"]
-[ext_resource type="Texture2D" uid="uid://j7yjhknavyfw" path="res://Bossimage.png" id="4_yjrng"]
+[ext_resource type="Texture2D" uid="uid://j7yjhknavyfw" path="res://圖片/Bossimage.png" id="4_yjrng"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_paxtu"]
 radius = 491.73724

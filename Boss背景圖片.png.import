@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bulkml13llpky"
-path="res://.godot/imported/血量瓶.png-777553821a8d033b1d5d49f44b41cfd8.ctex"
+uid="uid://dxmfg3yl60u15"
+path="res://.godot/imported/Boss背景圖片.png-b6b019b9ea6a824f577f5febfca55b1c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://血量瓶.png"
-dest_files=["res://.godot/imported/血量瓶.png-777553821a8d033b1d5d49f44b41cfd8.ctex"]
+source_file="res://Boss背景圖片.png"
+dest_files=["res://.godot/imported/Boss背景圖片.png-b6b019b9ea6a824f577f5febfca55b1c.ctex"]
 
 [params]
 

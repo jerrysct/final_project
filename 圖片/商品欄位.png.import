@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://j7yjhknavyfw"
-path="res://.godot/imported/Bossimage.png-4a8389ea8a8286c83056e52b71abcaea.ctex"
+uid="uid://c1ry3osi54ne2"
+path="res://.godot/imported/商品欄位.png-f842cf3357844e63507e6408eb9e3240.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Bossimage.png"
-dest_files=["res://.godot/imported/Bossimage.png-4a8389ea8a8286c83056e52b71abcaea.ctex"]
+source_file="res://圖片/商品欄位.png"
+dest_files=["res://.godot/imported/商品欄位.png-f842cf3357844e63507e6408eb9e3240.ctex"]
 
 [params]
 

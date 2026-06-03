@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c1ry3osi54ne2"
-path="res://.godot/imported/商品欄位.png-28ab4386e4d3e66adc629e9dbbfc8baa.ctex"
+uid="uid://cxeo02qttkroh"
+path="res://.godot/imported/稜鏡場.png-ab039fd25a0dbb5a8ff7e0c8c0fb9757.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://商品欄位.png"
-dest_files=["res://.godot/imported/商品欄位.png-28ab4386e4d3e66adc629e9dbbfc8baa.ctex"]
+source_file="res://圖片/稜鏡場.png"
+dest_files=["res://.godot/imported/稜鏡場.png-ab039fd25a0dbb5a8ff7e0c8c0fb9757.ctex"]
 
 [params]
 

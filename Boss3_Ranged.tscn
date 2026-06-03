@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ibhr0yox1fcc"]
 
 [ext_resource type="Script" uid="uid://dio36x2sh7c0t" path="res://Boss3_Ranged.gd" id="1_bs1s8"]
-[ext_resource type="Texture2D" uid="uid://bagpyv5fswdmh" path="res://boss遠程.png" id="1_hdcdk"]
+[ext_resource type="Texture2D" uid="uid://bagpyv5fswdmh" path="res://圖片/boss遠程.png" id="1_hdcdk"]
 [ext_resource type="PackedScene" uid="uid://cb1anm22lo0hn" path="res://Boss3_HomingBullet2.tscn" id="2_bs1s8"]
 [ext_resource type="PackedScene" uid="uid://cev2pcrpfr6l1" path="res://Boss3_Link.tscn" id="3_nam7t"]
 

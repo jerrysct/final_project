@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3sawqnatm826"
-path="res://.godot/imported/2026年6月2日 下午07_54_06.png-5fa0a3235af9644bc025ba0a06145ed3.ctex"
+uid="uid://bagpyv5fswdmh"
+path="res://.godot/imported/boss遠程.png-4f100ce9dc49c01fa2488125db83ee70.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://2026年6月2日 下午07_54_06.png"
-dest_files=["res://.godot/imported/2026年6月2日 下午07_54_06.png-5fa0a3235af9644bc025ba0a06145ed3.ctex"]
+source_file="res://圖片/boss遠程.png"
+dest_files=["res://.godot/imported/boss遠程.png-4f100ce9dc49c01fa2488125db83ee70.ctex"]
 
 [params]
 

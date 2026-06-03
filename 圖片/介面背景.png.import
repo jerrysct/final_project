@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dj5v2me0c2pia"
-path="res://.godot/imported/裂痕.png-4bc9424cc3486bc6d7686b3e60cc59f5.ctex"
+uid="uid://k4ydpk5uqpxv"
+path="res://.godot/imported/介面背景.png-d5174c515b36f92bfa9748c006ef05b8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://裂痕.png"
-dest_files=["res://.godot/imported/裂痕.png-4bc9424cc3486bc6d7686b3e60cc59f5.ctex"]
+source_file="res://圖片/介面背景.png"
+dest_files=["res://.godot/imported/介面背景.png-d5174c515b36f92bfa9748c006ef05b8.ctex"]
 
 [params]
 

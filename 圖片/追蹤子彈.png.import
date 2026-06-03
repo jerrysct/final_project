@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d37xcn1hnlyoc"
-path="res://.godot/imported/裝備欄位.png-34a84c4b67c4cf2e7cb7f70244d7deff.ctex"
+uid="uid://clmg57x8p7stq"
+path="res://.godot/imported/追蹤子彈.png-1ddf254d056f0f670f3e1f51e7508834.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://裝備欄位.png"
-dest_files=["res://.godot/imported/裝備欄位.png-34a84c4b67c4cf2e7cb7f70244d7deff.ctex"]
+source_file="res://圖片/追蹤子彈.png"
+dest_files=["res://.godot/imported/追蹤子彈.png-1ddf254d056f0f670f3e1f51e7508834.ctex"]
 
 [params]
 

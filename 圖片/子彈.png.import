@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://u2hhx7snykqj"
-path="res://.godot/imported/體力瓶.png-944fcf45791177d90ce1be4fdeadb4e2.ctex"
+uid="uid://bxnpy8hflfxw6"
+path="res://.godot/imported/子彈.png-a0ee660fc47a9846bc146b70dcf5f91c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://體力瓶.png"
-dest_files=["res://.godot/imported/體力瓶.png-944fcf45791177d90ce1be4fdeadb4e2.ctex"]
+source_file="res://圖片/子彈.png"
+dest_files=["res://.godot/imported/子彈.png-a0ee660fc47a9846bc146b70dcf5f91c.ctex"]
 
 [params]
 

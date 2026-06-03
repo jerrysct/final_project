@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wf4ti3oy8m2o"
-path="res://.godot/imported/選單背景.png-9d858d67930695637e023f1de63e2fa7.ctex"
+uid="uid://cgxc5s7l1tw7m"
+path="res://.godot/imported/商店背景.png-45f28e6b56e1f83221336c06cae358d4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://選單背景.png"
-dest_files=["res://.godot/imported/選單背景.png-9d858d67930695637e023f1de63e2fa7.ctex"]
+source_file="res://圖片/商店背景.png"
+dest_files=["res://.godot/imported/商店背景.png-45f28e6b56e1f83221336c06cae358d4.ctex"]
 
 [params]
 
