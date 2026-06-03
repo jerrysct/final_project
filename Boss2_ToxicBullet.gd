@@ -18,116 +18,116 @@ var is_absorbed: bool = false
 
 
 func _ready() -> void:
-	monitoring = true
-	monitorable = true
+    monitoring = true
+    monitorable = true
 
-	if not body_entered.is_connected(_on_body_entered):
-		body_entered.connect(_on_body_entered)
+    if not body_entered.is_connected(_on_body_entered):
+        body_entered.connect(_on_body_entered)
 
-	var completed: bool = await _safe_wait(lifetime)
+    var completed: bool = await _safe_wait(lifetime)
 
-	if not completed:
-		return
+    if not completed:
+        return
 
-	if is_instance_valid(self):
-		queue_free()
+    if is_instance_valid(self):
+        queue_free()
 
 
 func setup(spawn_pos: Vector2, fire_direction: Vector2) -> void:
-	global_position = spawn_pos
-	_spawn_position = spawn_pos
-	_age = 0.0
-	can_be_reflected = false
-	is_reflected = false
-	is_absorbed = false
+    global_position = spawn_pos
+    _spawn_position = spawn_pos
+    _age = 0.0
+    can_be_reflected = false
+    is_reflected = false
+    is_absorbed = false
 
-	if fire_direction.length_squared() > 0.0001:
-		direction = fire_direction.normalized()
-	else:
-		direction = Vector2.RIGHT
+    if fire_direction.length_squared() > 0.0001:
+        direction = fire_direction.normalized()
+    else:
+        direction = Vector2.RIGHT
 
 
 func _physics_process(delta: float) -> void:
-	if is_absorbed:
-		return
+    if is_absorbed:
+        return
 
-	_age += delta
-	global_position += direction * speed * delta
+    _age += delta
+    global_position += direction * speed * delta
 
-	if not can_be_reflected:
-		var traveled_distance: float = global_position.distance_to(_spawn_position)
+    if not can_be_reflected:
+        var traveled_distance: float = global_position.distance_to(_spawn_position)
 
-		if _age >= reflect_arm_time or traveled_distance >= reflect_arm_distance:
-			can_be_reflected = true
+        if _age >= reflect_arm_time or traveled_distance >= reflect_arm_distance:
+            can_be_reflected = true
 
 
 func reflect(new_direction: Vector2 = Vector2.ZERO, power_multiplier: float = 1.0) -> void:
-	if not can_be_reflected:
-		if debug_enabled:
-			print("Toxic bullet not armed yet, cannot reflect")
-		return
+    if not can_be_reflected:
+        if debug_enabled:
+            print("Toxic bullet not armed yet, cannot reflect")
+        return
 
-	is_reflected = true
-	is_absorbed = false
+    is_reflected = true
+    is_absorbed = false
 
-	if new_direction.length_squared() > 0.0001:
-		direction = new_direction.normalized()
-	else:
-		direction = -direction
+    if new_direction.length_squared() > 0.0001:
+        direction = new_direction.normalized()
+    else:
+        direction = -direction
 
-	speed *= power_multiplier
+    speed *= power_multiplier
 
-	if debug_enabled:
-		print("Boss2_ToxicBullet reflected")
+    if debug_enabled:
+        print("Boss2_ToxicBullet reflected")
 
 
 func _on_body_entered(body: Node) -> void:
-	if is_absorbed:
-		return
+    if body == null:
+        return
 
-	if not is_reflected:
-		return
+    if body.is_in_group("boss2_obstacle"):
+        queue_free()
+        return
 
-	if body == null:
-		return
+    if is_absorbed:
+        return
 
-	if body.is_in_group("player"):
-		return
+    if not is_reflected:
+        return
 
-	if not body.has_method("take_damage"):
-		return
+    if body.is_in_group("player"):
+        return
 
-	var damage_amount: int = damage_to_tentacle
+    if not body.has_method("take_damage"):
+        return
 
-	if body.is_in_group("boss2_fish"):
-		damage_amount = damage_to_fish
+    var damage_amount: int = damage_to_tentacle
 
-	body.take_damage(damage_amount)
+    if body.is_in_group("boss2_fish"):
+        damage_amount = damage_to_fish
 
-	if debug_enabled:
-		print("Reflected toxic bullet hit: ", body.name, " damage = ", damage_amount)
-
-	queue_free()
+    body.take_damage(damage_amount)
+    queue_free()
 
 
 func _safe_wait(seconds: float) -> bool:
-	if not is_inside_tree():
-		return false
+    if not is_inside_tree():
+        return false
 
-	var tree := get_tree()
+    var tree := get_tree()
 
-	if tree == null:
-		return false
+    if tree == null:
+        return false
 
-	await tree.create_timer(seconds).timeout
+    await tree.create_timer(seconds).timeout
 
-	if not is_instance_valid(self):
-		return false
+    if not is_instance_valid(self):
+        return false
 
-	if not is_inside_tree():
-		return false
+    if not is_inside_tree():
+        return false
 
-	return true
+    return true
 
 @export var damage_to_tentacle: int = 25
 @export var damage_to_fish: int = 25

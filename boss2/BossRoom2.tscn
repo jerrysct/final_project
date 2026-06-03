@@ -5,11 +5,23 @@
 [ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://圖片/Boss1地圖.png" id="2_v5n53"]
 [ext_resource type="Script" uid="uid://cpgxgawsgn4ue" path="res://bossHealBar.gd" id="4_i4xb6"]
 [ext_resource type="PackedScene" uid="uid://dcggsh5j4mpvq" path="res://boss2/boss2.tscn" id="4_pfg5e"]
+<<<<<<< HEAD
 [ext_resource type="Script" uid="uid://dhg3x7x530yia" path="res://ConsumableUI.gd" id="6_5ih4v"]
 [ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://圖片/血量瓶.png" id="7_470r3"]
 [ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://圖片/體力瓶.png" id="8_btwil"]
 [ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://圖片/魔力瓶.png" id="9_8pxao"]
 [ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://圖片/無敵瓶.png" id="10_ng05d"]
+=======
+[ext_resource type="Script" path="res://ConsumableUI.gd" id="6_5ih4v"]
+[ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://血量瓶.png" id="7_470r3"]
+[ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="8_btwil"]
+[ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="9_8pxao"]
+[ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://無敵瓶.png" id="10_ng05d"]
+[ext_resource type="Script" uid="uid://dhr8tbp6amyje" path="res://BossRoom2_ObstacleSpawner.gd" id="11_5ih4v"]
+[ext_resource type="Script" uid="uid://b6cnqh7nmhdq8" path="res:// BossRoom2_ReverseZoneSpawner.gd" id="12_470r3"]
+[ext_resource type="PackedScene" uid="uid://penuygjptsum" path="res://boss2/Boss2_Obstacle.tscn" id="12_btwil"]
+[ext_resource type="PackedScene" uid="uid://ckgym358sdd6o" path="res://boss2/ReverseInputZone.tscn" id="14_8pxao"]
+>>>>>>> a3df79ddfc3aab8eb99c6ad8d5cbcb22168d961a
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r6kx4"]
 size = Vector2(1453, 34)
@@ -318,3 +330,11 @@ offset_bottom = 31.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
+
+[node name="ObstacleSpawner" type="Node" parent="." unique_id=2114561027]
+script = ExtResource("11_5ih4v")
+obstacle_scene = ExtResource("12_btwil")
+
+[node name="ReverseZoneSpawner" type="Node" parent="." unique_id=1120129809]
+script = ExtResource("12_470r3")
+reverse_zone_scene = ExtResource("14_8pxao")

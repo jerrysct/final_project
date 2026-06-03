@@ -299,15 +299,16 @@ func _physics_process(delta: float) -> void:
 	elif velocity.x < 0:
 		sprite.flip_h = true  
 		
-	# 【修正】晃動要用 SpriteContainer (外殼容器)，且數值調回合理範圍
-	if velocity != Vector2.ZERO:
-		walk_time += delta * 12.0 # 數字 15.0 剛剛好，1000.0 會變殘影
-		sprite_container.position.y = sin(walk_time) * 3.0 # 上下彈跳 25 像素
-		sprite_container.rotation = sin(walk_time * 0.5) * 0.02 # 左右傾斜 0.15 弧度
-	else:
-		walk_time = 0.0
-		sprite_container.position.y = lerp(sprite_container.position.y, 0.0, 0.2)
-		sprite_container.rotation = lerp(sprite_container.rotation, 0.0, 0.2)
+	# 【修改點 1】當玩家「沒有」在衝刺時，才執行這些偽走路晃動動畫，避免覆蓋掉 AnimationPlayer
+	if not is_dashing:
+		if velocity != Vector2.ZERO:
+			walk_time += delta * 12.0 # 數字 15.0 剛剛好，1000.0 會變殘影
+			sprite_container.position.y = sin(walk_time) * 3.0 # 上下彈跳 25 像素
+			sprite_container.rotation = sin(walk_time * 0.5) * 0.02 # 左右傾斜 0.15 弧度
+		else:
+			walk_time = 0.0
+			sprite_container.position.y = lerp(sprite_container.position.y, 0.0, 0.2)
+			sprite_container.rotation = lerp(sprite_container.rotation, 0.0, 0.2)
 		
 	if skill_indicator:
 		skill_indicator.is_parry_preparing = is_parry_preparing
@@ -417,6 +418,7 @@ func execute_instant_parry() -> void:
 	for area in bounce_zone.get_overlapping_areas():
 		if not area.has_method("reflect"): continue
 		if area.get("is_reflected") or area.get("is_absorbed"): continue
+		if area.get("cannot_parry") == true: continue # 👈 【新增】跳過不可普通反彈的子彈
 
 		var distance_to_bullet = global_position.distance_to(area.global_position)
 		if distance_to_bullet < parry_inner_radius or distance_to_bullet > parry_outer_radius:
@@ -503,11 +505,8 @@ func _add_bullet_to_ui(bullet: Node) -> void:
 		icon.modulate = (bullet_sprite as Sprite2D).modulate
 
 		if icon.texture != null:
-			var tex_size: Vector2 = icon.texture.get_size()
-			# 注意：這裡的 head_icon_pixel_size 如果報錯，請在最上方 @export 宣告它，或者改回原本的縮放寫法
-			var head_icon_pixel_size = 32.0 
-			var target_scale: float = head_icon_pixel_size / maxf(tex_size.x, tex_size.y)
-			icon.scale = Vector2(target_scale, target_scale)
+			# 直接套用你在 Inspector 裡設定的 head_icon_scale
+			icon.scale = head_icon_scale
 
 	head_bullet_display.add_child(icon)
 	_arrange_headshot_bullets()
@@ -546,6 +545,10 @@ func handle_movement(direction: Vector2) -> void:
 	velocity = direction * speed * speed_mult * move_speed_multiplier * slow_multiplier
 
 func perform_dash() -> void:
+	# 【修改點 2】強制加速播放動畫，讓它在 0.15 秒內播完
+	if anim_player:
+		anim_player.play("dash_1")
+		
 	if burn_time_left > 0.0:
 		burn_time_left = 0.0
 		if sprite and not is_invincible:

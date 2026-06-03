@@ -1,9 +1,124 @@
 [gd_scene format=3 uid="uid://ibhr0yox1fcc"]
 
 [ext_resource type="Script" uid="uid://dio36x2sh7c0t" path="res://Boss3_Ranged.gd" id="1_bs1s8"]
+<<<<<<< HEAD
 [ext_resource type="Texture2D" uid="uid://bagpyv5fswdmh" path="res://圖片/boss遠程.png" id="1_hdcdk"]
+=======
+>>>>>>> a3df79ddfc3aab8eb99c6ad8d5cbcb22168d961a
 [ext_resource type="PackedScene" uid="uid://cb1anm22lo0hn" path="res://Boss3_HomingBullet2.tscn" id="2_bs1s8"]
 [ext_resource type="PackedScene" uid="uid://cev2pcrpfr6l1" path="res://Boss3_Link.tscn" id="3_nam7t"]
+[ext_resource type="Texture2D" uid="uid://q2e27ql4fvnj" path="res://boss3_Ranged/ezgif_黑龍攻擊.png" id="4_o412g"]
+[ext_resource type="Texture2D" uid="uid://chpxs4xe8im62" path="res://boss3_Ranged/黑龍死亡.png" id="5_l1nml"]
+[ext_resource type="Texture2D" uid="uid://dcp4nqhg4qxqw" path="res://boss3_Ranged/ezgif-黑龍待機.png" id="6_wd63m"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3i1te"]
+atlas = ExtResource("4_o412g")
+region = Rect2(0, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cn1ad"]
+atlas = ExtResource("4_o412g")
+region = Rect2(180, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rpuug"]
+atlas = ExtResource("4_o412g")
+region = Rect2(360, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kfhg5"]
+atlas = ExtResource("4_o412g")
+region = Rect2(540, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t667t"]
+atlas = ExtResource("4_o412g")
+region = Rect2(720, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b2dea"]
+atlas = ExtResource("4_o412g")
+region = Rect2(0, 180, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ufhvv"]
+atlas = ExtResource("4_o412g")
+region = Rect2(180, 180, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_47nca"]
+atlas = ExtResource("4_o412g")
+region = Rect2(360, 180, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7dbw0"]
+atlas = ExtResource("5_l1nml")
+region = Rect2(0, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u22kt"]
+atlas = ExtResource("6_wd63m")
+region = Rect2(0, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k2uly"]
+atlas = ExtResource("6_wd63m")
+region = Rect2(180, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7q4i"]
+atlas = ExtResource("6_wd63m")
+region = Rect2(0, 180, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ecll0"]
+atlas = ExtResource("6_wd63m")
+region = Rect2(180, 180, 180, 180)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kai6n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3i1te")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cn1ad")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rpuug")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kfhg5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t667t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2dea")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ufhvv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_47nca")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7dbw0")
+}],
+"loop": true,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u22kt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k2uly")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7q4i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ecll0")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7nwss"]
 radius = 59.135437
@@ -18,10 +133,11 @@ debug_enabled = true
 heal_chance = 1.0
 link_scene = ExtResource("3_nam7t")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1105495807]
-position = Vector2(3.8146973e-06, 1.9073486e-06)
-scale = Vector2(0.114379905, 0.114501946)
-texture = ExtResource("1_hdcdk")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1105495807]
+position = Vector2(-1.0000114, -0.9999962)
+scale = Vector2(0.6627455, 0.6350288)
+sprite_frames = SubResource("SpriteFrames_kai6n")
+animation = &"death"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1418570543]
 shape = SubResource("CircleShape2D_7nwss")
