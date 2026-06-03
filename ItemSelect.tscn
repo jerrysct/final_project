@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b1t0ioywafyw2"]
 
-[ext_resource type="Script" uid="uid://dmj6h03m8vsac" path="res://ItemSelect.gd" id="1_ob8j4"]
+[ext_resource type="Script" path="res://ItemSelect.gd" id="1_ob8j4"]
+[ext_resource type="Texture2D" uid="uid://db2py3aqdgw6e" path="res://圖片/儲存背景.png" id="2_bu024"]
 
 [node name="ItemSelect_tscn" type="Control" unique_id=1437240159]
 layout_mode = 3
@@ -8,15 +9,14 @@ anchors_preset = 0
 script = ExtResource("1_ob8j4")
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=1067863205]
-custom_minimum_size = Vector2(1152, 648)
+custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 3.0
-offset_top = 3.0
-offset_right = 1155.0
-offset_bottom = 651.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 1920.0
+offset_bottom = 1080.0
 columns = 8
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1509968173]
+z_index = -1
+position = Vector2(960, 540)
+scale = Vector2(1.1490126, 1.1477152)
+texture = ExtResource("2_bu024")

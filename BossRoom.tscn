@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://cjkrbp5sra854"]
 
 [ext_resource type="PackedScene" uid="uid://dxj5il4u0ibe8" path="res://Boss1.tscn" id="1_6f7f2"]
-[ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://Boss1地圖.png" id="1_r6kx4"]
+[ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://圖片/Boss1地圖.png" id="1_r6kx4"]
 [ext_resource type="Script" uid="uid://dmunu0ftgq2dx" path="res://BossRoom.gd" id="1_room"]
 [ext_resource type="Script" uid="uid://cpgxgawsgn4ue" path="res://bossHealBar.gd" id="4_5yl58"]
 [ext_resource type="Script" uid="uid://pin3fcqem2v4" path="res://SequenceUI.gd" id="5_yq10e"]
 [ext_resource type="Script" uid="uid://dhg3x7x530yia" path="res://ConsumableUI.gd" id="6_aoosn"]
-[ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://血量瓶.png" id="7_yfkcr"]
-[ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="8_epqb1"]
-[ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="9_owky3"]
-[ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://無敵瓶.png" id="10_nsjf7"]
+[ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://圖片/血量瓶.png" id="7_yfkcr"]
+[ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://圖片/魔力瓶.png" id="8_epqb1"]
+[ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://圖片/體力瓶.png" id="9_owky3"]
+[ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://圖片/無敵瓶.png" id="10_nsjf7"]
 [ext_resource type="Script" uid="uid://bwanmn7e378fu" path="res://PrismManager.gd" id="11_epqb1"]
 [ext_resource type="PackedScene" uid="uid://fe4qq74r4nr5" path="res://Boss1_skill.tscn" id="12_owky3"]
 
@@ -107,15 +107,17 @@ far_sweep_interval = 0.045
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1775512141]
 
 [node name="BossHealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=137317540]
-anchors_preset = -1
-anchor_left = -0.41145834
-anchor_top = 0.06767622
-anchor_right = 0.0703125
-anchor_bottom = 0.09036896
-offset_left = 874.0
-offset_top = 547.1458
-offset_right = 1019.0
-offset_bottom = 572.4409
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -268.0
+offset_top = -62.803223
+offset_right = 802.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 0
 scale = Vector2(0.5, 0.61)
 theme_override_styles/background = SubResource("StyleBoxFlat_738ee")
 theme_override_styles/fill = SubResource("StyleBoxFlat_r8hku")
@@ -123,14 +125,13 @@ max_value = 1000.0
 value = 1000.0
 show_percentage = false
 script = ExtResource("4_5yl58")
-metadata/_edit_use_anchors_ = true
 
 [node name="BossHealthLabel" type="Label" parent="CanvasLayer" unique_id=1017405694]
 z_index = 10
-offset_left = 406.0
-offset_top = 591.0
-offset_right = 446.0
-offset_bottom = 615.0
+offset_left = 700.0
+offset_top = 1020.0
+offset_right = 740.0
+offset_bottom = 1044.0
 
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=108827037]
 offset_left = 18.0
@@ -178,7 +179,7 @@ offset_right = 46.0
 offset_bottom = 26.0
 
 [node name="SequenceUI" type="Node2D" parent="CanvasLayer" unique_id=1611063624]
-position = Vector2(516, 561)
+position = Vector2(897, 977)
 script = ExtResource("5_yq10e")
 
 [node name="Color1" type="ColorRect" parent="CanvasLayer/SequenceUI" unique_id=745603049]
@@ -204,10 +205,10 @@ metadata/_edit_use_anchors_ = true
 [node name="ConsumableUI" type="Control" parent="CanvasLayer" unique_id=1381210459]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 26.0
-offset_top = 455.0
-offset_right = 276.0
-offset_bottom = 575.0
+offset_left = 30.0
+offset_top = 900.0
+offset_right = 280.0
+offset_bottom = 1020.0
 script = ExtResource("6_aoosn")
 
 [node name="HPPotionIcon" type="TextureRect" parent="CanvasLayer/ConsumableUI" unique_id=97869703]

@@ -2,6 +2,10 @@
 
 [ext_resource type="Script" uid="uid://dvjc2hcefwr7e" path="res://Boss3_Melee.gd" id="1_mdmya"]
 [ext_resource type="PackedScene" uid="uid://n8io3ewieojt" path="res://Boss3_Fire.tscn" id="2_nkiiy"]
+<<<<<<< HEAD
+[ext_resource type="Texture2D" uid="uid://clkf6kx0otbbe" path="res://圖片/boss3_melee.png" id="2_o76aw"]
+=======
+>>>>>>> a3df79ddfc3aab8eb99c6ad8d5cbcb22168d961a
 [ext_resource type="PackedScene" uid="uid://blbq3svwt12uj" path="res://Boss3_crash.tscn" id="2_swlsm"]
 [ext_resource type="PackedScene" uid="uid://b2e51s2slqvaw" path="res://Boss3_HomingBullet.tscn" id="3_ukpb7"]
 [ext_resource type="PackedScene" uid="uid://p8ls7w78whgh" path="res://Boss3_Bullet.tscn" id="4_wd6bl"]

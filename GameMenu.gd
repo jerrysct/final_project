@@ -8,10 +8,10 @@ func _ready():
 	$CreditsPanel.visible = false
 
 	# 填入開發者名單（改成你們的名字）
-	$CreditsPanel/VBoxContainer/Dev1.text = "開發者一：（名字）"
-	$CreditsPanel/VBoxContainer/Dev2.text = "開發者二：（名字）"
-	$CreditsPanel/VBoxContainer/Dev3.text = "開發者三：（名字）"
-	$CreditsPanel/VBoxContainer/Dev4.text = "開發者四：（名字）"
+	$CreditsPanel/VBoxContainer/Dev1.text = "爆肝一號：（歐騰）"
+	$CreditsPanel/VBoxContainer/Dev2.text = "爆肝二號：（剉冰）"
+	$CreditsPanel/VBoxContainer/Dev3.text = "爆肝三號：（無鹽）"
+	$CreditsPanel/VBoxContainer/Dev4.text = "爆肝四號：（薯條）"
 	$CreditsPanel/VBoxContainer/CloseBtn.pressed.connect(
 		func(): $CreditsPanel.visible = false
 	)

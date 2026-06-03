@@ -2,8 +2,11 @@
 
 [ext_resource type="Script" uid="uid://bsjp263qawcsn" path="res://control.gd" id="1_tddig"]
 [ext_resource type="Texture2D" uid="uid://bp1vomvvq3een" path="res://charactor1/ezgif-frame-001.png" id="2_6yhuy"]
+[ext_resource type="Texture2D" uid="uid://dstivfymqtsm2" path="res://圖片/角色選擇背景.png" id="3_4hbjg"]
 [ext_resource type="Texture2D" uid="uid://brokqrl44fl6v" path="res://charactor2/charactor2.png" id="3_6yhuy"]
 [ext_resource type="Texture2D" uid="uid://dn5lji00a762o" path="res://charctor3/15.png" id="4_aoibv"]
+[ext_resource type="Texture2D" uid="uid://djp1221cbkc3y" path="res://圖片/商店跳轉背景.png" id="5_7yigr"]
+[ext_resource type="Texture2D" uid="uid://c53cspvuvo1gy" path="res://圖片/腳色選擇畫面背景.png" id="5_mn8d4"]
 
 [node name="CharacterSelect" type="Node2D" unique_id=579652414]
 
@@ -14,48 +17,74 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
 script = ExtResource("1_tddig")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Control" unique_id=660656266]
-custom_minimum_size = Vector2(800, 400)
+[node name="Back" type="Button" parent="Control" unique_id=1196938973]
+custom_minimum_size = Vector2(120, 50)
 layout_mode = 0
-offset_left = 100.0
-offset_top = 95.0
-offset_right = 900.0
-offset_bottom = 495.0
-scale = Vector2(1.11, 1.11)
+offset_right = 156.0
+offset_bottom = 67.0
+theme_override_font_sizes/font_size = 22
+text = "返回"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/ScrollContainer" unique_id=313323072]
-layout_mode = 2
-size_flags_horizontal = 3
+[node name="Sprite2D" type="Sprite2D" parent="Control/Back" unique_id=428978663]
+z_index = -5
+position = Vector2(78, 33.5)
+scale = Vector2(0.071823224, 0.09254142)
+texture = ExtResource("5_7yigr")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control" unique_id=313323072]
+layout_mode = 1
+offset_left = 611.0
+offset_top = 321.0
+offset_right = 1311.0
+offset_bottom = 719.0
+size_flags_horizontal = 6
 size_flags_vertical = 3
 theme_override_constants/separation = 50
 
-[node name="Character1" type="TextureButton" parent="Control/ScrollContainer/HBoxContainer" unique_id=1013993154]
+[node name="Character1" type="TextureButton" parent="Control/HBoxContainer" unique_id=1013993154]
 custom_minimum_size = Vector2(200, 300)
 layout_mode = 2
 texture_normal = ExtResource("2_6yhuy")
 ignore_texture_size = true
 stretch_mode = 6
 
-[node name="Character2" type="TextureButton" parent="Control/ScrollContainer/HBoxContainer" unique_id=1078829923]
+[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/Character1" unique_id=1453211618]
+z_index = -1
+position = Vector2(100.00002, 200.45044)
+scale = Vector2(0.18416204, 0.27686527)
+texture = ExtResource("3_4hbjg")
+
+[node name="Character2" type="TextureButton" parent="Control/HBoxContainer" unique_id=1078829923]
 custom_minimum_size = Vector2(200, 300)
 layout_mode = 2
 texture_normal = ExtResource("3_6yhuy")
 ignore_texture_size = true
 stretch_mode = 6
 
-[node name="Character3" type="TextureButton" parent="Control/ScrollContainer/HBoxContainer" unique_id=239980451]
-custom_minimum_size = Vector2(150, 150)
+[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/Character2" unique_id=841194579]
+z_index = -1
+position = Vector2(100.00002, 200.45044)
+scale = Vector2(0.18416204, 0.27686527)
+texture = ExtResource("3_4hbjg")
+
+[node name="Character3" type="TextureButton" parent="Control/HBoxContainer" unique_id=239980451]
+custom_minimum_size = Vector2(200, 150)
 layout_mode = 2
 texture_normal = ExtResource("4_aoibv")
 ignore_texture_size = true
 stretch_mode = 6
 
-[node name="Back" type="Button" parent="Control" unique_id=1196938973]
-custom_minimum_size = Vector2(120, 50)
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-theme_override_font_sizes/font_size = 22
-text = "返回"
+[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/Character3" unique_id=558567041]
+z_index = -1
+position = Vector2(100.00002, 200.45044)
+scale = Vector2(0.18416204, 0.27686527)
+texture = ExtResource("3_4hbjg")
+
+[node name="背景" type="Sprite2D" parent="." unique_id=1241475857]
+z_index = -10
+position = Vector2(960, 540)
+scale = Vector2(1.1483253, 1.1477152)
+texture = ExtResource("5_mn8d4")
