@@ -419,7 +419,9 @@ func execute_instant_parry() -> void:
 		if area.get("is_reflected") or area.get("is_absorbed"): continue
 
 		var distance_to_bullet = global_position.distance_to(area.global_position)
-		if distance_to_bullet < parry_inner_radius or distance_to_bullet > parry_outer_radius:
+		
+		# 【修改 1】移除原本忽略內圈的條件，現在只過濾掉「大於外圈」的子彈
+		if distance_to_bullet > parry_outer_radius:
 			continue 
 
 		# --- 半圓範圍判定 ---
@@ -428,11 +430,19 @@ func execute_instant_parry() -> void:
 			continue
 		# --------------------
 
+		# 【修改 2】判定是否落在內圈範圍，如果是則將該子彈的傷害減半
+		if distance_to_bullet <= parry_inner_radius:
+			if "damage" in area:
+				area.damage *= 0.5
+				# 如果你的子彈腳本裡 damage 宣告為嚴格的 int 型態 (例如 var damage: int)，
+				# 可以改成 area.damage = int(area.damage * 0.5)
+
 		var reflect_dir: Vector2 = Vector2.ZERO
 		var area_direction = area.get("direction")
 		if area_direction is Vector2:
 			reflect_dir = -(area_direction as Vector2).normalized()
 
+		# 執行反彈 (此處的 1.5 應該是速度或力道加乘，維持你原本的設定)
 		area.reflect(reflect_dir, 1.5)
 
 func execute_absorb_action() -> void:
@@ -503,11 +513,8 @@ func _add_bullet_to_ui(bullet: Node) -> void:
 		icon.modulate = (bullet_sprite as Sprite2D).modulate
 
 		if icon.texture != null:
-			var tex_size: Vector2 = icon.texture.get_size()
-			# 注意：這裡的 head_icon_pixel_size 如果報錯，請在最上方 @export 宣告它，或者改回原本的縮放寫法
-			var head_icon_pixel_size = 32.0 
-			var target_scale: float = head_icon_pixel_size / maxf(tex_size.x, tex_size.y)
-			icon.scale = Vector2(target_scale, target_scale)
+			# 直接套用你在 Inspector 裡設定的 head_icon_scale
+			icon.scale = head_icon_scale
 
 	head_bullet_display.add_child(icon)
 	_arrange_headshot_bullets()

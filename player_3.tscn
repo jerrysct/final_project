@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cl730f13oh4w6"]
 
 [ext_resource type="Script" uid="uid://uo5jyw0vspoi" path="res://player_3.gd" id="1_ws8r4"]
-[ext_resource type="Script" uid="uid://c14o3o0faeeld" path="res://skill_indicator.gd" id="2_w8d8i"]
+[ext_resource type="Script" uid="uid://cwpuwt4so2s4p" path="res://skill_indicator3.gd" id="2_ws8r4"]
 [ext_resource type="Texture2D" uid="uid://bm1hlmtrucivr" path="res://charctor3/1.png" id="3_ws8r4"]
 [ext_resource type="Texture2D" uid="uid://8mvhya0iiao3" path="res://charctor3/2.png" id="4_yxmtl"]
 [ext_resource type="Texture2D" uid="uid://d8w4h8fp2sbx" path="res://charctor3/3.png" id="5_dh5kl"]
@@ -197,7 +197,7 @@ _data = {
 position = Vector2(-2, 0)
 script = ExtResource("1_ws8r4")
 parry_inner_radius = 50.0
-head_icon_scale = Vector2(0.005, 0.005)
+head_icon_scale = Vector2(0.06, 0.06)
 metadata/_edit_horizontal_guides_ = [34.0]
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1199489429]
@@ -218,7 +218,7 @@ default_color = Color(0.7921569, 1, 1, 1)
 shape = SubResource("CircleShape2D_bxx23")
 
 [node name="SkillIndicator" type="Node2D" parent="." unique_id=762262312]
-script = ExtResource("2_w8d8i")
+script = ExtResource("2_ws8r4")
 
 [node name="ReleaseBurstParticles" type="CPUParticles2D" parent="." unique_id=314675806]
 amount = 30
