@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://c3wd06ox041i2"]
+
+[ext_resource type="Script" uid="uid://yhli4xtmeud6" path="res://ReverseInputZone.gd" id="1_svica"]
+[ext_resource type="Texture2D" uid="uid://o664b1i0b8qf" path="res://圖片4.png" id="2_ew5ly"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vsiex"]
+radius = 57.0
+
+[node name="ReverseInputZone" type="Area2D" unique_id=61281707]
+script = ExtResource("1_svica")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=932874373]
+texture = ExtResource("2_ew5ly")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1771941665]
+shape = SubResource("CircleShape2D_vsiex")

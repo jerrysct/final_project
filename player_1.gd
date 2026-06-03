@@ -67,6 +67,8 @@ var burn_interval: float = 1.0
 var slow_debuff_timer: float = 0.0
 var slow_multiplier: float = 1.0
 
+var reverse_input_enabled: bool = false
+var _reverse_input_token: int = 0
 
 func _ready() -> void:
 	var own_canvas := get_node_or_null("CanvasLayer")
@@ -181,52 +183,96 @@ func _physics_process(delta: float) -> void:
 	handle_resources(delta)
 
 	# ==========================================
-	# 【新增灼燒邏輯】：處理灼燒持續傷害
+	# 灼燒持續傷害
 	# ==========================================
 	if burn_time_left > 0.0:
 		burn_time_left -= delta
 		burn_tick_timer -= delta
-		
+
 		if burn_tick_timer <= 0.0:
 			take_damage(burn_damage)
-			burn_tick_timer = burn_interval # 重置計時器
+			burn_tick_timer = burn_interval
 			print("💔 灼燒發作！扣除 ", burn_damage, " 滴血，灼燒剩餘時間: ", snapped(burn_time_left, 0.1), " 秒")
-			
-		# 灼燒自然結束，恢復原本顏色
+
 		if burn_time_left <= 0.0:
 			if sprite and not is_invincible:
 				sprite.modulate = Color.WHITE
 			print("💨 灼燒狀態自然結束！")
-	
+
 	# ==========================================
-	# 【新增緩速邏輯】：處理緩速計時
+	# 緩速計時
 	# ==========================================
 	if slow_debuff_timer > 0.0:
 		slow_debuff_timer -= delta
+
 		if slow_debuff_timer <= 0.0:
 			slow_multiplier = 1.0
 			print("🏃 緩速結束，恢復正常速度！")
+
 	# ==========================================
+	# 冷卻時間
+	# ==========================================
+	if parry_cd_timer > 0.0:
+		parry_cd_timer -= delta
 
-	if parry_cd_timer > 0: parry_cd_timer -= delta
-	if absorb_cd_timer > 0: absorb_cd_timer -= delta
-	if dash_cd_timer > 0: dash_cd_timer -= delta
+	if absorb_cd_timer > 0.0:
+		absorb_cd_timer -= delta
 
-	if health_bar: health_bar.value = current_hp
-	if hp_label: hp_label.text = "%d / %d" % [current_hp, Playerdata_Globle.max_hp]
-	if stamina_bar: stamina_bar.value = current_stamina
-	if stamina_label: stamina_label.text = "%d / %d" % [current_stamina, Playerdata_Globle.max_stamina]
-	if mp_bar: mp_bar.value = current_mp
-	if mp_label: mp_label.text = "%d / %d" % [current_mp, Playerdata_Globle.max_mp]
+	if dash_cd_timer > 0.0:
+		dash_cd_timer -= delta
 
-	if btn_hp_label: btn_hp_label.text = str(Playerdata_Globle.hp_potion)
-	if btn_stamina_label: btn_stamina_label.text = str(Playerdata_Globle.stamina_potion)
-	if btn_mp_label: btn_mp_label.text = str(Playerdata_Globle.mp_potion)
-	if btn_invincible_label: btn_invincible_label.text = str(Playerdata_Globle.invincible)
+	# ==========================================
+	# UI 更新
+	# ==========================================
+	if health_bar:
+		health_bar.value = current_hp
 
-	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	if hp_label:
+		hp_label.text = "%d / %d" % [current_hp, Playerdata_Globle.max_hp]
+
+	if stamina_bar:
+		stamina_bar.value = current_stamina
+
+	if stamina_label:
+		stamina_label.text = "%d / %d" % [current_stamina, Playerdata_Globle.max_stamina]
+
+	if mp_bar:
+		mp_bar.value = current_mp
+
+	if mp_label:
+		mp_label.text = "%d / %d" % [current_mp, Playerdata_Globle.max_mp]
+
+	if btn_hp_label:
+		btn_hp_label.text = str(Playerdata_Globle.hp_potion)
+
+	if btn_stamina_label:
+		btn_stamina_label.text = str(Playerdata_Globle.stamina_potion)
+
+	if btn_mp_label:
+		btn_mp_label.text = str(Playerdata_Globle.mp_potion)
+
+	if btn_invincible_label:
+		btn_invincible_label.text = str(Playerdata_Globle.invincible)
+
+	# ==========================================
+	# 移動輸入
+	# 反向輸入區域會在這裡生效
+	# ==========================================
+	var direction := Input.get_vector(
+		"move_left",
+		"move_right",
+		"move_up",
+        "move_down"
+	)
+
+	if reverse_input_enabled:
+		direction = -direction
+
 	handle_movement(direction)
-	
+
+	# ==========================================
+	# 瞬間反彈
+	# ==========================================
 	if Input.is_action_pressed("parry") and parry_cd_timer <= 0.0 and not is_absorb_preparing and not is_aiming:
 		is_parry_preparing = true
 	else:
@@ -234,7 +280,10 @@ func _physics_process(delta: float) -> void:
 			execute_instant_parry()
 			is_parry_preparing = false
 			parry_cd_timer = parry_cooldown
-			
+
+	# ==========================================
+	# 吸收
+	# ==========================================
 	if Input.is_action_pressed("absorb") and absorb_cd_timer <= 0.0 and not is_parry_preparing and not is_aiming:
 		is_absorb_preparing = true
 		execute_absorb_action()
@@ -242,19 +291,27 @@ func _physics_process(delta: float) -> void:
 		if is_absorb_preparing:
 			is_absorb_preparing = false
 			absorb_cd_timer = absorb_cooldown
-		
+
+	# ==========================================
+	# 瞄準與釋放
+	# ==========================================
 	if not is_parry_preparing and not is_absorb_preparing:
 		handle_aim_and_release()
 
+	# ==========================================
+	# 技能指示器更新
+	# ==========================================
 	if skill_indicator:
 		skill_indicator.is_parry_preparing = is_parry_preparing
 		skill_indicator.is_absorb_preparing = is_absorb_preparing
 		skill_indicator.is_aiming = is_aiming
-		if bounce_collision: skill_indicator.bounce_collision = bounce_collision
+
+		if bounce_collision:
+			skill_indicator.bounce_collision = bounce_collision
+
 		skill_indicator.queue_redraw()
 
 	move_and_slide()
-
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("use_item_1"): use_hp_potion()
@@ -608,3 +665,25 @@ func _on_btn_hp_pressed() -> void: use_hp_potion()
 func _on_btn_stamina_pressed() -> void: use_stamina_potion()
 func _on_btn_mp_pressed() -> void: use_mp_potion()
 func _on_btn_invincible_pressed() -> void: use_invincible_potion()
+
+func set_reverse_input(enabled: bool) -> void:
+	reverse_input_enabled = enabled
+	print("Reverse input enabled = ", reverse_input_enabled)
+
+func apply_reverse_input(duration: float) -> void:
+	_reverse_input_token += 1
+	var current_token: int = _reverse_input_token
+
+	reverse_input_enabled = true
+	print("Reverse input enabled = true, duration = ", duration)
+
+	await get_tree().create_timer(duration).timeout
+
+	if not is_instance_valid(self):
+		return
+
+	if current_token != _reverse_input_token:
+		return
+
+	reverse_input_enabled = false
+	print("Reverse input enabled = false")

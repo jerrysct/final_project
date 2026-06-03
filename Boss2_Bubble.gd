@@ -74,8 +74,9 @@ func _ready() -> void:
 	if not body_entered.is_connected(_on_body_entered):
 		body_entered.connect(_on_body_entered)
 
-	_update_visual()
+	call_deferred("_check_initial_obstacle_overlap")
 
+	_update_visual()
 
 func _physics_process(delta: float) -> void:
 	if _is_dead:
@@ -123,6 +124,13 @@ func _stop_and_arm() -> void:
 
 func _on_body_entered(body: Node) -> void:
 	if _is_dead:
+		return
+
+	if body == null:
+		return
+
+	if body.is_in_group("boss2_obstacle"):
+		_pop()
 		return
 
 	if not _is_armed:
@@ -207,6 +215,16 @@ func _update_visual() -> void:
 		return
 
 	sprite.modulate = Color(0.65, 0.9, 1.0, 0.75)
+
+
+func _check_initial_obstacle_overlap() -> void:
+	if _is_dead:
+		return
+
+	for body in get_overlapping_bodies():
+		if body != null and body.is_in_group("boss2_obstacle"):
+			_pop()
+			return
 
 
 func _pop() -> void:

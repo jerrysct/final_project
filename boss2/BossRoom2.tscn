@@ -10,6 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="8_btwil"]
 [ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="9_8pxao"]
 [ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://無敵瓶.png" id="10_ng05d"]
+[ext_resource type="Script" uid="uid://dhr8tbp6amyje" path="res://BossRoom2_ObstacleSpawner.gd" id="11_mlsfa"]
+[ext_resource type="PackedScene" uid="uid://penuygjptsum" path="res://boss2/Boss2_Obstacle.tscn" id="12_5ih4v"]
+[ext_resource type="Script" uid="uid://bcuaxmfhs8r8f" path="res://BossRoom2_ReverseZoneSpawner.gd" id="13_btwil"]
+[ext_resource type="PackedScene" uid="uid://c3wd06ox041i2" path="res://boss2/ReverseInputZone.tscn" id="14_8pxao"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r6kx4"]
 size = Vector2(1453, 34)
@@ -317,3 +321,14 @@ offset_bottom = 31.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
+
+[node name="ObstacleSpawner" type="Node2D" parent="." unique_id=1692454281]
+script = ExtResource("11_mlsfa")
+obstacle_scene = ExtResource("12_5ih4v")
+
+[node name="ReverseZoneSpawner" type="Node2D" parent="." unique_id=126725388]
+script = ExtResource("13_btwil")
+reverse_zone_scene = ExtResource("14_8pxao")
+phase_required = 2
+zone_lifetime = 10.0
+max_zones = 3

@@ -12,10 +12,10 @@ func _ready():
 		func(): _on_stage_selected("res://BossRoom.tscn")
 	)
 	$ScrollContainer/HBoxContainer/Boss2.pressed.connect(
-		func(): _on_stage_selected("res://scenes/Boss2.tscn")
+		func(): _on_stage_selected("res://boss2/BossRoom2.tscn")
 	)
 	$ScrollContainer/HBoxContainer/Boss3.pressed.connect(
-		func(): _on_stage_selected("res://BossRoom3.tscn")
+		func(): _on_stage_selected("res://boss2/BossRoom2.tscn")
 	)
 	
 	# 2. 連結右下角「開始戰鬥」按鈕

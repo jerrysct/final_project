@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://penuygjptsum"]
+
+[ext_resource type="Script" uid="uid://bu1r8w7n7ubhf" path="res://Boss2_Obstacle.gd" id="1_y51cp"]
+[ext_resource type="Texture2D" uid="uid://dxfh37njaobge" path="res://沈船木板.png" id="2_8uux8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8uux8"]
+radius = 99.48869
+
+[node name="Boss2Obstacle" type="StaticBody2D" unique_id=509055285]
+collision_layer = 17
+collision_mask = 17
+script = ExtResource("1_y51cp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1980500090]
+shape = SubResource("CircleShape2D_8uux8")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=656050376]
+scale = Vector2(0.1628418, 0.13525392)
+texture = ExtResource("2_8uux8")

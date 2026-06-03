@@ -10,6 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://tm3s30c78p8e" path="res://ToxicChargeSprite.png" id="8_7pt0y"]
 [ext_resource type="Texture2D" uid="uid://bfa5m4k30y4tu" path="res://BurstChargeSprite.png" id="9_ul6qa"]
 [ext_resource type="Texture2D" uid="uid://bd6ctunjyyb4p" path="res://LaserChargeSprite.png" id="10_jnqi1"]
+[ext_resource type="Script" uid="uid://cnsba68ywmocu" path="res://Boss2_WeakAttack.gd" id="11_7pt0y"]
+[ext_resource type="Script" uid="uid://cxp00w6neji8" path="res://Boss2_SpecialBulletPatterns.gd" id="12_jnqi1"]
+[ext_resource type="PackedScene" uid="uid://cc8cdq8vd85tk" path="res://boss2/Boss2_PatternBullet.tscn" id="13_kfk5m"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ogw3f"]
 
@@ -32,3 +35,11 @@ texture = ExtResource("2_hvbax")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=602824025]
 shape = SubResource("CircleShape2D_ogw3f")
+
+[node name="Boss2WeakAttack" type="Node" parent="." unique_id=19905988]
+script = ExtResource("11_7pt0y")
+toxic_bullet_scene = ExtResource("2_ut2jv")
+
+[node name="Boss2SpecialBulletPatterns" type="Node2D" parent="." unique_id=1866093089]
+script = ExtResource("12_jnqi1")
+pattern_bullet_scene = ExtResource("13_kfk5m")

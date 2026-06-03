@@ -4,8 +4,8 @@ extends CharacterBody2D
 @export var debug_enabled: bool = true
 
 @export var toxic_bullet_scene: PackedScene
-@export var shoot_interval_min: float = 1.4
-@export var shoot_interval_max: float = 2.4
+@export var shoot_interval_min: float = 2.5
+@export var shoot_interval_max: float = 4.0
 
 @export var toxic_bullet_count_min: int = 3
 @export var toxic_bullet_count_max: int = 5
@@ -14,8 +14,8 @@ extends CharacterBody2D
 @export var toxic_bullet_speed_random_max: float = 1.05
 @export var toxic_bullet_fire_interval: float = 0.045
 
-@export var fan_bullet_count_min: int = 4
-@export var fan_bullet_count_max: int = 6
+@export var fan_bullet_count_min: int = 3
+@export var fan_bullet_count_max: int = 5
 @export var fan_spread_degrees: float = 75.0
 
 @export var slam_warning_scene: PackedScene

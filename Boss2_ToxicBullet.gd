@@ -82,15 +82,25 @@ func reflect(new_direction: Vector2 = Vector2.ZERO, power_multiplier: float = 1.
 
 
 func _on_body_entered(body: Node) -> void:
-	if is_absorbed:
-		return
-
-	if not is_reflected:
-		return
-
 	if body == null:
 		return
 
+	# 撞到障礙物，不管有沒有被反彈，都直接消失
+	if body.is_in_group("boss2_obstacle"):
+		if debug_enabled:
+			print("Toxic bullet blocked by obstacle: ", body.name)
+
+		queue_free()
+		return
+
+	if is_absorbed:
+		return
+
+	# 沒有被玩家反彈前，不傷害魚 / 觸手 / Boss
+	if not is_reflected:
+		return
+
+	# 反彈彈不要打到玩家自己
 	if body.is_in_group("player"):
 		return
 
