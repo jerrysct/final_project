@@ -9,7 +9,7 @@ extends Area2D
 var direction: Vector2 = Vector2.RIGHT
 var is_reflected: bool = false
 var is_absorbed: bool = false
-var cannot_parry: bool = true 
+var cannot_parry: bool = false 
 
 var can_be_reflected: bool = false 
 

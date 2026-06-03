@@ -553,6 +553,8 @@ func handle_movement(direction: Vector2) -> void:
 	velocity = direction * speed * speed_mult * move_speed_multiplier * slow_multiplier
 
 func perform_dash() -> void:
+	if anim_player:
+		anim_player.play("dash")
 	if burn_time_left > 0.0:
 		burn_time_left = 0.0
 		if sprite and not is_invincible:
