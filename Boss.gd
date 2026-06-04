@@ -87,6 +87,7 @@ enum AttackPattern {
 @onready var sequence_ui: Node = get_tree().current_scene.get_node_or_null("CanvasLayer/SequenceUI")
 @onready var boss_sprite: Sprite2D = $Sprite2D
 
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 var player: Node2D = null
 
 var hp: int
@@ -115,6 +116,7 @@ var is_doing_far_sweep: bool = false
 
 
 func _ready() -> void:
+	animated_sprite.play("idle")
 	hp = max_hp
 
 	if health_bar != null:

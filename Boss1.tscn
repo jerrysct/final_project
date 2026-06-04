@@ -2,10 +2,103 @@
 
 [ext_resource type="Script" uid="uid://bp420gko6q7ys" path="res://Boss.gd" id="1_dtosr"]
 [ext_resource type="PackedScene" uid="uid://bjxcqjnkf8tf2" path="res://Boss1_Bullet.tscn" id="2_ohn0q"]
-[ext_resource type="Texture2D" uid="uid://j7yjhknavyfw" path="res://圖片/Bossimage.png" id="4_yjrng"]
+[ext_resource type="Texture2D" uid="uid://no7la37wft1y" path="res://Boss1精靈圖 (1).png" id="4_1r8ol"]
+[ext_resource type="Texture2D" uid="uid://j7yjhknavyfw" path="res://Bossimage.png" id="4_yjrng"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_paxtu"]
-radius = 491.73724
+radius = 197.23785
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2dsk"]
+atlas = ExtResource("4_1r8ol")
+region = Rect2(0, 0, 292, 372)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yjrng"]
+atlas = ExtResource("4_1r8ol")
+region = Rect2(292, 0, 292, 372)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7kw3l"]
+atlas = ExtResource("4_1r8ol")
+region = Rect2(584, 0, 292, 372)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pngss"]
+atlas = ExtResource("4_1r8ol")
+region = Rect2(876, 0, 292, 372)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mffgm"]
+atlas = ExtResource("4_1r8ol")
+region = Rect2(1168, 0, 292, 372)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pri70"]
+atlas = ExtResource("4_1r8ol")
+region = Rect2(0, 372, 292, 372)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g25ec"]
+atlas = ExtResource("4_1r8ol")
+region = Rect2(292, 372, 292, 372)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c0ouu"]
+atlas = ExtResource("4_1r8ol")
+region = Rect2(584, 372, 292, 372)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t6x8y"]
+atlas = ExtResource("4_1r8ol")
+region = Rect2(876, 372, 292, 372)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ikit"]
+atlas = ExtResource("4_1r8ol")
+region = Rect2(1168, 372, 292, 372)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ftpd6"]
+atlas = ExtResource("4_1r8ol")
+region = Rect2(0, 744, 292, 372)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g534c"]
+atlas = ExtResource("4_1r8ol")
+region = Rect2(292, 744, 292, 372)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_afyo4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2dsk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yjrng")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7kw3l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pngss")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mffgm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pri70")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g25ec")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c0ouu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t6x8y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ikit")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ftpd6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g534c")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
 
 [node name="Boss" type="CharacterBody2D" unique_id=737443956]
 position = Vector2(0, 1.1920929e-07)
@@ -14,12 +107,12 @@ script = ExtResource("1_dtosr")
 bullet_scene = ExtResource("2_ohn0q")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=761326382]
+visible = false
 position = Vector2(3.0517578e-05, 0)
 scale = Vector2(0.2, 0.199)
 texture = ExtResource("4_yjrng")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1562202276]
-scale = Vector2(0.2, 0.2)
 shape = SubResource("CircleShape2D_paxtu")
 
 [node name="BulletSpawnPoint" type="Marker2D" parent="." unique_id=1518232827]
@@ -31,3 +124,10 @@ wait_time = 0.8
 [node name="StunTimer" type="Timer" parent="." unique_id=1977830478]
 wait_time = 2.0
 one_shot = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=593913599]
+position = Vector2(-2.0833263, -2.5000153)
+scale = Vector2(1.3613013, 1.0976702)
+sprite_frames = SubResource("SpriteFrames_afyo4")
+animation = &"idle"
+frame_progress = 0.28345153

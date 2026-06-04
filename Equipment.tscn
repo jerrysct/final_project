@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://c0vkk2g5ygi4f"]
 
-[ext_resource type="Script" path="res://Equipment.gd" id="1_ij1m0"]
-[ext_resource type="Texture2D" uid="uid://b3sawqnatm826" path="res://圖片/2026年6月2日 下午07_54_06.png" id="2_7k06b"]
-[ext_resource type="Texture2D" uid="uid://d37xcn1hnlyoc" path="res://圖片/裝備欄位.png" id="2_kyt6o"]
-[ext_resource type="Texture2D" uid="uid://djp1221cbkc3y" path="res://圖片/商店跳轉背景.png" id="3_d15u6"]
+[ext_resource type="Script" uid="uid://cwaeiqxl5runo" path="res://Equipment.gd" id="1_ij1m0"]
+[ext_resource type="Texture2D" uid="uid://b3sawqnatm826" path="res://2026年6月2日 下午07_54_06.png" id="2_7k06b"]
+[ext_resource type="Texture2D" uid="uid://d37xcn1hnlyoc" path="res://裝備欄位.png" id="2_kyt6o"]
+[ext_resource type="Texture2D" uid="uid://djp1221cbkc3y" path="res://商店跳轉背景.png" id="3_d15u6"]
 
 [node name="Equipment_tscn" type="Control" unique_id=1596227129]
 layout_mode = 3
