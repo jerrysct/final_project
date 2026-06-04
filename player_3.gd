@@ -71,6 +71,9 @@ var burn_interval: float = 1.0
 var slow_debuff_timer: float = 0.0
 var slow_multiplier: float = 1.0
 
+var reverse_input_enabled: bool = false
+var _reverse_input_token: int = 0
+
 # --- 用於偽走路動畫的時間變數 ---
 var walk_time: float = 0.0
 
@@ -244,6 +247,10 @@ func _physics_process(delta: float) -> void:
 	
 	# 移動判斷
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	
+	if reverse_input_enabled:
+		direction = -direction
+		
 	handle_movement(direction)
 
 	# ==========================================
@@ -417,6 +424,7 @@ func execute_instant_parry() -> void:
 	for area in bounce_zone.get_overlapping_areas():
 		if not area.has_method("reflect"): continue
 		if area.get("is_reflected") or area.get("is_absorbed"): continue
+		if area.get("cannot_parry") == true: continue # 👈 【新增】跳過不可普通反彈的子彈
 
 		var distance_to_bullet = global_position.distance_to(area.global_position)
 		
@@ -434,15 +442,12 @@ func execute_instant_parry() -> void:
 		if distance_to_bullet <= parry_inner_radius:
 			if "damage" in area:
 				area.damage *= 0.5
-				# 如果你的子彈腳本裡 damage 宣告為嚴格的 int 型態 (例如 var damage: int)，
-				# 可以改成 area.damage = int(area.damage * 0.5)
 
 		var reflect_dir: Vector2 = Vector2.ZERO
 		var area_direction = area.get("direction")
 		if area_direction is Vector2:
 			reflect_dir = -(area_direction as Vector2).normalized()
 
-		# 執行反彈 (此處的 1.5 應該是速度或力道加乘，維持你原本的設定)
 		area.reflect(reflect_dir, 1.5)
 
 func execute_absorb_action() -> void:
@@ -745,3 +750,25 @@ func _on_btn_mp_pressed() -> void:
 
 func _on_btn_invincible_pressed() -> void:
 	use_invincible_potion()
+
+func set_reverse_input(enabled: bool) -> void:
+	reverse_input_enabled = enabled
+	print("Reverse input enabled = ", reverse_input_enabled)
+
+func apply_reverse_input(duration: float) -> void:
+	_reverse_input_token += 1
+	var current_token: int = _reverse_input_token
+
+	reverse_input_enabled = true
+	print("Reverse input enabled = true, duration = ", duration)
+
+	await get_tree().create_timer(duration).timeout
+
+	if not is_instance_valid(self):
+		return
+
+	if current_token != _reverse_input_token:
+		return
+
+	reverse_input_enabled = false
+	print("Reverse input enabled = false")

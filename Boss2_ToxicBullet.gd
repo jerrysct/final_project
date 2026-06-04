@@ -85,7 +85,10 @@ func _on_body_entered(body: Node) -> void:
     if body == null:
         return
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
     # 撞到障礙物，不管有沒有被反彈，都直接消失
     if body.is_in_group("boss2_obstacle"):
         if debug_enabled:
@@ -118,6 +121,7 @@ func _on_body_entered(body: Node) -> void:
     if debug_enabled:
         print("Reflected toxic bullet hit: ", body.name, " damage = ", damage_amount)
 
+<<<<<<< HEAD
 
     if body.is_in_group("boss2_obstacle"):
         queue_free()
@@ -143,6 +147,8 @@ func _on_body_entered(body: Node) -> void:
 
     body.take_damage(damage_amount)
 
+=======
+>>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
     queue_free()
 
 

@@ -11,7 +11,10 @@ func _ready():
 	$HBoxContainer/Boss1.pressed.connect(
 		func(): _on_stage_selected("res://BossRoom.tscn")
 	)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
 	$HBoxContainer/Boss2.pressed.connect(
 		func(): _on_stage_selected("res://boss2/BossRoom2.tscn")
 	)
@@ -19,7 +22,10 @@ func _ready():
 	
 	$HBoxContainer/Boss3.pressed.connect(
 		func(): _on_stage_selected("res://BossRoom3.tscn")
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
 	)
 	
 	# 2. 連結右下角「開始戰鬥」按鈕

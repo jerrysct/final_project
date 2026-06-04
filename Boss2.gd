@@ -19,16 +19,16 @@ signal died
 
 @export var phase1_spread_degrees: float = 30.0
 @export var phase2_spread_degrees: float = 55.0
-@export var phase3_spread_degrees: float = 70.0
+@export var phase3_spread_degrees: float = 80.0
 
 @export var burst_bullet_scene: PackedScene
 @export var fish_scene: PackedScene
 @export var explode_fish_scene: PackedScene
-@export var fish_spawn_count_min: int = 1
-@export var fish_spawn_count_max: int = 3
+@export var fish_spawn_count_min: int = 2
+@export var fish_spawn_count_max: int = 4
 @export var fish_spawn_radius: float = 260.0
 
-@export var max_normal_fish: int = 2
+@export var max_normal_fish: int = 4
 @export var max_explode_fish: int = 2
 
 @export var laser_warning_scene: PackedScene
@@ -66,8 +66,6 @@ signal died
 @export var fish_attack_weight: float = 15.0
 @export var laser_attack_weight: float = 5.0
 @export var tide_attack_weight: float = 15.0
-@export var special_bullet_attack_weight: float = 15.0
-@export var special_bullet_cooldown: float = 8.0
 
 # 大招冷卻：依你的要求，各自比前一版短 1 秒。
 @export var laser_cooldown: float = 11.0
@@ -83,7 +81,7 @@ signal died
 @export var tide_duration: float = 2.0
 
 @export var pull_force: float = 4000
-@export var push_force: float = 420.0
+@export var push_force: float = 620.0
 
 @export var tide_affects_bubbles: bool = true
 @export var tide_recovery_time: float = 3.0
@@ -93,17 +91,6 @@ signal died
 @export var debug_space_damage_enabled: bool = true
 @export var debug_space_damage_amount: int = 80
 @export var debug_space_damage_cooldown: float = 0.25
-
-@export var phase2_weak_duration: float = 2.5
-@export var phase3_weak_duration: float = 8.5
-
-@export var weak_bullet_interval: float = 0.55
-@export var weak_bullet_count: int = 4
-@export var weak_bullet_spread_degrees: float = 1
-@onready var special_bullet_patterns: Node = get_node_or_null("Boss2SpecialBulletPatterns")
-@onready var weak_attack: Node = get_node_or_null("Boss2WeakAttack")
-
-@warning_ignore("unused_private_class_variable")
 var _debug_space_damage_timer: float = 0.0
 var hp: int
 var _is_weak: bool = false
@@ -120,30 +107,17 @@ var _laser_next_allowed_time: float = 0.0
 var _fish_next_allowed_time: float = 0.0
 var _burst_next_allowed_time: float = 0.0
 var _tide_next_allowed_time: float = 0.0
-var _special_bullet_next_allowed_time: float = 0.0
-
-
+	  
+		
 func _ready() -> void:
 	hp = max_hp
 	find_player()
 	_roll_attack_timer()
 	_show_normal_texture()
 
-	if weak_attack != null and weak_attack.has_method("setup"):
-		weak_attack.setup(self)
-	else:
-		if debug_enabled:
-			print("Boss2WeakAttack 不存在，或沒有 setup() 方法")
-
-	if special_bullet_patterns != null and special_bullet_patterns.has_method("setup"):
-		special_bullet_patterns.setup(self)
-	else:
-		if debug_enabled:
-			print("Boss2SpecialBulletPatterns 不存在，或沒有 setup() 方法")
-
 	if debug_enabled:
 		print("Boss2 ready, HP = ", hp)
-		
+
 
 func _physics_process(delta: float) -> void:
 	if _debug_space_damage_timer > 0.0:
@@ -153,7 +127,6 @@ func _physics_process(delta: float) -> void:
 		if Input.is_key_pressed(KEY_SPACE) and _debug_space_damage_timer <= 0.0:
 			_debug_space_damage_timer = debug_space_damage_cooldown
 			_debug_space_damage_boss()
-
 	if _is_dead:
 		return
 
@@ -169,9 +142,6 @@ func _physics_process(delta: float) -> void:
 	if _is_phase_transitioning:
 		return
 
-	if _is_weak:
-		return
-
 	if _is_attacking:
 		return
 
@@ -181,12 +151,6 @@ func _physics_process(delta: float) -> void:
 		_is_attacking = true
 
 		await _choose_and_execute_attack()
-
-		if _is_dead:
-			return
-
-		if not is_inside_tree():
-			return
 
 		_roll_attack_timer()
 		_is_attacking = false
@@ -374,7 +338,6 @@ func _choose_and_execute_attack() -> void:
 
 	while attempts < attack_reroll_max_attempts:
 		attempts += 1
-
 		var attack_name: String = _roll_attack_name()
 
 		if attack_name == "laser":
@@ -382,7 +345,6 @@ func _choose_and_execute_attack() -> void:
 				_register_laser_cooldown()
 				await _attack_laser()
 				return
-
 			continue
 
 		if attack_name == "fish":
@@ -390,7 +352,6 @@ func _choose_and_execute_attack() -> void:
 				_register_fish_cooldown()
 				_summon_fish_group()
 				return
-
 			continue
 
 		if attack_name == "burst":
@@ -398,7 +359,6 @@ func _choose_and_execute_attack() -> void:
 				_register_burst_cooldown()
 				await _shoot_burst_bullet()
 				return
-
 			continue
 
 		if attack_name == "tide":
@@ -406,19 +366,6 @@ func _choose_and_execute_attack() -> void:
 				_register_tide_cooldown()
 				await _attack_tide()
 				return
-
-			continue
-
-		if attack_name == "special_bullet":
-			if _can_use_special_bullet():
-				_register_special_bullet_cooldown()
-
-				if special_bullet_patterns != null:
-					if special_bullet_patterns.has_method("execute_random_pattern"):
-						await special_bullet_patterns.execute_random_pattern()
-
-				return
-
 			continue
 
 		if attack_name == "toxic":
@@ -432,7 +379,6 @@ func _roll_attack_name() -> String:
 	var hp_ratio: float = get_hp_ratio()
 	var entries: Array[Dictionary] = []
 
-	# Phase 2 / Phase 3 才加入雷射、潮汐、特殊彈幕。
 	if hp_ratio <= 0.75:
 		entries.append({
 			"name": "laser",
@@ -442,11 +388,6 @@ func _roll_attack_name() -> String:
 		entries.append({
 			"name": "tide",
 			"weight": tide_attack_weight
-		})
-
-		entries.append({
-			"name": "special_bullet",
-			"weight": special_bullet_attack_weight
 		})
 
 	entries.append({
@@ -491,22 +432,7 @@ func _get_now_seconds() -> float:
 func _can_use_laser() -> bool:
 	return _get_now_seconds() >= _laser_next_allowed_time
 
-func _can_use_special_bullet() -> bool:
-	if get_hp_ratio() > 0.75:
-		return false
 
-	if special_bullet_patterns == null:
-		return false
-
-	return _get_now_seconds() >= _special_bullet_next_allowed_time
-
-
-func _register_special_bullet_cooldown() -> void:
-	_special_bullet_next_allowed_time = _get_now_seconds() + special_bullet_cooldown
-
-	if debug_enabled:
-		print("Boss2 special bullet cooldown started: ", special_bullet_cooldown)
-		
 func _register_laser_cooldown() -> void:
 	_laser_next_allowed_time = _get_now_seconds() + laser_cooldown
 
@@ -962,24 +888,12 @@ func enter_weak_state() -> void:
 	_is_weak = true
 	_show_normal_texture()
 
-	var duration: float = phase2_weak_duration
-
-	if get_hp_ratio() <= 0.5:
-		duration = phase3_weak_duration
-
 	if debug_enabled:
-		print("Boss2 進入虛弱狀態，duration = ", duration)
+		print("Boss2 進入虛弱狀態")
 
 	modulate = Color(1.0, 0.45, 0.45)
 
-	if get_hp_ratio() <= 0.5:
-		if weak_attack != null and weak_attack.has_method("start"):
-			weak_attack.start()
-
-	var wait_completed: bool = await _safe_wait(duration)
-
-	if weak_attack != null and weak_attack.has_method("stop"):
-		weak_attack.stop()
+	var wait_completed: bool = await _safe_wait(weak_duration)
 
 	if not wait_completed:
 		return
