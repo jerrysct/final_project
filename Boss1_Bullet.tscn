@@ -2,9 +2,10 @@
 
 [ext_resource type="Script" uid="uid://cdje0jmk62aye" path="res://Boss1_Bullet.gd" id="1_bwx05"]
 [ext_resource type="Texture2D" uid="uid://bxnpy8hflfxw6" path="res://圖片/子彈.png" id="2_ypvc5"]
+[ext_resource type="Texture2D" uid="uid://crqjn4v3pdtld" path="res://緩速子彈特效.png" id="3_bghil"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ypvc5"]
-radius = 79.99999
+[sub_resource type="CircleShape2D" id="CircleShape2D_bghil"]
+radius = 89.99999
 
 [node name="BossBullet" type="Area2D" unique_id=1400497496]
 script = ExtResource("1_bwx05")
@@ -12,9 +13,16 @@ speed = 100.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1148182119]
 modulate = Color(1.1031533, 1.353692, 1.4909492, 0.35000002)
-scale = Vector2(0.018115235, 0.017675783)
+position = Vector2(4.172325e-07, -5.364418e-07)
+scale = Vector2(0.023923445, 0.02232855)
 texture = ExtResource("2_ypvc5")
+
+[node name="SlowAura" type="Sprite2D" parent="." unique_id=153090826]
+z_index = 1
+position = Vector2(-8.940697e-07, -1.1920929e-06)
+scale = Vector2(0.019138755, 0.019138753)
+texture = ExtResource("3_bghil")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1300918764]
 scale = Vector2(0.1, 0.1)
-shape = SubResource("CircleShape2D_ypvc5")
+shape = SubResource("CircleShape2D_bghil")

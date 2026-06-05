@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://c2l8egek4iwfb"]
 
 [ext_resource type="Script" uid="uid://chjadysb4crqg" path="res://GameMenu.gd" id="1_rtg43"]
-[ext_resource type="Texture2D" uid="uid://wf4ti3oy8m2o" path="res://圖片/選單背景.png" id="2_jm1x4"]
+[ext_resource type="Texture2D" uid="uid://wf4ti3oy8m2o" path="res://選單背景.png" id="2_jm1x4"]
+[ext_resource type="Texture2D" uid="uid://djp1221cbkc3y" path="res://商店跳轉背景.png" id="2_oclov"]
+[ext_resource type="Texture2D" uid="uid://djp1221cbkc3y" path="res://商店跳轉背景.png" id="3_yrxs6"]
+[ext_resource type="Texture2D" uid="uid://cp2pve5ksgyqo" path="res://圖片/開發者名單背景.png" id="4_upkby"]
 
 [node name="GameMenu" type="Control" unique_id=782900967]
 layout_mode = 3
@@ -14,16 +17,16 @@ script = ExtResource("1_rtg43")
 
 [node name="BackButton" type="Button" parent="." unique_id=1114928125]
 layout_mode = 0
-offset_right = 111.0
-offset_bottom = 45.0
+offset_right = 156.0
+offset_bottom = 67.0
 theme_override_font_sizes/font_size = 20
 text = "← 返回"
 
-[node name="Sprite2D" type="Sprite2D" parent="BackButton" unique_id=1114928126]
+[node name="Sprite2D" type="Sprite2D" parent="BackButton" unique_id=315158986]
 z_index = -5
-position = Vector2(55.5, 22.5)
-scale = Vector2(0.051105, 0.0621547)
-texture = ExtResource("2_jm1x4")
+position = Vector2(78, 33.5)
+scale = Vector2(0.071823224, 0.09254142)
+texture = ExtResource("2_oclov")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=335772703]
 custom_minimum_size = Vector2(400, 70)
@@ -49,9 +52,9 @@ text = "存檔"
 
 [node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/SaveButton" unique_id=605035378]
 z_index = -5
-position = Vector2(125, 35)
-scale = Vector2(0.115101, 0.096685)
-texture = ExtResource("2_jm1x4")
+position = Vector2(199.99995, 35)
+scale = Vector2(0.18416204, 0.0966851)
+texture = ExtResource("3_yrxs6")
 
 [node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=45555083]
 custom_minimum_size = Vector2(250, 70)
@@ -59,11 +62,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "退出遊戲"
 
-[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/QuitButton" unique_id=45555084]
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/QuitButton" unique_id=296485019]
 z_index = -5
-position = Vector2(125, 35)
-scale = Vector2(0.115101, 0.096685)
-texture = ExtResource("2_jm1x4")
+position = Vector2(199.99995, 35)
+scale = Vector2(0.18416204, 0.0966851)
+texture = ExtResource("3_yrxs6")
 
 [node name="CreditsButton" type="Button" parent="VBoxContainer" unique_id=1387868123]
 custom_minimum_size = Vector2(250, 70)
@@ -71,11 +74,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "開發者名單"
 
-[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/CreditsButton" unique_id=1387868124]
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/CreditsButton" unique_id=730855241]
 z_index = -5
-position = Vector2(125, 35)
-scale = Vector2(0.115101, 0.096685)
-texture = ExtResource("2_jm1x4")
+position = Vector2(199.99995, 35)
+scale = Vector2(0.18416204, 0.0966851)
+texture = ExtResource("3_yrxs6")
 
 [node name="CreditsPanel" type="Panel" parent="." unique_id=906484525]
 layout_mode = 1
@@ -134,6 +137,12 @@ custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "關閉"
+
+[node name="Sprite2D" type="Sprite2D" parent="CreditsPanel" unique_id=1193011736]
+z_index = -5
+position = Vector2(211.50009, 540.00006)
+scale = Vector2(0.5834482, 0.49769583)
+texture = ExtResource("4_upkby")
 
 [node name="背景" type="Sprite2D" parent="." unique_id=1908022858]
 z_index = -10

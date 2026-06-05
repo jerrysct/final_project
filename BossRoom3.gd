@@ -22,6 +22,8 @@ extends Node2D
 @onready var return_button: Button = get_node_or_null("CanvasLayer/EndScreen/VBoxContainer/ReturnButton") as Button
 @onready var bgm_player: AudioStreamPlayer = $BGMPlayer
 
+@export var death_roar_sound: AudioStream = preload("res://死亡吼叫.mp3")
+
 var player: Node2D = null
 var camera: Camera2D = null
 
@@ -49,6 +51,21 @@ func _ready() -> void:
 	if return_button:
 		if not return_button.pressed.is_connected(_on_return_button_pressed):
 			return_button.pressed.connect(_on_return_button_pressed)
+			
+	if bgm_player:
+		bgm_player.finished.connect(bgm_player.play)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_K:
+			if is_instance_valid(melee_boss) and melee_boss.has_method("take_damage"):
+				melee_boss.take_damage(100)
+				print("Debug: Melee damaged by 100")
+		elif event.keycode == KEY_L:
+			if is_instance_valid(ranged_boss) and ranged_boss.has_method("take_damage"):
+				ranged_boss.take_damage(100)
+				print("Debug: Ranged damaged by 100")
 
 
 func _process(_delta: float) -> void:
@@ -143,19 +160,21 @@ func _check_boss_clear() -> void:
 	if _room_cleared:
 		return
 
-	if not _melee_dead and not is_instance_valid(melee_boss):
-		_melee_dead = true
-		print("Melee 死了")
+	# 檢查近戰 Boss 是否死亡
+	if not _melee_dead:
+		if not is_instance_valid(melee_boss) or melee_boss.get("hp") <= 0:
+			_melee_dead = true
+			print("Melee 死了")
+			if is_instance_valid(ranged_boss) and ranged_boss.has_method("trigger_death_sequence"):
+				ranged_boss.trigger_death_sequence(death_roar_sound)
 
-		if is_instance_valid(ranged_boss) and ranged_boss.has_method("enter_enraged_mode"):
-			ranged_boss.enter_enraged_mode()
-
-	if not _ranged_dead and not is_instance_valid(ranged_boss):
-		_ranged_dead = true
-		print("Ranged 死了")
-
-		if is_instance_valid(melee_boss) and melee_boss.has_method("enter_enraged_mode"):
-			melee_boss.enter_enraged_mode()
+	# 檢查遠程 Boss 是否死亡
+	if not _ranged_dead:
+		if not is_instance_valid(ranged_boss) or ranged_boss.get("hp") <= 0:
+			_ranged_dead = true
+			print("Ranged 死了")
+			if is_instance_valid(melee_boss) and melee_boss.has_method("trigger_death_sequence"):
+				melee_boss.trigger_death_sequence(death_roar_sound)
 
 	if _melee_dead and _ranged_dead:
 		_room_cleared = true

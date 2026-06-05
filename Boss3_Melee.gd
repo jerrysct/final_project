@@ -145,6 +145,36 @@ func enter_enraged_mode() -> void:
 	attack_cooldown_max *= 0.6
 	modulate = Color(1, 0.25, 0.25)
 
+func trigger_death_sequence(roar_stream: AudioStream) -> void:
+	# 移除 if state == State.DEAD: return 以允許從死亡中恢復
+	
+	# 進入恢復/停止狀態，並鎖定時間防止自動切換
+	state = State.RECOVER
+	velocity = Vector2.ZERO
+	_state_elapsed = -999.0 
+	
+	# 重新啟用碰撞與視覺
+	var col = get_node_or_null("CollisionShape2D")
+	if col:
+		col.set_deferred("disabled", false)
+	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
+	
+	# 播放吼叫
+	if roar_audio:
+		roar_audio.stream = roar_stream
+		roar_audio.play()
+		await roar_audio.finished
+	else:
+		await get_tree().create_timer(2.0).timeout
+	
+	# 回血與狂暴
+	hp = max_hp
+	_state_elapsed = 0.0 # 重置時間
+	enter_enraged_mode()
+	
+	# 固定施放一次烈焰衝刺 (FIRE_CHARGE)
+	print("Boss3_Melee 狂暴序列完成，強制發動死亡彈珠")
+	_start_prepare_fire_charge()
 func _physics_process(delta: float) -> void:
 	if state == State.DEAD: return
 
@@ -602,7 +632,7 @@ func find_player() -> void:
 
 func take_damage(amount: int) -> void:
 	if state == State.DEAD: return
-	hp -= amount
+	hp = max(0, hp - amount)
 	if hp <= 0:
 		state = State.DEAD
 		_remove_warning_shadow() 
@@ -614,6 +644,22 @@ func heal(amount: int) -> void:
 	hp = min(hp + amount, max_hp)
 
 func die() -> void:
+	state = State.DEAD
+	velocity = Vector2.ZERO
 	_set_sprite_modulate(SPRITE_COLOR_NORMAL)
-	if _anim: _anim.play("idle") # 播放一個基礎動畫防止崩潰
-	queue_free()
+	
+	# 停止計時器與邏輯
+	var attack_timer = get_node_or_null("AttackTimer")
+	if attack_timer: attack_timer.stop()
+	var charge_timer = get_node_or_null("ChargeTimer")
+	if charge_timer: charge_timer.stop()
+	
+	# 禁用碰撞
+	var col = get_node_or_null("CollisionShape2D")
+	if col:
+		col.set_deferred("disabled", true)
+	
+	if _anim:
+		_anim.play("death")
+	
+	print("Boss3_Melee 已死亡並顯示死亡圖片")

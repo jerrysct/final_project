@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://rpw763uji7is"]
 
 [ext_resource type="Script" uid="uid://bus1ebhecpcuq" path="res://stage_select.gd" id="1_d2q2k"]
-[ext_resource type="Texture2D" uid="uid://j7yjhknavyfw" path="res://圖片/Bossimage.png" id="2_q55ev"]
-[ext_resource type="Texture2D" uid="uid://clkf6kx0otbbe" path="res://圖片/boss3_melee.png" id="3_i5ytr"]
+[ext_resource type="Texture2D" uid="uid://clkf6kx0otbbe" path="res://boss3_melee.png" id="3_i5ytr"]
+[ext_resource type="Texture2D" uid="uid://14q66rwy5ooe" path="res://ChatGPT Image 2026年6月4日 下午09_39_20.png" id="3_la32h"]
 [ext_resource type="Texture2D" uid="uid://dxmfg3yl60u15" path="res://Boss背景圖片.png" id="3_nigjc"]
 [ext_resource type="Texture2D" uid="uid://cjhh5foak0ykp" path="res://Boss選擇背景.png" id="4_i5ytr"]
-[ext_resource type="Texture2D" uid="uid://djp1221cbkc3y" path="res://圖片/商店跳轉背景.png" id="4_qf63o"]
+[ext_resource type="Texture2D" uid="uid://djp1221cbkc3y" path="res://商店跳轉背景.png" id="4_qf63o"]
+[ext_resource type="Texture2D" uid="uid://cs3unide4elab" path="res://克拉肯.png" id="5_qbtxg"]
 
 [node name="stage_select" type="Node2D" unique_id=1708047513]
 
@@ -50,58 +51,49 @@ texture = ExtResource("4_qf63o")
 [node name="HBoxContainer" type="HBoxContainer" parent="Control" unique_id=830600763]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 0
-offset_left = 652.0
-offset_top = 321.0
-offset_right = 1264.0
-offset_bottom = 771.0
+offset_left = 431.0
+offset_top = 212.0
+offset_right = 1489.0
+offset_bottom = 908.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
 
 [node name="Boss1" type="Button" parent="Control/HBoxContainer" unique_id=407599545]
-custom_minimum_size = Vector2(150, 150)
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 2
-icon = ExtResource("2_q55ev")
+icon = ExtResource("3_la32h")
 expand_icon = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/Boss1" unique_id=1755897207]
 z_index = -1
-position = Vector2(75, 225.00002)
-scale = Vector2(0.13368984, 0.32097003)
+position = Vector2(175, 348.00003)
+scale = Vector2(0.31194293, 0.49643368)
 texture = ExtResource("3_nigjc")
 
 [node name="Boss2" type="Button" parent="Control/HBoxContainer" unique_id=1219861439]
-custom_minimum_size = Vector2(150, 150)
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 2
+icon = ExtResource("5_qbtxg")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/Boss2" unique_id=1363573527]
+[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/Boss2" unique_id=2099967367]
 z_index = -1
-position = Vector2(75, 225.00002)
-scale = Vector2(0.13368984, 0.32097003)
+position = Vector2(175, 348.00003)
+scale = Vector2(0.31194293, 0.49643368)
 texture = ExtResource("3_nigjc")
 
 [node name="Boss3" type="Button" parent="Control/HBoxContainer" unique_id=2076301601]
-custom_minimum_size = Vector2(150, 150)
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 2
 icon = ExtResource("3_i5ytr")
 expand_icon = true
 
-[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/Boss3" unique_id=1831027859]
+[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/Boss3" unique_id=78152520]
 z_index = -1
-position = Vector2(75, 225.00002)
-scale = Vector2(0.13368984, 0.32097003)
-texture = ExtResource("3_nigjc")
-
-[node name="FinalBoss" type="Button" parent="Control/HBoxContainer" unique_id=1781697451]
-custom_minimum_size = Vector2(150, 150)
-layout_mode = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/FinalBoss" unique_id=1965850207]
-z_index = -1
-position = Vector2(75, 225.00002)
-scale = Vector2(0.13368984, 0.32097003)
+position = Vector2(175, 348.00003)
+scale = Vector2(0.31194293, 0.49643368)
 texture = ExtResource("3_nigjc")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=467996141]

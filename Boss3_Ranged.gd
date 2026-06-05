@@ -186,6 +186,35 @@ func _on_animation_finished() -> void:
 		queue_free()
 
 
+func trigger_death_sequence(roar_stream: AudioStream) -> void:
+	if state == State.DEAD: return
+	
+	# 停止當前邏輯
+	state = State.RECOVER
+	_is_attacking = true
+	_state_time = -999.0 # 鎖定在 recover
+	
+	# 播放吼叫
+	var audio_player = get_node_or_null("RoarAudio")
+	if audio_player == null:
+		audio_player = AudioStreamPlayer2D.new()
+		audio_player.name = "RoarAudio"
+		add_child(audio_player)
+	
+	audio_player.stream = roar_stream
+	audio_player.play()
+	await audio_player.finished
+	
+	# 回血與狂暴
+	hp = max_hp
+	enter_enraged_mode()
+	
+	# 恢復行動 (Ranged 的 enter_enraged_mode 內已有強制施放大招邏輯)
+	_is_attacking = false
+	state = State.IDLE
+	_state_time = 0.0
+
+
 func enter_enraged_mode() -> void:
 	if _is_enraged:
 		return
@@ -957,7 +986,7 @@ func take_damage(amount: int) -> void:
 	if state == State.DEAD:
 		return
 
-	hp -= amount
+	hp = max(0, hp - amount)
 
 	if debug_enabled:
 		print("Boss3_Ranged HP: ", hp)

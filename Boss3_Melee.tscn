@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" uid="uid://dvjc2hcefwr7e" path="res://Boss3_Melee.gd" id="1_mdmya"]
 [ext_resource type="PackedScene" uid="uid://n8io3ewieojt" path="res://Boss3_Fire.tscn" id="2_nkiiy"]
-[ext_resource type="Texture2D" uid="uid://clkf6kx0otbbe" path="res://圖片/boss3_melee.png" id="2_o76aw"]
 [ext_resource type="PackedScene" uid="uid://blbq3svwt12uj" path="res://Boss3_crash.tscn" id="2_swlsm"]
 [ext_resource type="PackedScene" uid="uid://b2e51s2slqvaw" path="res://Boss3_HomingBullet.tscn" id="3_ukpb7"]
 [ext_resource type="PackedScene" uid="uid://p8ls7w78whgh" path="res://Boss3_Bullet.tscn" id="4_wd6bl"]
 [ext_resource type="AudioStream" uid="uid://mp32dk0sywpn" path="res://6727.wav" id="6_swlsm"]
 [ext_resource type="Texture2D" uid="uid://dp0lu8o5am25q" path="res://boss3_Melee/ezgif-白龍攻擊.png" id="6_xvptk"]
+[ext_resource type="Texture2D" uid="uid://cbwc8uklheu8x" path="res://boss3_Melee/白龍死亡.png" id="7_tppoa"]
 [ext_resource type="Texture2D" uid="uid://l1bu8somk14i" path="res://boss3_Melee/ezgif-白龍待機.png" id="7_uhs7f"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tppoa"]
@@ -41,6 +41,10 @@ region = Rect2(180, 180, 180, 180)
 [sub_resource type="AtlasTexture" id="AtlasTexture_ti6eu"]
 atlas = ExtResource("6_xvptk")
 region = Rect2(360, 180, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e0m5o"]
+atlas = ExtResource("7_tppoa")
+region = Rect2(0, 0, 180, 180)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sjm6m"]
 atlas = ExtResource("7_uhs7f")
@@ -91,6 +95,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_e0m5o")
+}],
+"loop": true,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_sjm6m")
 }, {
 "duration": 1.0,
@@ -124,7 +136,7 @@ homing_bullet_scene = ExtResource("3_ukpb7")
 position = Vector2(0.9999976, -2.0000017)
 scale = Vector2(0.6627455, 0.6350288)
 sprite_frames = SubResource("SpriteFrames_kai6n")
-animation = &"attack"
+animation = &"death"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1044099119]
 position = Vector2(0, -1)
