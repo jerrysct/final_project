@@ -2,33 +2,30 @@ extends Node
 
 @export var reverse_zone_scene: PackedScene
 
-@export var phase_required: int = 3
-@export var spawn_margin: float = 170.0
-@export var min_player_distance: float = 180.0
-@export var min_boss_distance: float = 300.0
-@export var min_tentacle_distance: float = 220.0
-@export var max_spawn_attempts: int = 40
-@export var min_occupied_distance: float = 220.0
-@export var object_radius: float = 120.0
-@export var spawn_interval_min: float = 14.0
-@export var spawn_interval_max: float = 18.0
+@export var phase_required: int = 1
+
+@export var spawn_interval_min: float = 4.0
+@export var spawn_interval_max: float = 6.0
 
 @export var zone_lifetime: float = 5.0
 @export var max_zones: int = 1
 
+@export var spawn_margin: float = 80.0
+@export var object_radius: float = 45.0
+@export var min_player_distance: float = 100.0
+@export var max_spawn_attempts: int = 300
+
 @export var debug_enabled: bool = true
 
 var room: Node = null
-var boss: Node2D = null
-var player: Node2D = null
-
-var _timer: float = 0.0
+var boss: Node = null
+var _spawn_timer: float = 0.0
 
 
-func setup(room_node: Node, boss_node: Node2D) -> void:
-	room = room_node
-	boss = boss_node
-	_roll_timer()
+func setup(room_ref: Node, boss_ref: Node) -> void:
+	room = room_ref
+	boss = boss_ref
+	_schedule_next_spawn()
 
 	if debug_enabled:
 		print("ReverseZoneSpawner setup complete")
@@ -41,28 +38,42 @@ func _process(delta: float) -> void:
 	if boss == null or not is_instance_valid(boss):
 		return
 
-	if not boss.has_method("get_current_phase"):
+	if not _can_spawn_in_current_phase():
 		return
 
-	var phase: int = boss.get_current_phase()
+	_spawn_timer -= delta
 
-	if phase < phase_required:
-		return
+	if _spawn_timer <= 0.0:
+		if debug_enabled:
+			print("ReverseZoneSpawner timer triggered")
 
-	_find_player_if_needed()
-
-	_timer -= delta
-
-	if _timer <= 0.0:
-		_roll_timer()
-		_spawn_reverse_zone()
+		_spawn_zone()
+		_schedule_next_spawn()
 
 
-func _roll_timer() -> void:
-	_timer = randf_range(spawn_interval_min, spawn_interval_max)
+func _can_spawn_in_current_phase() -> bool:
+	if boss == null or not is_instance_valid(boss):
+		return false
+
+	if boss.has_method("get_current_phase"):
+		return int(boss.get_current_phase()) >= phase_required
+
+	if boss.has_method("get_hp_ratio"):
+		var hp_ratio: float = boss.get_hp_ratio()
+
+		if phase_required <= 1:
+			return true
+
+		if phase_required == 2:
+			return hp_ratio <= 0.75
+
+		if phase_required >= 3:
+			return hp_ratio <= 0.5
+
+	return true
 
 
-func _spawn_reverse_zone() -> void:
+func _spawn_zone() -> void:
 	if reverse_zone_scene == null:
 		if debug_enabled:
 			print("ReverseZoneSpawner reverse_zone_scene not assigned")
@@ -70,7 +81,7 @@ func _spawn_reverse_zone() -> void:
 
 	if _get_zone_count() >= max_zones:
 		if debug_enabled:
-			print("ReverseZone count reached max: ", max_zones)
+			print("ReverseZoneSpawner max reached")
 		return
 
 	var pos: Vector2 = _get_safe_spawn_position()
@@ -83,61 +94,53 @@ func _spawn_reverse_zone() -> void:
 	var zone: Node = reverse_zone_scene.instantiate()
 
 	if zone == null:
-		print("ReverseZone instantiate failed")
+		if debug_enabled:
+			print("ReverseZone instantiate failed")
 		return
 
 	if zone is Node2D:
 		(zone as Node2D).global_position = pos
 
-	zone.set("lifetime", zone_lifetime)
+	if "lifetime" in zone:
+		zone.set("lifetime", zone_lifetime)
 
-	get_tree().current_scene.add_child(zone)
+	_get_spawn_parent().add_child(zone)
 
 	if debug_enabled:
 		print("ReverseZone spawned at ", pos)
 
 
-func _is_valid_spawn_position(pos: Vector2) -> bool:
-	if player != null and is_instance_valid(player):
-		if pos.distance_to(player.global_position) < min_player_distance:
-			return false
-
-	if boss != null and is_instance_valid(boss):
-		if pos.distance_to(boss.global_position) < min_boss_distance:
-			return false
-
-	return true
-
-
-func _find_player_if_needed() -> void:
-	if player != null and is_instance_valid(player):
-		return
-
-	var players: Array[Node] = get_tree().get_nodes_in_group("player")
-
-	if players.size() > 0:
-		player = players[0] as Node2D
-
-
-func _get_zone_count() -> int:
-	var count: int = 0
-
-	for node in get_tree().get_nodes_in_group("reverse_input_zone"):
-		if node != null and is_instance_valid(node):
-			count += 1
-
-	return count
-
 func _get_safe_spawn_position() -> Vector2:
 	if room == null:
 		return Vector2.INF
 
-	if room.has_method("get_safe_field_spawn_position"):
-		return room.get_safe_field_spawn_position(
-			spawn_margin,
-			object_radius,
-			min_player_distance,
-			max_spawn_attempts
-		)
+	if not room.has_method("get_safe_position_custom"):
+		return Vector2.INF
 
-	return Vector2.INF
+	return room.get_safe_position_custom(
+		spawn_margin,
+		object_radius,
+		min_player_distance,
+		max_spawn_attempts,
+		Callable(room, "is_position_valid_for_reverse_zone")
+	)
+
+
+func _schedule_next_spawn() -> void:
+	_spawn_timer = randf_range(spawn_interval_min, spawn_interval_max)
+
+
+func _get_zone_count() -> int:
+	return get_tree().get_nodes_in_group("reverse_input_zone").size()
+
+
+func _get_spawn_parent() -> Node:
+	var tree := get_tree()
+
+	if tree == null:
+		return self
+
+	if tree.current_scene != null:
+		return tree.current_scene
+
+	return tree.root

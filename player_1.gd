@@ -71,19 +71,13 @@ var burn_interval: float = 1.0
 var slow_debuff_timer: float = 0.0
 var slow_multiplier: float = 1.0
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
 var reverse_input_enabled: bool = false
 var _reverse_input_token: int = 0
 
 # --- 用於偽走路動畫的時間變數 ---
 var walk_time: float = 0.0
-<<<<<<< HEAD
 
-=======
->>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
 
 func _ready() -> void:
 	# 玩家本身如果還有舊 CanvasLayer，就先隱藏，避免和 BossRoom / BossRoom3 的 UI 重疊。
@@ -262,15 +256,15 @@ func _physics_process(delta: float) -> void:
 	handle_movement(direction)
 
 	# ==========================================
-<<<<<<< HEAD
+
 
 	# 灼燒持續傷害
 
 	# 互斥動作判斷
 
-=======
+
 	# 灼燒持續傷害
->>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
+
 	# ==========================================
 	if burn_time_left > 0.0:
 		burn_time_left -= delta
@@ -286,7 +280,6 @@ func _physics_process(delta: float) -> void:
 				sprite.modulate = Color.WHITE
 			print("💨 灼燒狀態自然結束！")
 
-<<<<<<< HEAD
 
 	# ==========================================
 	# 緩速計時
@@ -294,18 +287,18 @@ func _physics_process(delta: float) -> void:
 
 	# 緩速計時
 
-=======
+
 	# ==========================================
 	# 緩速計時
 	# ==========================================
->>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
+
 	if slow_debuff_timer > 0.0:
 		slow_debuff_timer -= delta
 
 		if slow_debuff_timer <= 0.0:
 			slow_multiplier = 1.0
 			print("🏃 緩速結束，恢復正常速度！")
-<<<<<<< HEAD
+
 
 
 	# ==========================================
@@ -357,12 +350,6 @@ func _physics_process(delta: float) -> void:
 	# 移動輸入
 	# 反向輸入區域會在這裡生效
 	# ==========================================
-	var direction := Input.get_vector(
-		"move_left",
-		"move_right",
-		"move_up",
-        "move_down"
-	)
 
 	if reverse_input_enabled:
 		direction = -direction
@@ -377,14 +364,14 @@ func _physics_process(delta: float) -> void:
 	_update_player_ui()
 
 
-=======
+
 
 	_update_player_ui()
 
 	# ==========================================
 	# 互斥動作判斷
 	# ==========================================
->>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
+
 	if Input.is_action_pressed("parry") and parry_cd_timer <= 0.0 and not is_absorb_preparing and not is_aiming:
 		if not is_parry_preparing:
 			is_parry_preparing = true
@@ -394,14 +381,13 @@ func _physics_process(delta: float) -> void:
 			is_parry_preparing = false
 			parry_cd_timer = parry_cooldown
 
-<<<<<<< HEAD
+
 
 	# ==========================================
 	# 吸收
 	# ==========================================
 
-=======
->>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
+
 	if Input.is_action_pressed("absorb") and absorb_cd_timer <= 0.0 and not is_parry_preparing and not is_aiming:
 		is_absorb_preparing = true
 		execute_absorb_action()
@@ -409,8 +395,6 @@ func _physics_process(delta: float) -> void:
 		if is_absorb_preparing:
 			is_absorb_preparing = false
 			absorb_cd_timer = absorb_cooldown
-
-<<<<<<< HEAD
 
 	# ==========================================
 	# 瞄準與釋放
@@ -422,8 +406,7 @@ func _physics_process(delta: float) -> void:
 	# 技能指示器更新
 	# ==========================================
 
-=======
->>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
+
 	if not is_parry_preparing and not is_absorb_preparing:
 		handle_aim_and_release()
 		
@@ -444,33 +427,29 @@ func _physics_process(delta: float) -> void:
 			sprite_container.position.y = lerp(sprite_container.position.y, 0.0, 0.2)
 			sprite_container.rotation = lerp(sprite_container.rotation, 0.0, 0.2)
 		
-<<<<<<< HEAD
 
-=======
->>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
+
 	if skill_indicator:
 		skill_indicator.is_parry_preparing = is_parry_preparing
 		skill_indicator.is_absorb_preparing = is_absorb_preparing
 		skill_indicator.is_aiming = is_aiming
-<<<<<<< HEAD
 
-=======
+
 		skill_indicator.inner_radius = parry_inner_radius 
 		skill_indicator.outer_radius = parry_outer_radius 
 		skill_indicator.aim_angle = (get_global_mouse_position() - global_position).angle()
->>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
+
 
 		if bounce_collision:
 			skill_indicator.bounce_collision = bounce_collision
 
-<<<<<<< HEAD
+
 
 		skill_indicator.inner_radius = parry_inner_radius 
 		skill_indicator.outer_radius = parry_outer_radius 
 		skill_indicator.aim_angle = (get_global_mouse_position() - global_position).angle()
 
-=======
->>>>>>> 7c85e2c5d89ed65698cc99fd015d76c4ff559e4f
+
 		skill_indicator.queue_redraw()
 
 	move_and_slide()

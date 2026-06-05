@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c3wd06ox041i2"]
 
 [ext_resource type="Script" uid="uid://yhli4xtmeud6" path="res://ReverseInputZone.gd" id="1_svica"]
-[ext_resource type="Texture2D" uid="uid://o664b1i0b8qf" path="res://圖片4.png" id="2_ew5ly"]
+[ext_resource type="Texture2D" uid="uid://bnwjw24dtf3r" path="res://反轉區.png" id="2_svica"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vsiex"]
 radius = 57.0
@@ -10,7 +10,8 @@ radius = 57.0
 script = ExtResource("1_svica")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=932874373]
-texture = ExtResource("2_ew5ly")
+scale = Vector2(0.13476564, 0.13012695)
+texture = ExtResource("2_svica")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1771941665]
 shape = SubResource("CircleShape2D_vsiex")

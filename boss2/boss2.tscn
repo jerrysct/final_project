@@ -13,10 +13,13 @@
 [ext_resource type="Script" uid="uid://cnsba68ywmocu" path="res://Boss2_WeakAttack.gd" id="11_7pt0y"]
 [ext_resource type="Script" uid="uid://cxp00w6neji8" path="res://Boss2_SpecialBulletPatterns.gd" id="12_jnqi1"]
 [ext_resource type="PackedScene" uid="uid://cc8cdq8vd85tk" path="res://boss2/Boss2_PatternBullet.tscn" id="13_kfk5m"]
+[ext_resource type="Script" uid="uid://exrxbypee1t" path="res://Boss2_AttackDirector.gd" id="14_kfk5m"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ogw3f"]
+radius = 129.0155
 
 [node name="Boss2" type="CharacterBody2D" unique_id=286412676]
+collision_layer = 31
 script = ExtResource("1_n2uan")
 toxic_bullet_scene = ExtResource("2_ut2jv")
 burst_bullet_scene = ExtResource("3_l2q1u")
@@ -29,8 +32,8 @@ burst_attack_texture = ExtResource("9_ul6qa")
 laser_attack_texture = ExtResource("10_jnqi1")
 
 [node name="BodySprite" type="Sprite2D" parent="." unique_id=1947153178]
-position = Vector2(0, 20)
-scale = Vector2(0.6357143, 0.71111107)
+position = Vector2(-3.8146973e-06, 3.8146973e-06)
+scale = Vector2(1.022619, 0.9533333)
 texture = ExtResource("2_hvbax")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=602824025]
@@ -41,5 +44,9 @@ script = ExtResource("11_7pt0y")
 toxic_bullet_scene = ExtResource("2_ut2jv")
 
 [node name="Boss2SpecialBulletPatterns" type="Node2D" parent="." unique_id=1866093089]
+position = Vector2(-22400, -4352)
 script = ExtResource("12_jnqi1")
 pattern_bullet_scene = ExtResource("13_kfk5m")
+
+[node name="Boss2AttackDirector" type="Node" parent="." unique_id=1148017295]
+script = ExtResource("14_kfk5m")

@@ -1,20 +1,22 @@
 [gd_scene format=3 uid="uid://np7dd6p6bbhp"]
 
-[ext_resource type="Texture2D" uid="uid://cy3pljys4yfrh" path="res://毒液彈.png" id="1_m254w"]
 [ext_resource type="Script" uid="uid://dr2o3mb58ee22" path="res://Boss2_ToxicBullet.gd" id="2_3v63t"]
+[ext_resource type="Texture2D" uid="uid://doy237vqmd7ft" path="res://毒液彈 (2).png" id="2_m254w"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8ycc3"]
-radius = 25.019993
+radius = 29.15476
 
 [node name="Boss2_ToxicBullet" type="Area2D" unique_id=1896768353]
 position = Vector2(3, 0)
+collision_layer = 3
+collision_mask = 23
 script = ExtResource("2_3v63t")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1099529733]
-position = Vector2(-2.5312557, 7.874996)
-scale = Vector2(0.049865734, 0.052978516)
-texture = ExtResource("1_m254w")
+position = Vector2(0.17577934, 10.75)
+scale = Vector2(0.050552372, 0.057128903)
+texture = ExtResource("2_m254w")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1627649833]
-position = Vector2(-3, 4)
+position = Vector2(-3, 6)
 shape = SubResource("CircleShape2D_8ycc3")

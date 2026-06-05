@@ -1,12 +1,13 @@
 [gd_scene format=3 uid="uid://cc8cdq8vd85tk"]
 
-[ext_resource type="Texture2D" uid="uid://cy3pljys4yfrh" path="res://毒液彈.png" id="1_i78yn"]
+[ext_resource type="Texture2D" uid="uid://doy237vqmd7ft" path="res://毒液彈 (2).png" id="2_i78yn"]
 [ext_resource type="Script" uid="uid://b3nqkegrs7ijn" path="res://Boss2_PatternBullet.gd" id="2_js1ay"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o46ls"]
 radius = 36.05551
 
 [node name="Boss2PatternBullet" type="Area2D" unique_id=1610175937]
+collision_layer = 19
 script = ExtResource("2_js1ay")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1578525763]
@@ -16,4 +17,4 @@ shape = SubResource("CircleShape2D_o46ls")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=29894137]
 position = Vector2(304, 124)
 scale = Vector2(0.06542968, 0.06884766)
-texture = ExtResource("1_i78yn")
+texture = ExtResource("2_i78yn")

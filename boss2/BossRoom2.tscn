@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" uid="uid://bf5k21l6bnhjc" path="res://BossRoom2.gd" id="1_x7esj"]
 [ext_resource type="PackedScene" uid="uid://c04d01bemf5t3" path="res://boss2/Boss2_Tentacle.tscn" id="2_gi0iw"]
-[ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://圖片/Boss1地圖.png" id="2_v5n53"]
+[ext_resource type="Texture2D" uid="uid://txoskwjnju81" path="res://boss2場地圖.png" id="3_btwil"]
 [ext_resource type="Script" uid="uid://cpgxgawsgn4ue" path="res://bossHealBar.gd" id="4_i4xb6"]
 [ext_resource type="PackedScene" uid="uid://dcggsh5j4mpvq" path="res://boss2/boss2.tscn" id="4_pfg5e"]
-[ext_resource type="Script" uid="uid://dhg3x7x530yia" path="res://ConsumableUI.gd" id="6_5ih4v"]
-[ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://圖片/血量瓶.png" id="7_470r3"]
-[ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://圖片/體力瓶.png" id="8_btwil"]
-[ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://圖片/魔力瓶.png" id="9_8pxao"]
-[ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://圖片/無敵瓶.png" id="10_ng05d"]
+[ext_resource type="Script" path="res://ConsumableUI.gd" id="6_5ih4v"]
+[ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://血量瓶.png" id="7_470r3"]
+[ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="8_btwil"]
+[ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="9_8pxao"]
+[ext_resource type="Texture2D" uid="uid://cowm1ospyjqto" path="res://無敵瓶.png" id="10_ng05d"]
 [ext_resource type="Script" uid="uid://dhr8tbp6amyje" path="res://BossRoom2_ObstacleSpawner.gd" id="11_mlsfa"]
 [ext_resource type="PackedScene" uid="uid://penuygjptsum" path="res://boss2/Boss2_Obstacle.tscn" id="12_5ih4v"]
 [ext_resource type="Script" uid="uid://bcuaxmfhs8r8f" path="res://BossRoom2_ReverseZoneSpawner.gd" id="13_btwil"]
@@ -65,12 +65,14 @@ script = ExtResource("1_x7esj")
 tentacle_scene = ExtResource("2_gi0iw")
 
 [node name="Floor" type="Sprite2D" parent="." unique_id=754397698]
-scale = Vector2(0.8834635, 0.8339843)
-texture = ExtResource("2_v5n53")
+position = Vector2(14.3333435, 10.203949)
+scale = Vector2(0.9739583, 1.1453024)
+texture = ExtResource("3_btwil")
 
 [node name="WallTop" type="StaticBody2D" parent="." unique_id=308624505 groups=["wall"]]
 position = Vector2(0, -450)
-collision_layer = 16
+collision_layer = 17
+collision_mask = 255
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop" unique_id=2012980522]
 position = Vector2(5.5, 5)
@@ -78,7 +80,8 @@ shape = SubResource("RectangleShape2D_r6kx4")
 
 [node name="WallBottom" type="StaticBody2D" parent="." unique_id=1092831311 groups=["wall"]]
 position = Vector2(0, 450)
-collision_layer = 16
+collision_layer = 17
+collision_mask = 255
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallBottom" unique_id=1137973731]
 position = Vector2(4, 0)
@@ -86,7 +89,8 @@ shape = SubResource("RectangleShape2D_xb4eh")
 
 [node name="WallLeft" type="StaticBody2D" parent="." unique_id=1562384323 groups=["wall"]]
 position = Vector2(-700, 0)
-collision_layer = 16
+collision_layer = 17
+collision_mask = 255
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=1714029320]
 position = Vector2(-1, 2.5)
@@ -94,7 +98,8 @@ shape = SubResource("RectangleShape2D_5yl58")
 
 [node name="WallRight" type="StaticBody2D" parent="." unique_id=242822482 groups=["wall"]]
 position = Vector2(700, 0)
-collision_layer = 16
+collision_layer = 17
+collision_mask = 255
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=120228062]
 position = Vector2(12, 13)
@@ -106,6 +111,7 @@ shape = SubResource("RectangleShape2D_yq10e")
 position = Vector2(0, 140)
 
 [node name="Boss2" parent="." unique_id=1327634662 instance=ExtResource("4_pfg5e")]
+position = Vector2(18, 80)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=767440707]
 
@@ -326,6 +332,7 @@ theme_override_constants/separation = 10
 [node name="ObstacleSpawner" type="Node" parent="." unique_id=2114561027]
 script = ExtResource("11_mlsfa")
 obstacle_scene = ExtResource("12_5ih4v")
+spawn_margin = 60.0
 
 [node name="ReverseZoneSpawner" type="Node" parent="." unique_id=1120129809]
 script = ExtResource("13_btwil")

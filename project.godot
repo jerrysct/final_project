@@ -19,7 +19,7 @@ config/icon="res://icon.svg"
 
 Playerdata_Globle="*uid://c1246frh0xs4n"
 SaveManager="*res://SaveManager.gd"
-GamepadCursorManager="*uid://bgsegwwexuklm"
+GamepadCursorManager="uid://bgsegwwexuklm"
 
 [display]
 

@@ -14,141 +14,168 @@ var _running: bool = false
 
 
 func setup(boss_node: Node2D) -> void:
-	boss = boss_node
+    boss = boss_node
 
 
 func start() -> void:
-	if _running:
-		return
+    if _running:
+        return
 
-	if boss == null or not is_instance_valid(boss):
-		return
+    if boss == null or not is_instance_valid(boss):
+        return
 
-	_running = true
-	_run_loop()
+    _running = true
+    _run_loop()
 
 
 func stop() -> void:
-	_running = false
+    _running = false
 
 
 func _run_loop() -> void:
-	while _running:
-		if boss == null or not is_instance_valid(boss):
-			break
+    while _running:
+        if boss == null or not is_instance_valid(boss):
+            break
 
-		if boss.has_method("is_weak"):
-			if not boss.is_weak():
-				break
+        if boss.has_method("is_weak"):
+            if not boss.is_weak():
+                break
 
-		_shoot_weak_reflect_barrage()
+        _shoot_weak_reflect_barrage()
 
-		var completed: bool = await _safe_wait(weak_bullet_interval)
+        var completed: bool = await _safe_wait(weak_bullet_interval)
 
-		if not completed:
-			break
+        if not completed:
+            break
 
-	_running = false
+    _running = false
 
+
+# ============================================================
+# ✅ 主攻擊（朝玩家發射）
+# ============================================================
 
 func _shoot_weak_reflect_barrage() -> void:
-	if toxic_bullet_scene == null:
-		if debug_enabled:
-			print("Boss2WeakAttack toxic_bullet_scene not assigned")
-		return
+    if toxic_bullet_scene == null:
+        if debug_enabled:
+            print("Boss2WeakAttack toxic_bullet_scene not assigned")
+        return
 
-	var player: Node2D = _find_player()
+    var player: Node2D = boss.player if "player" in boss else _find_player()
 
-	if player == null:
-		return
+    if player == null or not is_instance_valid(player):
+        return
 
-	if boss == null or not is_instance_valid(boss):
-		return
+    if boss == null or not is_instance_valid(boss):
+        return
 
-	var base_dir: Vector2 = player.global_position - boss.global_position
+    var boss_pos: Vector2 = boss.global_position
 
-	if base_dir.length_squared() <= 0.0001:
-		base_dir = Vector2.RIGHT
+    var base_dir: Vector2 = player.global_position - boss_pos
 
-	base_dir = base_dir.normalized()
+    if base_dir.length_squared() <= 0.0001:
+        base_dir = Vector2.RIGHT
 
-	if weak_bullet_count <= 1:
-		_spawn_weak_bullet(base_dir)
-		return
+    base_dir = base_dir.normalized()
 
-	var spread_rad: float = deg_to_rad(weak_bullet_spread_degrees)
-	var start_angle: float = -spread_rad / 2.0
-	var angle_step: float = spread_rad / float(weak_bullet_count - 1)
+    # ✅ 單發
+    if weak_bullet_count <= 1:
+        _spawn_weak_bullet(base_dir)
+        return
 
-	for i in range(weak_bullet_count):
-		var angle_offset: float = start_angle + angle_step * i
-		var fire_dir: Vector2 = base_dir.rotated(angle_offset)
-		_spawn_weak_bullet(fire_dir)
+    # ✅ 扇形散射
+    var spread_rad: float = deg_to_rad(weak_bullet_spread_degrees)
+    var start_angle: float = -spread_rad / 2.0
+    var angle_step: float = spread_rad / float(weak_bullet_count - 1)
 
-	if debug_enabled:
-		print("Boss2 weak reflect barrage count = ", weak_bullet_count)
+    for i in range(weak_bullet_count):
+        var angle_offset: float = start_angle + angle_step * i
+        var fire_dir: Vector2 = base_dir.rotated(angle_offset)
+        _spawn_weak_bullet(fire_dir)
 
+    if debug_enabled:
+        print("Boss2 weak reflect barrage count = ", weak_bullet_count)
+
+
+# ============================================================
+# ✅ 子彈生成（已修正）
+# ============================================================
 
 func _spawn_weak_bullet(fire_dir: Vector2) -> void:
-	if toxic_bullet_scene == null:
-		return
+    if toxic_bullet_scene == null:
+        return
 
-	if boss == null or not is_instance_valid(boss):
-		return
+    if boss == null or not is_instance_valid(boss):
+        return
 
-	var spawn_parent: Node = _get_spawn_parent()
+    var spawn_parent: Node = _get_spawn_parent()
 
-	if spawn_parent == null:
-		return
+    if spawn_parent == null:
+        return
 
-	var bullet: Node = toxic_bullet_scene.instantiate()
-	spawn_parent.add_child(bullet)
+    var bullet: Node = toxic_bullet_scene.instantiate()
 
-	if bullet.has_method("setup"):
-		bullet.setup(boss.global_position, fire_dir.normalized())
+    if bullet == null:
+        return
 
-	var bullet_speed = bullet.get("speed")
+    # ✅ 先加入場景（避免位置錯亂）
+    spawn_parent.add_child(bullet)
 
-	if bullet_speed != null:
-		bullet.set("speed", float(bullet_speed) * weak_bullet_speed_multiplier)
+    # ✅ 從 Boss 表面發射（看起來更自然）
+    var boss_pos: Vector2 = boss.global_position
+    var muzzle_offset: Vector2 = fire_dir.normalized() * 20.0
+    var spawn_pos: Vector2 = boss_pos + muzzle_offset
 
+    # ✅ 設定子彈
+    if bullet.has_method("setup"):
+        bullet.setup(
+            spawn_pos,
+            fire_dir.normalized()
+        )
+    elif bullet is Node2D:
+        (bullet as Node2D).global_position = spawn_pos
+
+
+# ============================================================
+# Helper
+# ============================================================
 
 func _find_player() -> Node2D:
-	var players: Array[Node] = get_tree().get_nodes_in_group("player")
+    var players: Array[Node] = get_tree().get_nodes_in_group("player")
 
-	if players.size() <= 0:
-		return null
+    if players.size() <= 0:
+        return null
 
-	return players[0] as Node2D
+    return players[0] as Node2D
 
 
 func _get_spawn_parent() -> Node:
-	var tree := get_tree()
+    var tree := get_tree()
 
-	if tree == null:
-		return null
+    if tree == null:
+        return null
 
-	if tree.current_scene != null:
-		return tree.current_scene
+    if tree.current_scene != null:
+        return tree.current_scene
 
-	return tree.root
+    return tree.root
 
 
 func _safe_wait(seconds: float) -> bool:
-	if not is_inside_tree():
-		return false
+    if not is_inside_tree():
+        return false
 
-	var tree := get_tree()
+    var tree := get_tree()
 
-	if tree == null:
-		return false
+    if tree == null:
+        return false
 
-	await tree.create_timer(seconds).timeout
+    await tree.create_timer(seconds).timeout
 
-	if not is_instance_valid(self):
-		return false
+    if not is_instance_valid(self):
+        return false
 
-	if not is_inside_tree():
-		return false
+    if not is_inside_tree():
+        return false
 
-	return true
+    return true
