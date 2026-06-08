@@ -352,6 +352,7 @@ _data = {
 position = Vector2(-2, 0)
 script = ExtResource("1_up5o4")
 parry_outer_radius = 125.0
+head_icon_scale = Vector2(0.02, 0.02)
 metadata/_edit_horizontal_guides_ = [34.0]
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1199489429]
