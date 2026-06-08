@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://bf5k21l6bnhjc" path="res://BossRoom2.gd" id="1_x7esj"]
 [ext_resource type="PackedScene" uid="uid://c04d01bemf5t3" path="res://boss2/Boss2_Tentacle.tscn" id="2_gi0iw"]
-[ext_resource type="Texture2D" uid="uid://txoskwjnju81" path="res://boss2場地圖.png" id="3_btwil"]
+[ext_resource type="Texture2D" uid="uid://b4kny1xc6scv8" path="res://Boss1地圖.png" id="3_btwil"]
 [ext_resource type="Script" uid="uid://cpgxgawsgn4ue" path="res://bossHealBar.gd" id="4_i4xb6"]
 [ext_resource type="PackedScene" uid="uid://dcggsh5j4mpvq" path="res://boss2/boss2.tscn" id="4_pfg5e"]
-[ext_resource type="Script" path="res://ConsumableUI.gd" id="6_5ih4v"]
+[ext_resource type="Script" uid="uid://dhg3x7x530yia" path="res://ConsumableUI.gd" id="6_5ih4v"]
 [ext_resource type="Texture2D" uid="uid://bulkml13llpky" path="res://血量瓶.png" id="7_470r3"]
 [ext_resource type="Texture2D" uid="uid://u2hhx7snykqj" path="res://體力瓶.png" id="8_btwil"]
 [ext_resource type="Texture2D" uid="uid://ujrl4f28rlm" path="res://魔力瓶.png" id="9_8pxao"]
