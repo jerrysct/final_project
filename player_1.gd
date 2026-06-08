@@ -243,35 +243,135 @@ func _physics_process(delta: float) -> void:
 	_sync_effect_nodes_position()
 	handle_resources(delta)
 
-	# --- 計時器與冷卻 ---
 	if parry_cd_timer > 0: parry_cd_timer -= delta
 	if absorb_cd_timer > 0: absorb_cd_timer -= delta
 	if dash_cd_timer > 0: dash_cd_timer -= delta
+	
+	# 移動判斷
+	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	
+	if reverse_input_enabled:
+		direction = -direction
+		
+	handle_movement(direction)
 
-	# --- 負面狀態處理 ---
+	# ==========================================
+
+
+	# 灼燒持續傷害
+
+	# 互斥動作判斷
+
+
+	# 灼燒持續傷害
+
+	# ==========================================
 	if burn_time_left > 0.0:
 		burn_time_left -= delta
 		burn_tick_timer -= delta
+
 		if burn_tick_timer <= 0.0:
 			take_damage(burn_damage)
 			burn_tick_timer = burn_interval
+			print("💔 灼燒發作！扣除 ", burn_damage, " 滴血，灼燒剩餘時間: ", snapped(burn_time_left, 0.1), " 秒")
+
 		if burn_time_left <= 0.0:
 			if sprite and not is_invincible:
 				sprite.modulate = Color.WHITE
+			print("💨 灼燒狀態自然結束！")
+
+
+	# ==========================================
+	# 緩速計時
+	# ==========================================
+
+	# 緩速計時
+
+
+	# ==========================================
+	# 緩速計時
+	# ==========================================
 
 	if slow_debuff_timer > 0.0:
 		slow_debuff_timer -= delta
+
 		if slow_debuff_timer <= 0.0:
 			slow_multiplier = 1.0
+			print("🏃 緩速結束，恢復正常速度！")
 
-	# --- 移動輸入 ---
-	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+
+
+	# ==========================================
+	# 冷卻時間
+	# ==========================================
+	if parry_cd_timer > 0.0:
+		parry_cd_timer -= delta
+
+	if absorb_cd_timer > 0.0:
+		absorb_cd_timer -= delta
+
+	if dash_cd_timer > 0.0:
+		dash_cd_timer -= delta
+
+	# ==========================================
+	# UI 更新
+	# ==========================================
+	if health_bar:
+		health_bar.value = current_hp
+
+	if hp_label:
+		hp_label.text = "%d / %d" % [current_hp, Playerdata_Globle.max_hp]
+
+	if stamina_bar:
+		stamina_bar.value = current_stamina
+
+	if stamina_label:
+		stamina_label.text = "%d / %d" % [current_stamina, Playerdata_Globle.max_stamina]
+
+	if mp_bar:
+		mp_bar.value = current_mp
+
+	if mp_label:
+		mp_label.text = "%d / %d" % [current_mp, Playerdata_Globle.max_mp]
+
+	if btn_hp_label:
+		btn_hp_label.text = str(Playerdata_Globle.hp_potion)
+
+	if btn_stamina_label:
+		btn_stamina_label.text = str(Playerdata_Globle.stamina_potion)
+
+	if btn_mp_label:
+		btn_mp_label.text = str(Playerdata_Globle.mp_potion)
+
+	if btn_invincible_label:
+		btn_invincible_label.text = str(Playerdata_Globle.invincible)
+
+	# ==========================================
+	# 移動輸入
+	# 反向輸入區域會在這裡生效
+	# ==========================================
+
 	if reverse_input_enabled:
 		direction = -direction
+
 	handle_movement(direction)
 
-	# --- 動作判定 (互斥) ---
-	# 1. 普通反彈 (Parry) - 不消耗魔力
+	# ==========================================
+	# 瞬間反彈
+	# ==========================================
+
+
+	_update_player_ui()
+
+
+
+
+	_update_player_ui()
+
+	# ==========================================
+	# 互斥動作判斷
+	# ==========================================
+
 	if Input.is_action_pressed("parry") and parry_cd_timer <= 0.0 and not is_absorb_preparing and not is_aiming:
 		if not is_parry_preparing:
 			is_parry_preparing = true
@@ -281,7 +381,13 @@ func _physics_process(delta: float) -> void:
 			is_parry_preparing = false
 			parry_cd_timer = parry_cooldown
 
-	# 2. 吸收 (Absorb) - 不消耗魔力
+
+
+	# ==========================================
+	# 吸收
+	# ==========================================
+
+
 	if Input.is_action_pressed("absorb") and absorb_cd_timer <= 0.0 and not is_parry_preparing and not is_aiming:
 		is_absorb_preparing = true
 		execute_absorb_action()
@@ -290,38 +396,62 @@ func _physics_process(delta: float) -> void:
 			is_absorb_preparing = false
 			absorb_cd_timer = absorb_cooldown
 
-	# 3. 瞄準與發射 (Aim & Release) - 發射時消耗 MP
+	# ==========================================
+	# 瞄準與釋放
+	# ==========================================
 	if not is_parry_preparing and not is_absorb_preparing:
 		handle_aim_and_release()
 
-	# --- 動畫與視覺更新 ---
+	# ==========================================
+	# 技能指示器更新
+	# ==========================================
+
+
+	if not is_parry_preparing and not is_absorb_preparing:
+		handle_aim_and_release()
+		
+	# 【修正】翻轉要用 Sprite2D (圖片本體)
 	if velocity.x > 0:
 		sprite.flip_h = false 
 	elif velocity.x < 0:
 		sprite.flip_h = true  
 		
+	# 【修改點 1】當玩家「沒有」在衝刺時，才執行這些偽走路晃動動畫，避免覆蓋掉 AnimationPlayer
 	if not is_dashing:
 		if velocity != Vector2.ZERO:
-			walk_time += delta * 12.0
-			sprite_container.position.y = sin(walk_time) * 3.0
-			sprite_container.rotation = sin(walk_time * 0.5) * 0.02
+			walk_time += delta * 12.0 # 數字 12.0 剛剛好
+			sprite_container.position.y = sin(walk_time) * 3.0 # 上下彈跳
+			sprite_container.rotation = sin(walk_time * 0.5) * 0.02 # 左右傾斜
 		else:
 			walk_time = 0.0
 			sprite_container.position.y = lerp(sprite_container.position.y, 0.0, 0.2)
 			sprite_container.rotation = lerp(sprite_container.rotation, 0.0, 0.2)
+		
+
 
 	if skill_indicator:
 		skill_indicator.is_parry_preparing = is_parry_preparing
 		skill_indicator.is_absorb_preparing = is_absorb_preparing
 		skill_indicator.is_aiming = is_aiming
+
+
 		skill_indicator.inner_radius = parry_inner_radius 
 		skill_indicator.outer_radius = parry_outer_radius 
 		skill_indicator.aim_angle = (get_global_mouse_position() - global_position).angle()
+
+
 		if bounce_collision:
 			skill_indicator.bounce_collision = bounce_collision
+
+
+
+		skill_indicator.inner_radius = parry_inner_radius 
+		skill_indicator.outer_radius = parry_outer_radius 
+		skill_indicator.aim_angle = (get_global_mouse_position() - global_position).angle()
+
+
 		skill_indicator.queue_redraw()
 
-	_update_player_ui()
 	move_and_slide()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -623,13 +753,8 @@ func launch_captured_bullets() -> void:
 		return
 
 	if not has_infinite_mp:
-		var cost = Playerdata_Globle.absorb_mp_cost
-		print("DEBUG: 發射子彈，扣除 MP. 當前: ", current_mp, " 消耗: ", cost)
-		current_mp -= cost
+		current_mp -= Playerdata_Globle.absorb_mp_cost
 		current_mp = maxf(current_mp, 0.0)
-		print("DEBUG: 扣除後 MP: ", current_mp)
-	else:
-		print("DEBUG: 無限魔力狀態，不扣 MP")
 
 	_update_player_ui()
 	play_release_burst_particles()

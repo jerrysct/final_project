@@ -241,34 +241,45 @@ func _physics_process(delta: float) -> void:
 	_sync_effect_nodes_position()
 	handle_resources(delta)
 
-	# --- 計時器 ---
 	if parry_cd_timer > 0: parry_cd_timer -= delta
 	if absorb_cd_timer > 0: absorb_cd_timer -= delta
 	if dash_cd_timer > 0: dash_cd_timer -= delta
+	
+	# 移動判斷
+	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	
+	if reverse_input_enabled:
+		direction = -direction
+		
+	handle_movement(direction)
 
-	# --- 負面狀態 ---
+	# ==========================================
+	# 互斥動作判斷
+	# ==========================================
+	# 灼燒持續傷害
 	if burn_time_left > 0.0:
 		burn_time_left -= delta
 		burn_tick_timer -= delta
+
 		if burn_tick_timer <= 0.0:
 			take_damage(burn_damage)
 			burn_tick_timer = burn_interval
+			print("💔 灼燒發作！扣除 ", burn_damage, " 滴血，灼燒剩餘時間: ", snapped(burn_time_left, 0.1), " 秒")
+
 		if burn_time_left <= 0.0:
 			if sprite and not is_invincible:
 				sprite.modulate = Color.WHITE
+			print("💨 灼燒狀態自然結束！")
 
+	# 緩速計時
 	if slow_debuff_timer > 0.0:
 		slow_debuff_timer -= delta
 		if slow_debuff_timer <= 0.0:
 			slow_multiplier = 1.0
+			print("🏃 緩速結束，恢復正常速度！")
 
-	# --- 移動 ---
-	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	if reverse_input_enabled:
-		direction = -direction
-	handle_movement(direction)
+	_update_player_ui()
 
-	# --- 動作判定 ---
 	if Input.is_action_pressed("parry") and parry_cd_timer <= 0.0 and not is_absorb_preparing and not is_aiming:
 		if not is_parry_preparing:
 			is_parry_preparing = true
@@ -289,21 +300,21 @@ func _physics_process(delta: float) -> void:
 	if not is_parry_preparing and not is_absorb_preparing:
 		handle_aim_and_release()
 		
-	# --- 視覺與動畫 ---
+	# 【修正】翻轉要用 Sprite2D (圖片本體)
 	if velocity.x > 0:
 		sprite.flip_h = false 
 	elif velocity.x < 0:
 		sprite.flip_h = true  
 		
-	if not is_dashing:
-		if velocity != Vector2.ZERO:
-			walk_time += delta * 12.0
-			sprite_container.position.y = sin(walk_time) * 3.0
-			sprite_container.rotation = sin(walk_time * 0.5) * 0.02
-		else:
-			walk_time = 0.0
-			sprite_container.position.y = lerp(sprite_container.position.y, 0.0, 0.2)
-			sprite_container.rotation = lerp(sprite_container.rotation, 0.0, 0.2)
+	# 【修正】晃動要用 SpriteContainer (外殼容器)，且數值調回合理範圍
+	if velocity != Vector2.ZERO:
+		walk_time += delta * 12.0 # 數字 15.0 剛剛好，1000.0 會變殘影
+		sprite_container.position.y = sin(walk_time) * 3.0 # 上下彈跳 25 像素
+		sprite_container.rotation = sin(walk_time * 0.5) * 0.02 # 左右傾斜 0.15 弧度
+	else:
+		walk_time = 0.0
+		sprite_container.position.y = lerp(sprite_container.position.y, 0.0, 0.2)
+		sprite_container.rotation = lerp(sprite_container.rotation, 0.0, 0.2)
 		
 	if skill_indicator:
 		skill_indicator.is_parry_preparing = is_parry_preparing
@@ -314,7 +325,6 @@ func _physics_process(delta: float) -> void:
 		skill_indicator.aim_angle = (get_global_mouse_position() - global_position).angle()
 		skill_indicator.queue_redraw()
 
-	_update_player_ui()
 	move_and_slide()
 
 
@@ -613,13 +623,8 @@ func launch_captured_bullets() -> void:
 		return
 
 	if not has_infinite_mp:
-		var cost = Playerdata_Globle.absorb_mp_cost
-		print("DEBUG: (Player 2) 發射子彈，扣除 MP. 當前: ", current_mp, " 消耗: ", cost)
-		current_mp -= cost
+		current_mp -= Playerdata_Globle.absorb_mp_cost
 		current_mp = maxf(current_mp, 0.0)
-		print("DEBUG: (Player 2) 扣除後 MP: ", current_mp)
-	else:
-		print("DEBUG: (Player 2) 無限魔力狀態，不扣 MP")
 
 	_update_player_ui()
 	play_release_burst_particles()
